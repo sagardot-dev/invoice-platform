@@ -19,6 +19,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
@@ -27,22 +28,20 @@ import { useRouter } from "next/navigation";
 const formSchema = z.object({
   email: z.string().email("Please enter valid email"),
   password: z.string().min(6, "Password is required, 6 characters"),
-  username: z.string().min(3, "Username is required"),
 });
 
-export const SignUpForm = () => {
+export const InvoiceForm = () => {
   const router = useRouter();
-  const [isloading, setIsLoading] = useState(false);
+  const [isLoading, setIsloading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
       password: "",
-      username: "",
     },
   });
 
-  const isPending = form.formState.isSubmitting || isloading;
+  const isPending = form.formState.isSubmitting || isLoading;
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     toast("You submit a form please wait", {
@@ -60,23 +59,22 @@ export const SignUpForm = () => {
       } as React.CSSProperties,
     });
     console.log(data);
-    await authClient.signUp.email(
+    await authClient.signIn.email(
       {
         email: data.email,
         password: data.password,
-        name: data.username,
         callbackURL: "/dashboard",
       },
       {
         onRequest: (ctx) => {
-          setIsLoading(true);
+          setIsloading(true);
         },
         onSuccess: (ctx) => {
-          setIsLoading(false);
+          setIsloading(false);
           toast("sign-up successfully", {
             description: (
               <pre className="bg-code text-code-foreground mt-2 w-[320px] overflow-x-auto rounded-md p-4">
-                <p className=" animate-pulse">Redirecting to Dashboard</p>
+                <p className=" animate-pulse">Redirecting to dashborad</p>
               </pre>
             ),
             position: "bottom-right",
@@ -90,8 +88,7 @@ export const SignUpForm = () => {
           router.push("/dashboard");
         },
         onError: (ctx) => {
-          console.log(ctx);
-          setIsLoading(false);
+          setIsloading(false);
           toast.error(ctx.error.message, {
             description: (
               <pre className="bg-code text-code-foreground mt-2 w-[320px] overflow-x-auto rounded-md p-4">
@@ -107,41 +104,19 @@ export const SignUpForm = () => {
   }
 
   return (
-    <Card className="w-full md:max-w-lg md:min-w-lg sm:max-w-md px-3 py-8 max-w-sm">
+    <Card className="w-full md:max-w-lg md:min-w-md sm:max-w-md px-3 py-8 max-w-sm">
       <CardHeader className=" text-center">
-        <CardTitle className=" text-2xl">Sign-Up</CardTitle>
-        <CardDescription>Sign-up to get start with D-voice</CardDescription>
+        <CardTitle className=" text-2xl">Sign-In</CardTitle>
+        <CardDescription>Sign-in to get start with D-invoice</CardDescription>
       </CardHeader>
       <div className=" gap-y-8 flex flex-col">
         <CardContent>
           <form
             className=" flex flex-col gap-y-5"
-            id="form-rhf-demo"
+            id="form-rhf-submit"
             onSubmit={form.handleSubmit(onSubmit)}
           >
             <FieldGroup className=" flex flex-col gap-y-4">
-              <Controller
-                name="username"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="form-rhf-demo-username">
-                      Username
-                    </FieldLabel>
-                    <Input
-                      disabled={isPending}
-                      {...field}
-                      id="form-rhf-demo-username"
-                      aria-invalid={fieldState.invalid}
-                      placeholder="sagar gautham"
-                      autoComplete="on"
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
               <Controller
                 name="email"
                 control={form.control}
@@ -151,7 +126,7 @@ export const SignUpForm = () => {
                     <Input
                       disabled={isPending}
                       {...field}
-                      id="form-rhf-demo-email"
+                      id="form-rhf-email"
                       aria-invalid={fieldState.invalid}
                       placeholder="sagar@gmail.com"
                       autoComplete="on"
@@ -171,13 +146,13 @@ export const SignUpForm = () => {
                       Password
                     </FieldLabel>
                     <Input
+                      type="password"
                       disabled={isPending}
                       {...field}
                       id="form-rhf-password"
                       aria-invalid={fieldState.invalid}
                       placeholder="******"
-                      type="password"
-                      autoComplete="om"
+                      autoComplete="off"
                     />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
@@ -194,7 +169,7 @@ export const SignUpForm = () => {
             orientation="horizontal"
           >
             <Button
-              disabled={isloading}
+              disabled={isPending}
               className=" w-1/2"
               type="button"
               variant="outline"
@@ -202,13 +177,8 @@ export const SignUpForm = () => {
             >
               Reset
             </Button>
-            <Button
-              disabled={isPending}
-              className=" w-1/2"
-              type="submit"
-              form="form-rhf-demo"
-            >
-              Sign-up
+            <Button className=" w-1/2" type="submit" form="form-rhf-submit">
+              sign in
             </Button>
           </Field>
         </CardFooter>
@@ -223,8 +193,8 @@ export const SignUpForm = () => {
               type="button"
               variant="link"
             >
-              <Link href={"/auth/sign-in"}>
-                <p>Already have an account ?</p>
+              <Link href={"/auth/sign-up"}>
+                <p>Dont have an account yet?</p>
               </Link>
             </Button>
           </Field>

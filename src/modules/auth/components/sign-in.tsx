@@ -14,18 +14,12 @@ import {
 } from "@/components/ui/card";
 import {
   Field,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroupTextarea,
-} from "@/components/ui/input-group";
+
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
@@ -94,6 +88,7 @@ export const SignInForm = () => {
           router.push("/dashboard");
         },
         onError: (ctx) => {
+          setIsloading(false);
           toast.error(ctx.error.message, {
             description: (
               <pre className="bg-code text-code-foreground mt-2 w-[320px] overflow-x-auto rounded-md p-4">
@@ -109,34 +104,11 @@ export const SignInForm = () => {
   }
 
   return (
-    <Card className="w-full md:max-w-xl md:min-w-md sm:max-w-md px-3 py-8 max-w-sm">
+    <Card className="w-full md:max-w-lg md:min-w-md sm:max-w-md px-3 py-8 max-w-sm">
       <CardHeader className=" text-center">
         <CardTitle className=" text-2xl">Sign-In</CardTitle>
-        <CardDescription>Sign-in to get start with S-voice</CardDescription>
+        <CardDescription>Sign-in to get start with D-invoice</CardDescription>
       </CardHeader>
-      <div className="border-b py-3 pb-7 text-center">
-        <CardContent>
-          <Field
-            className="flex justify-center items-center text-center gap-4"
-            orientation="horizontal"
-          >
-            <Button
-              disabled={isPending}
-              className="w-1/2"
-              type="button"
-              variant="outline"
-              onClick={() => form.reset()}
-            >
-              GitHub
-            </Button>
-
-            <Button className="w-1/2" type="submit" form="form-rhf-google">
-              Google
-            </Button>
-          </Field>
-        </CardContent>
-      </div>
-
       <div className=" gap-y-8 flex flex-col">
         <CardContent>
           <form
@@ -174,6 +146,7 @@ export const SignInForm = () => {
                       Password
                     </FieldLabel>
                     <Input
+                      type="password"
                       disabled={isPending}
                       {...field}
                       id="form-rhf-password"

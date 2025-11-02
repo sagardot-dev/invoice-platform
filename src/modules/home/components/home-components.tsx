@@ -94,12 +94,10 @@ export default function InvoiceLandingPage() {
   return (
     <div className="min-h-screen  antialiased">
       <div className=" w-full max-w-7xl  mx-auto">
-        {/* Background Pattern */}
-        <div className="fixed inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-size-[4rem_4rem][mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)] -z-10" />
-
+        <div className="fixed inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-size-[4rem_4rem] mask-[radial-gradient(ellipse_60%_50%_at_50%_0%,black_70%,transparent_110%)] opacity-35" />
         <div className="relative">
           {/* Navigation */}
-          <nav className="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center border-b">
+          <nav className="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center ">
             <div className="flex items-center justify-center space-x-3">
               <Image
                 src="/logo.svg"
@@ -124,7 +122,7 @@ export default function InvoiceLandingPage() {
           </nav>
 
           {/* Hero Section */}
-          <section className="max-w-7xl mx-auto px-6 pt-29 pb-42  text-center">
+          <section className="max-w-7xl mx-auto px-6 pt-20 pb-32  text-center">
             <Badge className="mb-6 bg-primary/10 text-primary border-primary/20">
               💼 Trusted by 5,000+ Businesses
             </Badge>
@@ -229,7 +227,7 @@ export default function InvoiceLandingPage() {
           </section>
 
           {/* Testimonials Section */}
-          <section className="max-w-7xl mx-auto px-6 pb-32 pt-0 md:pt-10">
+          <section className="max-w-7xl mx-auto px-6 md:pb-32 pb-26 pt-0 md:pt-10">
             <div className="text-center mb-16">
               <Badge className="mb-4 bg-secondary text-secondary-foreground">
                 Testimonials

@@ -44,7 +44,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="border-t border-border mt-4 md:mt-10">
+    <footer className="border-t border-border  md:mt-10">
       <div className="max-w-7xl mx-auto px-6 py-16">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 mb-12">
@@ -144,7 +144,7 @@ export default function Footer() {
         </div>
 
         {/* Newsletter Section */}
-        <div className="border-t border-border pt-8 pb-8">
+        <div className="border-t border-border pt-8 pb-1">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start justify-between md:items-center">
             <div>
               <h3 className="font-semibold text-foreground mb-2">
@@ -155,13 +155,13 @@ export default function Footer() {
               </p>
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex flex-col md:flex-row gap-2">
               <input
                 type="email"
                 placeholder="Enter your email"
                 className="flex-1 px-4 py-2 rounded-lg bg-muted border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               />
-              <Button className="rounded-lg">Subscribe</Button>
+              <Button className="rounded-lg w-fit">Subscribe</Button>
             </div>
           </div>
         </div>

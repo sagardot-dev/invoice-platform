@@ -3,19 +3,19 @@
 import React, { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { 
-  FileText, 
-  DollarSign, 
-  TrendingUp, 
-  Users, 
-  Terminal, 
+import {
+  FileText,
+  DollarSign,
+  TrendingUp,
+  Users,
+  Terminal,
   Receipt,
   CreditCard,
   PieChart,
   BarChart3,
   Clock,
   CheckCircle,
-  AlertCircle
+  AlertCircle,
 } from "lucide-react";
 
 const InvoiceFeatures = () => {
@@ -93,23 +93,23 @@ const InvoiceFeatures = () => {
       color: "blue",
       active: false,
     },
-    { 
-      icon: BarChart3, 
-      label: "Sales Analytics", 
-      color: "green", 
-      active: false 
+    {
+      icon: BarChart3,
+      label: "Sales Analytics",
+      color: "green",
+      active: false,
     },
-    { 
-      icon: DollarSign, 
-      label: "Payment Tracking", 
-      color: "purple", 
-      active: true 
+    {
+      icon: DollarSign,
+      label: "Payment Tracking",
+      color: "purple",
+      active: true,
     },
-    { 
-      icon: Users, 
-      label: "Client Management", 
-      color: "cyan", 
-      active: false 
+    {
+      icon: Users,
+      label: "Client Management",
+      color: "cyan",
+      active: false,
     },
   ];
 
@@ -173,7 +173,8 @@ const InvoiceFeatures = () => {
             How D-Invoice Works
           </h2>
           <p className="text-muted-foreground text-sm md:text-lg max-w-2xl text-center mx-auto">
-            Complete invoicing solution with real-time tracking and powerful analytics
+            Complete invoicing solution with real-time tracking and powerful
+            analytics
           </p>
         </div>
 
@@ -185,7 +186,8 @@ const InvoiceFeatures = () => {
                 Recent Activity
               </h2>
               <p className="text-muted-foreground mt-2 max-w-md">
-                Real-time updates on invoices, payments, and business operations.
+                Real-time updates on invoices, payments, and business
+                operations.
               </p>
             </div>
             <div className="relative h-80 overflow-hidden p-4">
@@ -251,7 +253,8 @@ const InvoiceFeatures = () => {
                 Platform Features
               </h2>
               <p className="text-muted-foreground mt-2 max-w-md">
-                Powerful tools to streamline your invoicing and business management.
+                Powerful tools to streamline your invoicing and business
+                management.
               </p>
             </div>
             <div className="relative h-80 overflow-hidden flex items-center justify-center p-7">
@@ -361,7 +364,9 @@ const InvoiceFeatures = () => {
                     >
                       <capability.icon
                         className={`w-3 h-3 ${
-                          capability.active ? "text-foreground" : "text-muted-foreground"
+                          capability.active
+                            ? "text-foreground"
+                            : "text-muted-foreground"
                         }`}
                       />
                       {capability.label}
@@ -378,7 +383,9 @@ const InvoiceFeatures = () => {
                         Payment Tracking
                       </p>
                       <p className="text-sm text-muted-foreground mb-3">
-                        Track all payments, manage currencies, set up automated reminders, and integrate with multiple payment gateways seamlessly.
+                        Track all payments, manage currencies, set up automated
+                        reminders, and integrate with multiple payment gateways
+                        seamlessly.
                       </p>
                       <div className="flex gap-2 flex-wrap">
                         {["Stripe", "PayPal", "Bank Transfer", "Crypto"].map(
