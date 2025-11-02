@@ -1,10 +1,9 @@
 export interface Invoice {
   invoiceID: string;
-  status: "Paid" | "Pending" | "Unpaid";
+  status: "Paid" | "Pending" | "Unpaid" | "Balance";
   customerName: string;
-  date: string;
+  date: Date;
   saleMan: string;
-  amount: string;
-  paymentMethod: "Credit Card" | "PayPal" | "Bank Transfer";
-  action: string;
+  amount: Number;
+  paymentMethod: "CC" | "PayPal" | "Bank Transfer" | "CA" | "STRIPE";
 }

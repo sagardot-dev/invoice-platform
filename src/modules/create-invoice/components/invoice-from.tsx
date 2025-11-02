@@ -24,6 +24,9 @@ import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { InvoiceSchema } from "@/schema";
+import { DatePicker } from "./date-picker";
+import { Separator } from "@/components/ui/separator";
 
 const formSchema = z.object({
   email: z.string().email("Please enter valid email"),
@@ -33,81 +36,30 @@ const formSchema = z.object({
 export const InvoiceForm = () => {
   const router = useRouter();
   const [isLoading, setIsloading] = useState(false);
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof InvoiceSchema>>({
+    resolver: zodResolver(InvoiceSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      invoiceID: "",
+      status: "Unpaid",
+      customerName: "",
+      date: new Date(),
+      saleMan: "",
+      amount: 0,
+      paymentMethod: "CC",
     },
   });
 
   const isPending = form.formState.isSubmitting || isLoading;
 
-  async function onSubmit(data: z.infer<typeof formSchema>) {
-    toast("You submit a form please wait", {
-      description: (
-        <pre className="bg-code text-code-foreground mt-2 w-[320px] overflow-x-auto rounded-md p-4">
-          <p className=" animate-pulse">Submitting the from...</p>
-        </pre>
-      ),
-      position: "bottom-right",
-      classNames: {
-        content: "flex flex-col gap-2",
-      },
-      style: {
-        "--border-radius": "calc(var(--radius)  + 4px)",
-      } as React.CSSProperties,
-    });
+  async function onSubmit(data: z.infer<typeof InvoiceSchema>) {
     console.log(data);
-    await authClient.signIn.email(
-      {
-        email: data.email,
-        password: data.password,
-        callbackURL: "/dashboard",
-      },
-      {
-        onRequest: (ctx) => {
-          setIsloading(true);
-        },
-        onSuccess: (ctx) => {
-          setIsloading(false);
-          toast("sign-up successfully", {
-            description: (
-              <pre className="bg-code text-code-foreground mt-2 w-[320px] overflow-x-auto rounded-md p-4">
-                <p className=" animate-pulse">Redirecting to dashborad</p>
-              </pre>
-            ),
-            position: "bottom-right",
-            classNames: {
-              content: "flex flex-col gap-2",
-            },
-            style: {
-              "--border-radius": "calc(var(--radius)  + 4px)",
-            } as React.CSSProperties,
-          });
-          router.push("/dashboard");
-        },
-        onError: (ctx) => {
-          setIsloading(false);
-          toast.error(ctx.error.message, {
-            description: (
-              <pre className="bg-code text-code-foreground mt-2 w-[320px] overflow-x-auto rounded-md p-4">
-                <p className=" animate-pulse">
-                  Error while sign up please try again
-                </p>
-              </pre>
-            ),
-          });
-        },
-      }
-    );
   }
 
   return (
-    <Card className="w-full md:max-w-lg md:min-w-md sm:max-w-md px-3 py-8 max-w-sm">
-      <CardHeader className=" text-center">
-        <CardTitle className=" text-2xl">Sign-In</CardTitle>
-        <CardDescription>Sign-in to get start with D-invoice</CardDescription>
+    <Card className="w-full border-none px-3 py-8">
+      <CardHeader className=" border-b">
+        <CardTitle className=" text-2xl"> Create a new Invoice </CardTitle>
+        <CardDescription>Please Fill all the data</CardDescription>
       </CardHeader>
       <div className=" gap-y-8 flex flex-col">
         <CardContent>
@@ -116,51 +68,443 @@ export const InvoiceForm = () => {
             id="form-rhf-submit"
             onSubmit={form.handleSubmit(onSubmit)}
           >
-            <FieldGroup className=" flex flex-col gap-y-4">
-              <Controller
-                name="email"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="form-rhf-email">Email</FieldLabel>
-                    <Input
-                      disabled={isPending}
-                      {...field}
-                      id="form-rhf-email"
-                      aria-invalid={fieldState.invalid}
-                      placeholder="sagar@gmail.com"
-                      autoComplete="on"
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-              <Controller
-                name="password"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="form-rhf-password">
-                      Password
-                    </FieldLabel>
-                    <Input
-                      type="password"
-                      disabled={isPending}
-                      {...field}
-                      id="form-rhf-password"
-                      aria-invalid={fieldState.invalid}
-                      placeholder="******"
-                      autoComplete="off"
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-            </FieldGroup>
+            <div className=" customer-data  ">
+              <FieldGroup className=" grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-y-4">
+                <Controller
+                  name="invoiceID"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="form-rhf-email">
+                        Invoice ID
+                      </FieldLabel>
+                      <Input
+                        disabled={isPending}
+                        {...field}
+                        id="form-rhf-email"
+                        aria-invalid={fieldState.invalid}
+                        placeholder="sagar@gmail.com"
+                        autoComplete="on"
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+                <Controller
+                  name="status"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="form-rhf-password">
+                        Status
+                      </FieldLabel>
+                      <Input
+                        disabled={isPending}
+                        {...field}
+                        id="form-rhf-password"
+                        aria-invalid={fieldState.invalid}
+                        placeholder="******"
+                        autoComplete="off"
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+                <Controller
+                  name="customerName"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="form-rhf-email">
+                        Customer Name
+                      </FieldLabel>
+                      <Input
+                        disabled={isPending}
+                        {...field}
+                        id="form-rhf-email"
+                        aria-invalid={fieldState.invalid}
+                        placeholder="sagar@gmail.com"
+                        autoComplete="on"
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+                <Controller
+                  name="date"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="form-rhf-email">Date</FieldLabel>
+                      <DatePicker />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+                <Controller
+                  name="saleMan"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="form-rhf-email">SaleMan</FieldLabel>
+                      <Input
+                        disabled={isPending}
+                        {...field}
+                        id="form-rhf-email"
+                        aria-invalid={fieldState.invalid}
+                        placeholder="sagar@gmail.com"
+                        autoComplete="on"
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+                <Controller
+                  name="amount"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="form-rhf-email">Amount</FieldLabel>
+                      <Input
+                        disabled={isPending}
+                        {...field}
+                        id="form-rhf-email"
+                        aria-invalid={fieldState.invalid}
+                        placeholder="sagar@gmail.com"
+                        autoComplete="on"
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+                <Controller
+                  name="paymentMethod"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="form-rhf-email">
+                        Payment Method
+                      </FieldLabel>
+                      <Input
+                        disabled={isPending}
+                        {...field}
+                        id="form-rhf-email"
+                        aria-invalid={fieldState.invalid}
+                        placeholder="sagar@gmail.com"
+                        autoComplete="on"
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+              </FieldGroup>
+            </div>
+            <Separator/>
+            <div className=" customer-data  ">
+              <FieldGroup className=" grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-y-4">
+                <Controller
+                  name="invoiceID"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="form-rhf-email">
+                        Invoice ID
+                      </FieldLabel>
+                      <Input
+                        disabled={isPending}
+                        {...field}
+                        id="form-rhf-email"
+                        aria-invalid={fieldState.invalid}
+                        placeholder="sagar@gmail.com"
+                        autoComplete="on"
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+                <Controller
+                  name="status"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="form-rhf-password">
+                        Status
+                      </FieldLabel>
+                      <Input
+                        disabled={isPending}
+                        {...field}
+                        id="form-rhf-password"
+                        aria-invalid={fieldState.invalid}
+                        placeholder="******"
+                        autoComplete="off"
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+                <Controller
+                  name="customerName"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="form-rhf-email">
+                        Customer Name
+                      </FieldLabel>
+                      <Input
+                        disabled={isPending}
+                        {...field}
+                        id="form-rhf-email"
+                        aria-invalid={fieldState.invalid}
+                        placeholder="sagar@gmail.com"
+                        autoComplete="on"
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+                <Controller
+                  name="date"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="form-rhf-email">Date</FieldLabel>
+                      <DatePicker />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+                <Controller
+                  name="saleMan"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="form-rhf-email">SaleMan</FieldLabel>
+                      <Input
+                        disabled={isPending}
+                        {...field}
+                        id="form-rhf-email"
+                        aria-invalid={fieldState.invalid}
+                        placeholder="sagar@gmail.com"
+                        autoComplete="on"
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+                <Controller
+                  name="amount"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="form-rhf-email">Amount</FieldLabel>
+                      <Input
+                        disabled={isPending}
+                        {...field}
+                        id="form-rhf-email"
+                        aria-invalid={fieldState.invalid}
+                        placeholder="sagar@gmail.com"
+                        autoComplete="on"
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+                <Controller
+                  name="paymentMethod"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="form-rhf-email">
+                        Payment Method
+                      </FieldLabel>
+                      <Input
+                        disabled={isPending}
+                        {...field}
+                        id="form-rhf-email"
+                        aria-invalid={fieldState.invalid}
+                        placeholder="sagar@gmail.com"
+                        autoComplete="on"
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+              </FieldGroup>
+            </div>
+            <Separator/>
+            <div className=" customer-data  ">
+              <FieldGroup className=" grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-y-4">
+                <Controller
+                  name="invoiceID"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="form-rhf-email">
+                        Invoice ID
+                      </FieldLabel>
+                      <Input
+                        disabled={isPending}
+                        {...field}
+                        id="form-rhf-email"
+                        aria-invalid={fieldState.invalid}
+                        placeholder="sagar@gmail.com"
+                        autoComplete="on"
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+                <Controller
+                  name="status"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="form-rhf-password">
+                        Status
+                      </FieldLabel>
+                      <Input
+                        disabled={isPending}
+                        {...field}
+                        id="form-rhf-password"
+                        aria-invalid={fieldState.invalid}
+                        placeholder="******"
+                        autoComplete="off"
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+                <Controller
+                  name="customerName"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="form-rhf-email">
+                        Customer Name
+                      </FieldLabel>
+                      <Input
+                        disabled={isPending}
+                        {...field}
+                        id="form-rhf-email"
+                        aria-invalid={fieldState.invalid}
+                        placeholder="sagar@gmail.com"
+                        autoComplete="on"
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+                <Controller
+                  name="date"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="form-rhf-email">Date</FieldLabel>
+                      <DatePicker />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+                <Controller
+                  name="saleMan"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="form-rhf-email">SaleMan</FieldLabel>
+                      <Input
+                        disabled={isPending}
+                        {...field}
+                        id="form-rhf-email"
+                        aria-invalid={fieldState.invalid}
+                        placeholder="sagar@gmail.com"
+                        autoComplete="on"
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+                <Controller
+                  name="amount"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="form-rhf-email">Amount</FieldLabel>
+                      <Input
+                        disabled={isPending}
+                        {...field}
+                        id="form-rhf-email"
+                        aria-invalid={fieldState.invalid}
+                        placeholder="sagar@gmail.com"
+                        autoComplete="on"
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+                <Controller
+                  name="paymentMethod"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="form-rhf-email">
+                        Payment Method
+                      </FieldLabel>
+                      <Input
+                        disabled={isPending}
+                        {...field}
+                        id="form-rhf-email"
+                        aria-invalid={fieldState.invalid}
+                        placeholder="sagar@gmail.com"
+                        autoComplete="on"
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+              </FieldGroup>
+            </div>
           </form>
         </CardContent>
         <CardFooter>
