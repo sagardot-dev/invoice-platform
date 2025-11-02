@@ -27,7 +27,7 @@ export const AppSidebar = () => {
       <SidebarHeader className=" border-b ">
         <SidebarMenu>
           <SidebarMenuButton asChild>
-            <Link href="/" className="flex items-center gap-2">
+            <Link href="/dashboard" className="flex items-center gap-2">
               <Image width={15} height={30} alt="logo" src="/logo.svg" />
               <span className="group-data-[collapsible=icon]:hidden font-semibold text-sm">
                 D-invoice
@@ -68,16 +68,6 @@ export const AppSidebar = () => {
       <SidebarFooter>
         <SidebarMenu className=" py-2 ">
           <SidebarMenuItem>
-            {
-              <SidebarMenuButton
-                tooltip={"update to pro"}
-                className=" gap-x-4"
-                onClick={() => {}}
-              >
-                <StarIcon className=" size-4" />
-                <span>Update to pro</span>
-              </SidebarMenuButton>
-            }
             <SidebarMenuButton tooltip={"update to pro"} className=" gap-x-4">
               <CreditCardIcon className=" size-4" />
               <span>Billings </span>
