@@ -437,30 +437,6 @@ const InvoiceFeatures = () => {
             </div>
           </div>
         </div>
-
-        {/* Stats Section */}
-        <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-3">
-          <Card className="bg-card border-border p-6 text-center">
-            <Receipt className="w-8 h-8 text-primary mx-auto mb-3" />
-            <div className="text-3xl font-bold text-foreground mb-1">50K+</div>
-            <div className="text-sm text-muted-foreground">Invoices Created</div>
-          </Card>
-          <Card className="bg-card border-border p-6 text-center">
-            <DollarSign className="w-8 h-8 text-primary mx-auto mb-3" />
-            <div className="text-3xl font-bold text-foreground mb-1">$10M+</div>
-            <div className="text-sm text-muted-foreground">Revenue Tracked</div>
-          </Card>
-          <Card className="bg-card border-border p-6 text-center">
-            <Users className="w-8 h-8 text-primary mx-auto mb-3" />
-            <div className="text-3xl font-bold text-foreground mb-1">5K+</div>
-            <div className="text-sm text-muted-foreground">Happy Businesses</div>
-          </Card>
-          <Card className="bg-card border-border p-6 text-center">
-            <CheckCircle className="w-8 h-8 text-primary mx-auto mb-3" />
-            <div className="text-3xl font-bold text-foreground mb-1">99.9%</div>
-            <div className="text-sm text-muted-foreground">Uptime</div>
-          </Card>
-        </div>
       </div>
     </section>
   );

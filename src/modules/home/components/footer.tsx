@@ -21,12 +21,6 @@ export default function Footer() {
       { name: "Templates", href: "#templates" },
       { name: "Integrations", href: "#integrations" },
     ],
-    company: [
-      { name: "About Us", href: "#about" },
-      { name: "Blog", href: "#blog" },
-      { name: "Careers", href: "#careers" },
-      { name: "Contact", href: "#contact" },
-    ],
     resources: [
       { name: "Documentation", href: "#docs" },
       { name: "Help Center", href: "#help" },
@@ -50,19 +44,18 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="border-t border-border mt-4 md:mt-20">
+    <footer className="border-t border-border mt-4 md:mt-10">
       <div className="max-w-7xl mx-auto px-6 py-16">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 mb-12">
           {/* Brand Section */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-3">
             <div className="flex items-center space-x-3 mb-4">
               <Image
                 src="/logo.svg"
                 alt="D-Invoice Logo"
-                width={40}
-                height={40}
-                className="rounded-lg"
+                width={20}
+                height={20}
               />
               <span className="font-bold text-foreground text-xl">
                 D-Invoice
@@ -77,10 +70,10 @@ export default function Footer() {
             <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
               <Mail className="w-4 h-4 text-primary" />
               <a
-                href="mailto:support@d-invoice.com"
+                href="mailto:sagardotdev@gmail.com"
                 className="hover:text-foreground transition-colors"
               >
-                support@d-invoice.com
+                sagardotdev@gmail.com
               </a>
             </div>
 
@@ -115,24 +108,6 @@ export default function Footer() {
               ))}
             </ul>
           </div>
-
-          {/* Company Links */}
-          <div>
-            <h3 className="font-semibold text-foreground mb-4">Company</h3>
-            <ul className="space-y-3">
-              {footerLinks.company.map((link, i) => (
-                <li key={i}>
-                  <a
-                    href={link.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {link.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
           {/* Resources Links */}
           <div>
             <h3 className="font-semibold text-foreground mb-4">Resources</h3>
