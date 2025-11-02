@@ -3,8 +3,9 @@ import InvoiceLandingPage from "@/modules/home/components/home-components";
 
 export default async function Home() {
   const session = await getServerSessionOrRedirect();
-  return <div className=" h-screen w-full bg-background">
-    
-    <InvoiceLandingPage/>
-  </div>;
+  return (
+    <div className=" h-screen w-full ">
+      <InvoiceLandingPage />
+    </div>
+  );
 }

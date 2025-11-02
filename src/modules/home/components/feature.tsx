@@ -208,7 +208,7 @@ const InvoiceFeatures = () => {
                     >
                       <div className="flex justify-between items-start gap-3">
                         <div className="flex items-center gap-2 min-w-0 flex-1">
-                          <div className="size-5 rounded-sm flex items-center justify-center text-sm bg-gradient-to-br from-primary to-primary/50">
+                          <div className="size-5 rounded-sm flex items-center justify-center text-sm bg-linear-to-br from-primary to-primary/50">
                             {activity.icon}
                           </div>
                           <p className="text-sm text-foreground truncate">
@@ -259,12 +259,12 @@ const InvoiceFeatures = () => {
                 {platformFeatures.map((feature, i) => (
                   <div
                     key={i}
-                    className=" rounded-xl border border-border bg-gradient-to-br from-card to-muted relative overflow-hidden group hover:border-primary/50 transition-all duration-300"
+                    className=" rounded-xl border border-border bg-linear-to-br from-card to-muted relative overflow-hidden group hover:border-primary/50 transition-all duration-300"
                     style={{
                       animationDelay: `${i * 100}ms`,
                     }}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-linear-to-br from-primary/10 via-transparent to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     <div className="relative z-10 flex flex-col items-center justify-center h-full p-2">
                       <span
                         className="text-3xl mb-2 animate-float"
@@ -285,7 +285,7 @@ const InvoiceFeatures = () => {
                   </div>
                 ))}
               </div>
-              <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-[size:40px_40px] opacity-10 pointer-events-none" />
+              <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-size[40px_40px] opacity-10 pointer-events-none" />
             </div>
           </div>
 
@@ -302,7 +302,7 @@ const InvoiceFeatures = () => {
             <div className="relative overflow-hidden flex flex-wrap items-center justify-center px-4">
               <div className="relative z-10 w-full">
                 <div className="w-full flex gap-x-2">
-                  <Card className="bg-gradient-to-br from-primary/10 to-transparent border-primary/20 p-4 mt-6 w-full">
+                  <Card className="bg-linear-to-br from-primary/10 to-transparent border-primary/20 p-4 mt-6 w-full">
                     <FileText className="w-8 h-7 text-primary mb-2" />
                     <h3 className="text-sm font-bold text-foreground">
                       Create Invoices
@@ -311,7 +311,7 @@ const InvoiceFeatures = () => {
                       Templates & Auto-calc
                     </p>
                   </Card>
-                  <Card className="bg-gradient-to-br from-primary/10 to-transparent border-primary/20 p-4 mt-6 w-full">
+                  <Card className="bg-linear-to-br from-primary/10 to-transparent border-primary/20 p-4 mt-6 w-full">
                     <TrendingUp className="w-8 h-7 text-primary mb-2" />
                     <h3 className="text-sm font-bold text-foreground">
                       Track Sales
@@ -322,7 +322,7 @@ const InvoiceFeatures = () => {
                   </Card>
                 </div>
                 <div className="mt-3">
-                  <Card className="bg-gradient-to-r from-primary/10 via-transparent to-primary/10 border-primary/20 p-4">
+                  <Card className="bg-linear-to-r from-primary/10 via-transparent to-primary/10 border-primary/20 p-4">
                     <DollarSign className="w-8 h-6 text-primary mb-2" />
                     <h3 className="text-sm font-bold text-foreground">
                       Payment Management
@@ -333,7 +333,7 @@ const InvoiceFeatures = () => {
                   </Card>
                 </div>
               </div>
-              <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-[size:40px_40px] opacity-10 pointer-events-none" />
+              <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-size-[40px_40px] opacity-10 pointer-events-none" />
             </div>
           </div>
 
@@ -370,7 +370,7 @@ const InvoiceFeatures = () => {
                 </div>
                 <Card className="bg-muted border-border p-4 py-6">
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary/50 flex items-center justify-center flex-shrink-0">
+                    <div className="w-8 h-8 rounded-lg bg-linear-to-br from-primary to-primary/50 flex items-center justify-center shrink-0">
                       <DollarSign className="w-5 h-5 text-primary-foreground" />
                     </div>
                     <div className="flex-1">
@@ -398,8 +398,8 @@ const InvoiceFeatures = () => {
                 </Card>
 
                 <div className="overflow-hidden relative mt-6">
-                  <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-card to-transparent z-10 pointer-events-none" />
-                  <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-card to-transparent z-10 pointer-events-none" />
+                  <div className="absolute left-0 top-0 bottom-0 w-24 bg-linear-to-r from-card to-transparent z-10 pointer-events-none" />
+                  <div className="absolute right-0 top-0 bottom-0 w-24 bg-linear-to-l from-card to-transparent z-10 pointer-events-none" />
 
                   <div
                     className="flex animate-marquee"
@@ -407,7 +407,7 @@ const InvoiceFeatures = () => {
                       { "--marquee-duration": "30s" } as React.CSSProperties
                     }
                   >
-                    <div className="flex gap-4 flex-shrink-0">
+                    <div className="flex gap-4 shrink-0">
                       {businessTools.map((tool) => (
                         <Badge
                           key={tool}
@@ -418,8 +418,8 @@ const InvoiceFeatures = () => {
                         </Badge>
                       ))}
                     </div>
-                    <div className="w-4 flex-shrink-0" />
-                    <div className="flex gap-4 flex-shrink-0">
+                    <div className="w-4 shrink-0" />
+                    <div className="flex gap-4 shrink-0">
                       {businessTools.map((tool) => (
                         <Badge
                           key={`${tool}-2`}
@@ -430,7 +430,7 @@ const InvoiceFeatures = () => {
                         </Badge>
                       ))}
                     </div>
-                    <div className="w-4 flex-shrink-0" />
+                    <div className="w-4 shrink-0" />
                   </div>
                 </div>
               </div>

@@ -18,6 +18,9 @@ import {
   Zap,
 } from "lucide-react";
 import InvoiceFeatures from "./feature";
+import Link from "next/link";
+import { ModeToggle } from "@/components/global/mode-toggle";
+import Footer from "./footer";
 
 export default function InvoiceLandingPage() {
   const [activeTestimonial, setActiveTestimonial] = useState(0);
@@ -87,19 +90,19 @@ export default function InvoiceLandingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-background antialiased">
+    <div className="min-h-screen  antialiased">
       <div className=" w-full max-w-7xl  mx-auto">
         {/* Background Pattern */}
-        <div className="fixed inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)] -z-10" />
+        <div className="fixed inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-size-[4rem_4rem][mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)] -z-10" />
 
         <div className="relative">
           {/* Navigation */}
           <nav className="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center justify-center space-x-3">
               <Image
                 src="/logo.svg"
                 alt="Invoice App Logo"
-                width={20}
+                width={16}
                 height={20}
               />
               <span className="font-bold text-foreground text-lg">
@@ -107,26 +110,19 @@ export default function InvoiceLandingPage() {
               </span>
             </div>
 
-            <div className="hidden md:flex items-center space-x-1 border border-border bg-card rounded-full px-2 py-1.5">
-              <Button variant="ghost" size="sm" className="rounded-full">
-                Features
+            <div className=" flex gap-x-4 justify-center items-center">
+              <Button className="rounded-full">
+                <Link prefetch href={"/dashboard"}>
+                  Get Started
+                </Link>
+                <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
-              <Button variant="ghost" size="sm" className="rounded-full">
-                Pricing
-              </Button>
-              <Button variant="ghost" size="sm" className="rounded-full">
-                About
-              </Button>
+              <ModeToggle />
             </div>
-
-            <Button className="rounded-full">
-              Get Started
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
           </nav>
 
           {/* Hero Section */}
-          <section className="max-w-7xl mx-auto px-6 pt-20 pb-32 text-center">
+          <section className="max-w-7xl mx-auto px-6 pt-29 pb-42  text-center">
             <Badge className="mb-6 bg-primary/10 text-primary border-primary/20">
               💼 Trusted by 5,000+ Businesses
             </Badge>
@@ -144,8 +140,10 @@ export default function InvoiceLandingPage() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-10">
               <Button size="lg" className="rounded-full text-base px-8">
-                Start today
-                <ArrowRight className="w-5 h-5 ml-2" />
+                <Link prefetch href={"/dashboard"}>
+                  Start today
+                </Link>
+                <ArrowRight className="w-5 h-5 ml-1" />
               </Button>
             </div>
 
@@ -164,8 +162,12 @@ export default function InvoiceLandingPage() {
             </div>
           </section>
 
+          <>
+            <InvoiceFeatures />
+          </>
+
           {/* Features Section */}
-          <section className="max-w-7xl mx-auto px-6 pb-20">
+          <section className="max-w-7xl mx-auto px-6 pb-30 md:pt-30 pt-19 ">
             <div className="text-center mb-16">
               <Badge className="mb-4 bg-secondary text-secondary-foreground">
                 Features
@@ -201,66 +203,8 @@ export default function InvoiceLandingPage() {
             </div>
           </section>
 
-          {/* How It Works */}
-          <section className="max-w-7xl mx-auto px-6 pb-20">
-            <div className="text-center mb-10">
-              <Badge className="mb-4 bg-secondary text-secondary-foreground">
-                How It Works
-              </Badge>
-              <h2 className="text-2xl md:text-5xl font-bold text-foreground mb-4">
-                Get Started in 3 Simple Steps
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[
-                {
-                  step: "01",
-                  icon: <Users className="w-8 h-8" />,
-                  title: "Sign Up Free",
-                  description:
-                    "Create your account in under 60 seconds. No credit card required.",
-                },
-                {
-                  step: "02",
-                  icon: <FileText className="w-8 h-8" />,
-                  title: "Create Invoice",
-                  description:
-                    "Use our templates to generate professional invoices instantly.",
-                },
-                {
-                  step: "03",
-                  icon: <TrendingUp className="w-8 h-8" />,
-                  title: "Track Growth",
-                  description:
-                    "Monitor your sales and revenue with powerful analytics.",
-                },
-              ].map((item, i) => (
-                <Card
-                  key={i}
-                  className="bg-card border-border relative overflow-hidden"
-                >
-                  <CardContent className="p-8">
-                    <div className="absolute top-4 right-4 text-6xl font-bold text-muted opacity-10">
-                      {item.step}
-                    </div>
-                    <div className="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center text-primary mb-4">
-                      {item.icon}
-                    </div>
-                    <h3 className="text-xl font-bold text-card-foreground mb-2">
-                      {item.title}
-                    </h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
-                      {item.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </section>
-
           {/* Testimonials Section */}
-          <section className="max-w-7xl mx-auto px-6 pb-32">
+          <section className="max-w-7xl mx-auto px-6 pb-32 pt-0 md:pt-10">
             <div className="text-center mb-16">
               <Badge className="mb-4 bg-secondary text-secondary-foreground">
                 Testimonials
@@ -295,7 +239,7 @@ export default function InvoiceLandingPage() {
                       "{testimonial.content}"
                     </p>
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary/50 flex items-center justify-center text-lg">
+                      <div className="w-10 h-10 rounded-full bg-linear-to-br from-primary to-primary/50 flex items-center justify-center text-lg">
                         {testimonial.avatar}
                       </div>
                       <div>
@@ -313,31 +257,10 @@ export default function InvoiceLandingPage() {
             </div>
           </section>
 
-          <>
-            <InvoiceFeatures />
-          </>
-
           {/* Footer */}
-          <footer className="border-t border-border mt-20 py-10">
-            <div className=" mx-auto px-6 py-12">
-              <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-                <div className="flex items-center space-x-3">
-                  <Image
-                    src="/logo.svg"
-                    alt="Invoice App Logo"
-                    width={32}
-                    height={32}
-                    className="rounded-lg"
-                  />
-                  <span className="font-bold text-foreground">D-Invoice</span>
-                </div>
-
-                <p className="text-sm text-muted-foreground">
-                  © 2025 D-Invoice. All rights reserved.
-                </p>
-              </div>
-            </div>
-          </footer>
+         <>
+         <Footer/>
+         </>
         </div>
       </div>
     </div>
