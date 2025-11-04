@@ -73,3 +73,9 @@ model Verification {
 
   @@map("verification")
 }
+
+model Invoice {
+   id          String @id @default(uuid())
+   name        String
+   fileName    String
+}

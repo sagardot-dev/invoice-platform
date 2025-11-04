@@ -28,7 +28,7 @@ export const AppSidebar = () => {
         <SidebarMenu>
           <SidebarMenuButton asChild>
             <Link href="/dashboard" className="flex items-center gap-2">
-              <Image width={15} height={30} alt="logo" src="/logo.svg" />
+              <Image width={15} height={15} alt="logo" src="/logo.svg" />
               <span className="group-data-[collapsible=icon]:hidden font-semibold text-sm">
                 D-invoice
               </span>

@@ -12,12 +12,12 @@ const client = new S3Client({
   },
 });
 
-export async function GET(req: Request) {
-  const { fileName, mime } = await req.json();
-  const key = `uploads/${fileName}-${crypto.randomUUID()}.${mime}`;
+export async function POST(req: Request) {
+  const { fileName, ext } = await req.json();
+  const FileName = `uploads-${fileName}-${crypto.randomUUID()}.${ext}`;
   const command = new PutObjectCommand({
     Bucket: bucket,
-    Key: key,
+    Key: FileName,
   });
   try {
     const url = await getSignedUrl(client, command, { expiresIn: 3600 });
@@ -25,8 +25,9 @@ export async function GET(req: Request) {
     return Response.json(
       {
         success: true,
-        message: "get the url",
-        url: url,
+        message: "success fully get the sign url",
+        fileName: FileName,
+        signUrl: url,
       },
       { status: 200 }
     );
@@ -34,7 +35,8 @@ export async function GET(req: Request) {
     return Response.json(
       {
         success: false,
-        message: error?.message || error || "get the url",
+        message:
+          error?.message || error || "server error while getting sign url",
       },
       { status: 500 }
     );
