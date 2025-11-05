@@ -8,5 +8,22 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
+    requireEmailVerification: true,
+    sendResetPassword: async ({ user, url }) => {
+      await sendPasswordResetEmal({ user, url });
+    },
+  },
+  emailVerification: {
+    autoSignInAfterVerification: true,
+    sendOnSignIn: true,
+    sendVerificationEmail: async ({ user, url }) => {
+      await sendVerificatinEmail({ user, url });
+    },
+  },
+  session: {
+    cookieCache: {
+      enabled: true,
+      maxAge: 60,
+    },
   },
 });

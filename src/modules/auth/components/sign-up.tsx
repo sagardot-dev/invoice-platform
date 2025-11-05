@@ -107,7 +107,7 @@ export const SignUpForm = () => {
   }
 
   return (
-    <Card className="w-full md:max-w-lg md:min-w-lg sm:max-w-md px-3 py-8 max-w-sm">
+    <Card className="w-full md:max-w-md md:min-w-md  px-2 py-8 max-w-sm">
       <CardHeader className=" text-center">
         <CardTitle className=" text-2xl">Sign-Up</CardTitle>
         <CardDescription>Sign-up to get start with D-voice</CardDescription>
