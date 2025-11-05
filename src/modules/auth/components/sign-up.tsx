@@ -92,7 +92,7 @@ export const SignUpForm = () => {
         onError: (ctx) => {
           console.log(ctx);
           setIsLoading(false);
-          toast.error(ctx.error.message, {
+          toast.error(ctx.error?.code, {
             description: (
               <pre className="bg-code text-code-foreground mt-2 w-[320px] overflow-x-auto rounded-md p-4">
                 <p className=" animate-pulse">
