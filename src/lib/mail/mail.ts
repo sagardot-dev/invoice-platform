@@ -13,13 +13,13 @@ export async function sendEmail({
   subject: string;
   template: string;
 }) {
- const {data, error} =   await resend.emails.send({
+  const { data, error } = await resend.emails.send({
     from,
     to,
     subject,
     html: template,
   });
-  console.log(data)
-  console.log(error)
-  return {data, error}
+  console.log(data);
+  console.log(error);
+  return { data, error };
 }

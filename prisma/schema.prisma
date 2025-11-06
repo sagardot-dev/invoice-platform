@@ -74,8 +74,192 @@ model Verification {
   @@map("verification")
 }
 
+enum Role {
+  ADMIN
+  SALEMAN
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+}
+
+model SaleMan {
+  id           String    @id @default(uuid())
+  name         String   
+  email        String
+  status       Status    
+  role         Role      @default(SALEMAN)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now()) @updatedAt
+  invoice      Invoice[]
+
+  @@unique([name])
+  @@unique([status])
+}
+
+model Company {
+  id               String @id @default(uuid())
+  name             String
+  email            String
+  imgae            String
+  address          String
+  phoneNumber      String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @default(now()) @updatedAt
+  taxId            String
+  websiteUrl       String
+  whatsappNumber   String
+}
+
+enum Gender {
+  FEMALE
+  MALE
+}
+
+enum CustomerStatus {
+  PAID
+  BALANCE
+  UNPAID
+  PENDING
+}
+
+enum PaymentMethod {
+  CC
+  CA
+  BANKTRANSFER
+  CRYPTO
+  CHECK
+}
+
+enum JacketType {
+  NORMAL
+  LEATHER
+  WEEDING
+  SPORT
+  LINEN
+  DENIM
+  CROCODILE
+  WINTER
+}
+
+
+model Jacket {
+  id                    String @id @default(uuid())
+  quantity              Int 
+  tailorName            String
+  addVest               Boolean
+ 
+  jacketType            JacketType @default(NORMAL)
+  jacketFabricImage           String
+  jacketStyleDrawing    String
+  monogramName          String
+  mongogramImage        String
+  liningImage           String
+
+  ch                    Int
+  wa                    Int
+  hip                   Int
+  nk                    Int
+  sh                    Int
+  sleeve                Int
+  arm                   Int
+  fr                    Int
+  ba                    Int
+  lg                    Int
+  Vlg                   Int
+  invoice               Invoice[]
+}
+
+enum PantType {
+  NORMAL
+  LEATHER
+  WEEDING
+  LINEN
+  DENIM
+  CROCODILE
+  ChINO
+}
+
+model Pant {
+  id                    String @id @default(uuid())
+  quantity              Int 
+  tailorName            String
+  addLining             Boolean
+ 
+  pantType              PantType @default(NORMAL)
+  pantFabricImage       String
+  PantstyleDrawing      String
+
+  wa                    Int
+  hip                   Int
+  cr                    Int
+  th                    Int
+  kn                    Int
+  bo                    Int
+  lg                    Int
+  invoice               Invoice[]
+}
+
+
+enum ShirtType {
+  DRESSSHIRT 
+  DESIGNER
+  LINEN
+  TUXEDO
+  POLO
+}
+
+
+model Shirt {
+  id                    String @id @default(uuid())
+  quantity              Int 
+  tailorName            String
+  addTie                Boolean
+ 
+  shirtType                  ShirtType @default(DRESSSHIRT)
+  shirtFabricImage           String
+  shirtStyleDrawing          String
+  shirtMonogramName          String
+  shirtMongogramImage        String
+
+  ch                    Int
+  wa                    Int
+  hip                   Int
+  nk                    Int
+  sh                    Int
+  sleeve                Int
+  arm                   Int
+  fr                    Int
+  ba                    Int
+  lg                    Int
+  Vlg                   Int
+  invoice               Invoice[]
+}
+
+
 model Invoice {
-   id          String @id @default(uuid())
-   name        String
-   fileName    String
+  id                  String @id @default(uuid())
+  invoiceNumber       String @unique
+  name                String
+  email               String
+  address             String
+  phoneNumber         String
+  customerSignature   String
+  gender            Gender @default(MALE)
+  customerStatus    CustomerStatus @default(UNPAID)
+  paymentMethod     PaymentMethod @default(CA)
+
+  ownerId         String
+  owner           SaleMan @relation(fields: [ownerId], references: [id])
+
+  jacketId         String
+  jecket           Jacket  @relation(fields: [jacketId], references:[id])
+
+  pantId         String
+  pant           Pant  @relation(fields: [pantId], references:[id])
+
+  shirtId         String
+  shirt          Shirt  @relation(fields: [shirtId], references:[id])
+
 }
