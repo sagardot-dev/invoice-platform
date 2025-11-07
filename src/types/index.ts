@@ -7,3 +7,10 @@ export interface Invoice {
   amount: Number;
   paymentMethod: "CC" | "PayPal" | "Bank Transfer" | "CA" | "STRIPE";
 }
+
+export type GetSignApiRes = {
+  success: boolean;
+  message: string;
+  fileName: string;
+  signUrl: string;
+};

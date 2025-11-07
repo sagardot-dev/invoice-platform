@@ -1,10 +1,10 @@
-import { AppHeader } from "@/components/global/app-header";
-import { OnBoardring } from "@/modules/dashboard/ui/components/onboarding";
+import { DashboardView } from "@/modules/dashboard/ui/view/view";
+
 
 const page = () => {
   return (
-    <div>
-      <OnBoardring />
+    <div className=" w-full h-full">
+      <DashboardView />
     </div>
   );
 };

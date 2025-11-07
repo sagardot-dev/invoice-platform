@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-    CheckCircle,
+  CheckCircle,
   DownloadCloud,
   MailIcon,
   MoreHorizontalIcon,

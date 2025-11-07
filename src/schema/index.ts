@@ -53,4 +53,16 @@ export const InvoiceSchema = z.object({
   customerSignature: z.string(), 
 });
 
-export type Invoice = z.infer<typeof InvoiceSchema>;
+
+
+
+export const onBoardSchema = z.object({
+  name : z.string().min(1, "name is required"),
+  email: z.string().email().min(1, 'email is required'),
+  image: z.base64url().optional(),
+  address: z.string().min(5, 'address is required'),
+  phoneNumber: z.string().min(9, 'phone number is required'),
+  taxId : z.string().optional(),
+  websiteUrl: z.string().optional(),
+  whatsappNumber: z.string().min(1, "Whatsapp number is required")
+})

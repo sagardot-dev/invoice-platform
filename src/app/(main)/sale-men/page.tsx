@@ -69,7 +69,7 @@ const Page = () => {
 
   return (
     <>
-      <div className="flex flex-col justify-center items-start gap-5">
+      <div className="flex flex-col w-full  justify-center items-start gap-5">
         <div
           onClick={handleBoxClick}
           className="w-30 h-30 border rounded-md border-dashed flex justify-center items-center"

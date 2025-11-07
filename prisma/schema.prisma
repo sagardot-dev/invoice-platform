@@ -102,13 +102,13 @@ model Company {
   id               String @id @default(uuid())
   name             String
   email            String
-  imgae            String
+  imgae            String?
   address          String
   phoneNumber      String
   createdAt        DateTime @default(now())
   updatedAt        DateTime @default(now()) @updatedAt
-  taxId            String
-  websiteUrl       String
+  taxId            String?
+  websiteUrl       String?
   whatsappNumber   String
 }
 

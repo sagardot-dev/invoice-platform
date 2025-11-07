@@ -13,7 +13,7 @@ import { InvoiceTable } from "./table";
 
 export const MainCard = () => {
   return (
-    <Card className=" border-none space-y-9 ">
+    <Card className=" border-none space-y-2 ">
       <CardHeader className=" flex justify-between items-center border-b  ">
         <div>
           <CardTitle className=" text-2xl font-semibold">Invoice</CardTitle>
@@ -34,7 +34,6 @@ export const MainCard = () => {
             Previous Invoices
           </p>
         </div>
-        <InvoiceTable />
       </CardContent>
     </Card>
   );
