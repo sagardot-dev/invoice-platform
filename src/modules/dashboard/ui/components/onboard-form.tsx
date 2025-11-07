@@ -30,11 +30,15 @@ import axios from "axios";
 import { useGetSignUrlMutation } from "../../server/get-signUrl";
 import { headers } from "next/headers";
 import Image from "next/image";
+import { useCreateCompany } from "../../server/create-company";
 
 const OnboradForm = () => {
+  const onboadringMutation = useCreateCompany();
   const [preview, setPreview] = useState("");
   const signUrlMutation = useGetSignUrlMutation();
-  const pending =signUrlMutation.isPending;
+  const loading = onboadringMutation.isPending;
+  const pending = signUrlMutation.isPending || loading;
+
   const form = useForm<z.infer<typeof onBoardSchema>>({
     resolver: zodResolver(onBoardSchema),
     defaultValues: {
@@ -49,8 +53,10 @@ const OnboradForm = () => {
     },
   });
 
-  async function  onSubmit(values: z.infer<typeof onBoardSchema>) {
-      const res = await axios.post('/')
+  async function onSubmit(values: z.infer<typeof onBoardSchema>) {
+    onboadringMutation.mutate({
+      ...values,
+    });
   }
 
   const onUpload = (e: ChangeEvent<HTMLInputElement>) => {
@@ -80,7 +86,7 @@ const OnboradForm = () => {
   };
 
   return (
-    <div className=" w-full h-full md:max-w-6xl  flex justify-center items-center ">
+    <div className="">
       <Card className=" md:max-w-5xl  md:min-w-2xl   space-y-2 py-10 border-accent-foreground/4 shadow-sm">
         <CardHeader className=" border-b px-9">
           <CardTitle className=" md:text-2xl text-lg ">
@@ -116,7 +122,7 @@ const OnboradForm = () => {
                               }}
                             />
                             <Button
-                            disabled={pending}
+                              disabled={pending}
                               variant={"custom"}
                               type="button"
                               onClick={() =>
@@ -156,7 +162,11 @@ const OnboradForm = () => {
                       <FormItem>
                         <FormLabel>Company Name</FormLabel>
                         <FormControl>
-                          <Input placeholder="Bespoke Tailor" {...field} />
+                          <Input
+                            disabled={loading}
+                            placeholder="Bespoke Tailor"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -169,7 +179,11 @@ const OnboradForm = () => {
                       <FormItem>
                         <FormLabel>Email</FormLabel>
                         <FormControl>
-                          <Input placeholder="custome@tailor.com" {...field} />
+                          <Input
+                            disabled={loading}
+                            placeholder="custome@tailor.com"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -186,6 +200,7 @@ const OnboradForm = () => {
                         <FormLabel>Address</FormLabel>
                         <FormControl>
                           <Input
+                            disabled={loading}
                             placeholder="Bangkok Thailand, 10400"
                             {...field}
                           />
@@ -201,7 +216,11 @@ const OnboradForm = () => {
                       <FormItem>
                         <FormLabel>Phone Number</FormLabel>
                         <FormControl>
-                          <Input placeholder="+66 956421706" {...field} />
+                          <Input
+                            disabled={loading}
+                            placeholder="+66 956421706"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -217,7 +236,11 @@ const OnboradForm = () => {
                       <FormItem>
                         <FormLabel>Tax-id</FormLabel>
                         <FormControl>
-                          <Input placeholder="tax-id" {...field} />
+                          <Input
+                            disabled={loading}
+                            placeholder="tax-id"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -230,7 +253,11 @@ const OnboradForm = () => {
                       <FormItem>
                         <FormLabel>Whatsapp Number</FormLabel>
                         <FormControl>
-                          <Input placeholder="+66 959401706" {...field} />
+                          <Input
+                            disabled={loading}
+                            placeholder="+66 959401706"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -244,7 +271,11 @@ const OnboradForm = () => {
                     <FormItem>
                       <FormLabel>WebSite Url</FormLabel>
                       <FormControl>
-                        <Input placeholder="www.bespoketailor.com" {...field} />
+                        <Input
+                          disabled={loading}
+                          placeholder="www.bespoketailor.com"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -253,6 +284,7 @@ const OnboradForm = () => {
               </div>
 
               <Button
+                disabled={loading}
                 className=" bg-linear-0 from-primary via-primary/10 to-chart-1 text-shadow-2xs border-primary"
                 type="submit"
               >

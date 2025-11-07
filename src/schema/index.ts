@@ -59,7 +59,7 @@ export const InvoiceSchema = z.object({
 export const onBoardSchema = z.object({
   name : z.string().min(1, "name is required"),
   email: z.string().email().min(1, 'email is required'),
-  image: z.base64url().optional(),
+  image: z.string().optional(),
   address: z.string().min(5, 'address is required'),
   phoneNumber: z.string().min(9, 'phone number is required'),
   taxId : z.string().optional(),
