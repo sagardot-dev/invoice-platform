@@ -16,6 +16,21 @@ export async function POST(req: Request) {
     whatsappNumber,
   } = await req.json();
 
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (!session || !session.user) {
+    return Response.json(
+      {
+        success: false,
+        title: "You are not authozrized",
+        description: "Plaese dign up to get start",
+      },
+      { status: 400 }
+    );
+  }
+  console.log(session);
+
   if (!name || !email || !address) {
     return Response.json(
       {
@@ -38,6 +53,7 @@ export async function POST(req: Request) {
         taxId,
         websiteUrl,
         whatsappNumber,
+        userId: session?.user.id,
       },
     });
     if (!data) {
@@ -71,4 +87,106 @@ export async function POST(req: Request) {
       { status: 500 }
     );
   }
+}
+
+export async function GET(req: Request) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (!session || !session.user) {
+    return Response.json(
+      {
+        success: false,
+        title: "You are not authorized ",
+        description: "Please login to access the page",
+      },
+      { status: 401 }
+    );
+  }
+  const data = await prisma.company.findUnique({
+    where: {
+      userId: session.user.id,
+    },
+  });
+  if (!data) {
+    return Response.json(
+      {
+        success: false,
+        title: "You are not authorized ",
+        description: "Please login to access the page",
+      },
+      { status: 401 }
+    );
+  }
+  return Response.json(
+    {
+      success: true,
+      title: "Successfully get the company data",
+      description: "Please login to access the page",
+      data: data,
+    },
+    { status: 200 }
+  );
+}
+
+export async function PUT(req: Request) {
+  const {
+    name,
+    email,
+    image,
+    address,
+    phoneNumber,
+    taxId,
+    websiteUrl,
+    whatsappNumber,
+  } = await req.json();
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (!session || !session.user) {
+    return Response.json(
+      {
+        success: false,
+        title: "You are not authorized ",
+        description: "Please login to access the page",
+      },
+      { status: 401 }
+    );
+  }
+  try {
+    const data = await prisma.company.update({
+      where: {
+        userId: session.user.id,
+      },
+      data: {
+        name,
+        email,
+        image,
+        address,
+        phoneNumber,
+        taxId,
+        websiteUrl,
+        whatsappNumber,
+      },
+    });
+    if (!data) {
+      return Response.json(
+        {
+          success: false,
+          title: "You are not authorized ",
+          description: "Please login to access the page",
+        },
+        { status: 401 }
+      );
+    }
+    return Response.json(
+      {
+        success: true,
+        title: "Successfully update the company data",
+        description: "Please login to access the page",
+        data: data,
+      },
+      { status: 200 }
+    );
+  } catch (error) {}
 }

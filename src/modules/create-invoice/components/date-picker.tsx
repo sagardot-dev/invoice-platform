@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ChevronDownIcon } from "lucide-react"
+import * as React from "react";
+import { ChevronDownIcon } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
-import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 
 type DatePickerProps = {
   value?: Date;
@@ -18,13 +18,13 @@ type DatePickerProps = {
 };
 
 export function DatePicker({ value, onChange }: DatePickerProps) {
-  const [open, setOpen] = React.useState(false)
-  const [date, setDate] = React.useState<Date | undefined>(value) // INIT FROM RHF
+  const [open, setOpen] = React.useState(false);
+  const [date, setDate] = React.useState<Date | undefined>(value); // INIT FROM RHF
 
   // Sync internal state when RHF value changes (important for reset)
   React.useEffect(() => {
-    setDate(value)
-  }, [value])
+    setDate(value);
+  }, [value]);
 
   return (
     <div className="flex flex-col gap-3">
@@ -45,14 +45,13 @@ export function DatePicker({ value, onChange }: DatePickerProps) {
             selected={date}
             captionLayout="dropdown"
             onSelect={(d) => {
-              setDate(d)
-              onChange?.(d!) // update RHF value
-              setOpen(false)
+              setDate(d);
+              onChange?.(d!); // update RHF value
+              setOpen(false);
             }}
           />
         </PopoverContent>
       </Popover>
     </div>
-  )
+  );
 }
-

@@ -24,7 +24,7 @@ export function useCustomToast() {
         <div className="flex flex-col gap-2">
           {description && <p className=" text-accent/70">{description}</p>}
           {data && (
-            <pre className="bg-primary text-code-foreground mt-2 w-[320px] overflow-x-auto rounded-sm p-4">
+            <pre className="text-code-foreground mt-2 w-[320px] overflow-x-auto rounded-sm p-4">
               <code>{JSON.stringify(data, null, 2)}</code>
             </pre>
           )}

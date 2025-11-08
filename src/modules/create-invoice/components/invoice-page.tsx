@@ -56,9 +56,7 @@ export const InvoiceForm = () => {
         <CardTitle className=" text-2xl"> Create a new Invoice </CardTitle>
         <CardDescription>Please Fill all the data</CardDescription>
       </CardHeader>
-      <CardContent>
-        
-      </CardContent>
+      <CardContent></CardContent>
     </Card>
   );
 };

@@ -24,6 +24,7 @@ model User {
   updatedAt     DateTime  @default(now()) @updatedAt
   sessions      Session[]
   accounts      Account[]
+  company       Company[]
 
   @@unique([email])
   @@map("user")
@@ -110,6 +111,8 @@ model Company {
   taxId            String?
   websiteUrl       String?
   whatsappNumber   String
+  user             User  @relation(fields: [userId], references:[id])
+  userId           String @unique
 }
 
 enum Gender {

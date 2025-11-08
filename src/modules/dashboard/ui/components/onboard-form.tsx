@@ -23,7 +23,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { CameraIcon, LocationEditIcon, UploadCloud } from "lucide-react";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Kbd } from "@/components/ui/kbd";
 import { onBoardSchema } from "@/schema";
 import axios from "axios";
@@ -31,27 +31,68 @@ import { useGetSignUrlMutation } from "../../server/get-signUrl";
 import { headers } from "next/headers";
 import Image from "next/image";
 import { useCreateCompany } from "../../server/create-company";
+import { useGetComapnyData } from "../../server/get-companydat";
+import { useEditCompanyData } from "../../server/edit-company-data";
 
 const OnboradForm = () => {
+  const editMuation = useEditCompanyData();
+  const getCompanyDataQuery = useGetComapnyData();
   const onboadringMutation = useCreateCompany();
   const [preview, setPreview] = useState("");
   const signUrlMutation = useGetSignUrlMutation();
   const loading = onboadringMutation.isPending;
-  const pending = signUrlMutation.isPending || loading;
+  const pending =
+    signUrlMutation.isPending ||
+    loading ||
+    getCompanyDataQuery.isPending ||
+    editMuation.isPending;
+  const [mouthed, setMounted] = useState(false);
 
   const form = useForm<z.infer<typeof onBoardSchema>>({
     resolver: zodResolver(onBoardSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      image: "",
-      address: "",
-      phoneNumber: "",
-      taxId: "",
-      websiteUrl: "",
-      whatsappNumber: "",
-    },
+    defaultValues: getCompanyDataQuery.data
+      ? {
+          name: getCompanyDataQuery.data.name,
+          email: getCompanyDataQuery.data.email,
+          image: getCompanyDataQuery.data.image,
+          address: getCompanyDataQuery.data.address,
+          phoneNumber: getCompanyDataQuery.data.phoneNumber,
+          taxId: getCompanyDataQuery.data.taxId,
+          websiteUrl: getCompanyDataQuery.data.websiteUrl,
+          whatsappNumber: getCompanyDataQuery.data.whatsappNumber,
+        }
+      : {
+          name: "",
+          email: "",
+          image: "",
+          address: "",
+          phoneNumber: "",
+          taxId: "",
+          websiteUrl: "",
+          whatsappNumber: "",
+        },
   });
+
+  useEffect(() => {
+    if (getCompanyDataQuery.data) {
+      form.reset({
+        name: getCompanyDataQuery.data.name || "",
+        email: getCompanyDataQuery.data.email || "",
+        image: getCompanyDataQuery.data.image || "",
+        address: getCompanyDataQuery.data.address || "",
+        phoneNumber: getCompanyDataQuery.data.phoneNumber || "",
+        taxId: getCompanyDataQuery.data.taxId || "",
+        websiteUrl: getCompanyDataQuery.data.websiteUrl || "",
+        whatsappNumber: getCompanyDataQuery.data.whatsappNumber || "",
+      });
+    }
+  }, [getCompanyDataQuery.data, form]);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mouthed) return null;
 
   async function onSubmit(values: z.infer<typeof onBoardSchema>) {
     onboadringMutation.mutate({
@@ -83,6 +124,10 @@ const OnboradForm = () => {
         },
       }
     );
+  };
+
+  const onEdit = (values: z.infer<typeof onBoardSchema>) => {
+    editMuation.mutate({ ...values });
   };
 
   return (
@@ -163,7 +208,7 @@ const OnboradForm = () => {
                         <FormLabel>Company Name</FormLabel>
                         <FormControl>
                           <Input
-                            disabled={loading}
+                            disabled={pending || loading}
                             placeholder="Bespoke Tailor"
                             {...field}
                           />
@@ -180,7 +225,7 @@ const OnboradForm = () => {
                         <FormLabel>Email</FormLabel>
                         <FormControl>
                           <Input
-                            disabled={loading}
+                            disabled={pending || loading}
                             placeholder="custome@tailor.com"
                             {...field}
                           />
@@ -200,7 +245,7 @@ const OnboradForm = () => {
                         <FormLabel>Address</FormLabel>
                         <FormControl>
                           <Input
-                            disabled={loading}
+                            disabled={pending || loading}
                             placeholder="Bangkok Thailand, 10400"
                             {...field}
                           />
@@ -217,7 +262,7 @@ const OnboradForm = () => {
                         <FormLabel>Phone Number</FormLabel>
                         <FormControl>
                           <Input
-                            disabled={loading}
+                            disabled={pending || loading}
                             placeholder="+66 956421706"
                             {...field}
                           />
@@ -237,7 +282,7 @@ const OnboradForm = () => {
                         <FormLabel>Tax-id</FormLabel>
                         <FormControl>
                           <Input
-                            disabled={loading}
+                            disabled={pending || loading}
                             placeholder="tax-id"
                             {...field}
                           />
@@ -254,7 +299,7 @@ const OnboradForm = () => {
                         <FormLabel>Whatsapp Number</FormLabel>
                         <FormControl>
                           <Input
-                            disabled={loading}
+                            disabled={pending || loading}
                             placeholder="+66 959401706"
                             {...field}
                           />
@@ -272,7 +317,7 @@ const OnboradForm = () => {
                       <FormLabel>WebSite Url</FormLabel>
                       <FormControl>
                         <Input
-                          disabled={loading}
+                          disabled={pending || loading}
                           placeholder="www.bespoketailor.com"
                           {...field}
                         />
@@ -283,13 +328,24 @@ const OnboradForm = () => {
                 />
               </div>
 
-              <Button
-                disabled={loading}
-                className=" bg-linear-0 from-primary via-primary/10 to-chart-1 text-shadow-2xs border-primary"
-                type="submit"
-              >
-                Submit
-              </Button>
+              {!getCompanyDataQuery.data ? (
+                <Button
+                  disabled={pending || loading}
+                  className=" bg-linear-0 from-primary via-primary/10 to-chart-1 text-shadow-2xs border-primary"
+                  type="submit"
+                >
+                  Submit
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => onEdit(form.getValues())}
+                  disabled={loading}
+                  className=" bg-linear-0 from-primary via-primary/10 to-chart-1 text-shadow-2xs border-primary"
+                  type="button"
+                >
+                  update
+                </Button>
+              )}
             </form>
           </Form>
         </CardContent>

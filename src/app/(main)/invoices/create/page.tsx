@@ -1,4 +1,4 @@
-import { InvoiceForm } from "@/modules/create-invoice/components/invoice-from";
+import { InvoiceForm } from "@/modules/create-invoice/components/invoice-page";
 
 const Page = () => {
   return (
