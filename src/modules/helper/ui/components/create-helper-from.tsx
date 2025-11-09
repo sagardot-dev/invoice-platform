@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -31,48 +30,47 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Kbd } from "@/components/ui/kbd";
-import { onBoardSchema, saleManSchema } from "@/schema";
+import { onBoardSchema, helperSchema } from "@/schema";
 import { useEditCompanyData } from "@/modules/dashboard/server/edit-company-data";
 
 import { useSearchParams } from "next/navigation";
-import { useCreateSaleman } from "../../server/create-saleman";
-import { useGetSalemanData } from "../../server/get-saleman";
+import { useGetHelperData } from "../../server/get-helper";
+import { useCreateHelper } from "../../server/create-helper";
 
-const SalemanForm = () => {
+export const HelperForm = () => {
   const params = useSearchParams();
   const id = params.get("id");
   const editMuation = useEditCompanyData();
-  const getSaleManDataQuery = useGetSalemanData(id);
-  const salemanMutation = useCreateSaleman();
-  const loading = salemanMutation.isPending;
-  const pending = Boolean(loading || (id && getSaleManDataQuery.isPending));
+  const getHelperDataQuery = useGetHelperData(id);
+  const helperMutation = useCreateHelper();
+  const loading = helperMutation.isPending;
+  const pending = Boolean(loading || (id && getHelperDataQuery.isPending));
 
-  // || editMuation.isPending;
   const [mouthed, setMounted] = useState(false);
 
-  const form = useForm<z.infer<typeof saleManSchema>>({
-    resolver: zodResolver(saleManSchema),
-    defaultValues: getSaleManDataQuery.data
+  const form = useForm<z.infer<typeof helperSchema>>({
+    resolver: zodResolver(helperSchema),
+    defaultValues: getHelperDataQuery.data
       ? {
-          name: getSaleManDataQuery.data.name,
-          email: getSaleManDataQuery.data.email,
-          status : getSaleManDataQuery.data.status,
+          name: getHelperDataQuery.data.name,
+          email: getHelperDataQuery.data.email,
+          status: getHelperDataQuery.data.status,
         }
       : {
           name: "",
           email: "",
-          status: 'ACTIVE'
+          status: "ACTIVE",
         },
   });
 
   useEffect(() => {
-    if (getSaleManDataQuery.data) {
+    if (getHelperDataQuery.data) {
       form.reset({
-        name: getSaleManDataQuery.data.name || "",
-        email: getSaleManDataQuery.data.email || "",
+        name: getHelperDataQuery.data.name || "",
+        email: getHelperDataQuery.data.email || "",
       });
     }
-  }, [getSaleManDataQuery.data, form]);
+  }, [getHelperDataQuery.data, form]);
 
   useEffect(() => {
     setMounted(true);
@@ -80,9 +78,9 @@ const SalemanForm = () => {
 
   if (!mouthed) return null;
 
-  async function onSubmit(values: z.infer<typeof saleManSchema>) {
+  async function onSubmit(values: z.infer<typeof helperSchema>) {
     console.log(values);
-    salemanMutation.mutate({
+    helperMutation.mutate({
       ...values,
     });
     console.log("hello");
@@ -96,14 +94,12 @@ const SalemanForm = () => {
     <>
       <Card className=" space-y-2 py-8 pb-7 border-accent-foreground/4 shadow-sm">
         <CardHeader className=" border-b px-9">
-          <CardTitle className=" lg:text-xl text-md ">
-            Create saleman
-          </CardTitle>
+          <CardTitle className=" lg:text-xl text-md ">Create helper</CardTitle>
           <CardDescription className=" text-xs lg:text-sm">
             please fill the real data
           </CardDescription>
           <CardAction>
-            <Kbd>saleman data</Kbd>
+            <Kbd>helper data</Kbd>
           </CardAction>
         </CardHeader>
 
@@ -120,11 +116,11 @@ const SalemanForm = () => {
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Saleman Name</FormLabel>
+                        <FormLabel>Helper Name</FormLabel>
                         <FormControl>
                           <Input
                             disabled={pending || loading}
-                            placeholder="Bespoke Tailor"
+                            placeholder="John"
                             {...field}
                           />
                         </FormControl>
@@ -189,5 +185,3 @@ const SalemanForm = () => {
     </>
   );
 };
-
-export default SalemanForm;

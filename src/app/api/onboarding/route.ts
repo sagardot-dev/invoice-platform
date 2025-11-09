@@ -29,7 +29,7 @@ export async function POST(req: Request) {
       { status: 400 }
     );
   }
-  console.log(session);
+ 
 
   if (!name || !email || !address) {
     return Response.json(

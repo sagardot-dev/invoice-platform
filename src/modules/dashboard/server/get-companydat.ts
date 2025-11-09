@@ -6,7 +6,6 @@ export const useGetComapnyData = () => {
     queryKey: ["getCompanydata"],
     queryFn: async () => {
       const res = await axios.get("/api/onboarding");
-      console.log(res.data.data.name);
       if (!res.data) {
         throw new Error("Some went wrong");
       }

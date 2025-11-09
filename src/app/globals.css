@@ -184,3 +184,13 @@ button{
 body {
   font-family: var(--font-poppins), sans-serif;
 }
+
+
+.bar {
+  overflow: auto;
+  scrollbar-width: none; /* Firefox */
+}
+
+.bar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}

@@ -50,19 +50,28 @@ export const InvoiceSchema = z.object({
     length: z.number().default(0),
   }),
 
-  customerSignature: z.string(), 
+  customerSignature: z.string(),
 });
 
-
-
-
 export const onBoardSchema = z.object({
-  name : z.string().min(1, "name is required"),
-  email: z.string().email().min(1, 'email is required'),
+  name: z.string().min(1, "name is required"),
+  email: z.string().email().min(1, "email is required"),
   image: z.string().optional(),
-  address: z.string().min(5, 'address is required'),
-  phoneNumber: z.string().min(9, 'phone number is required'),
-  taxId : z.string().optional(),
+  address: z.string().min(5, "address is required"),
+  phoneNumber: z.string().min(9, "phone number is required"),
+  taxId: z.string().optional(),
   websiteUrl: z.string().optional(),
-  whatsappNumber: z.string().min(1, "Whatsapp number is required")
-})
+  whatsappNumber: z.string().min(1, "Whatsapp number is required"),
+});
+
+export const saleManSchema = z.object({
+  name: z.string().min(1, "name is required"),
+  email: z.string().email().min(1, "email is required"),
+  status: z.enum(["ACTIVE", "INACTIVE"]).optional(),
+});
+
+export const helperSchema = z.object({
+  name: z.string().min(1, "name is required"),
+  email: z.string().email().min(1, "email is required"),
+  status: z.enum(["ACTIVE", "INACTIVE"]).optional(),
+});

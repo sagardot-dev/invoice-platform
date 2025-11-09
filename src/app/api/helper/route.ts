@@ -13,7 +13,7 @@ export async function POST(req: Request) {
         false,
         ResponseTitle.NOT_FOUND,
         "All feild are required",
-        "Please fill all the data to create saleman",
+        "Please fill all the data to create helper",
         "error"
       ),
       { status: HttpStatus.NOT_FOUND }
@@ -37,7 +37,7 @@ export async function POST(req: Request) {
     );
   }
   try {
-    const saleman = await prisma.saleMan.create({
+    const helper = await prisma.helper.create({
       data: {
         name,
         email,
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
         userId: session.user.id,
       },
     });
-    if (!saleman) {
+    if (!helper) {
       return Response.json(
         createResponse(
           false,
@@ -63,9 +63,9 @@ export async function POST(req: Request) {
       createResponse(
         true,
         ResponseTitle.CREATED,
-        "Sale man created",
-        "saleman created succefully",
-        saleman
+        "Helper created",
+        "helper created succefully",
+        helper
       ),
       {
         status: HttpStatus.CREATED,
@@ -77,7 +77,7 @@ export async function POST(req: Request) {
         false,
         ResponseTitle.SERVICE_UNAVAILABLE,
         error?.message || "Server error",
-        "Server error while creating saleman"
+        "Server error while creating helper"
       ),
       {
         status: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -105,8 +105,8 @@ export async function GET(req: Request) {
     );
   }
   try {
-    const saleman = await prisma.saleMan.findMany({});
-    if (!saleman) {
+    const helper = await prisma.helper.findMany({});
+    if (!helper) {
       return Response.json(
         createResponse(
           false,
@@ -125,8 +125,8 @@ export async function GET(req: Request) {
         true,
         ResponseTitle.CREATED,
         "Sale man created",
-        "saleman created succefully",
-        saleman
+        "helper created succefully",
+        helper
       ),
       {
         status: HttpStatus.CREATED,
@@ -138,7 +138,7 @@ export async function GET(req: Request) {
         false,
         ResponseTitle.SERVICE_UNAVAILABLE,
         error?.message || "Server error",
-        "Server error while creating saleman"
+        "Server error while creating helper"
       ),
       {
         status: HttpStatus.INTERNAL_SERVER_ERROR,

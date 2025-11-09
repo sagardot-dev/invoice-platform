@@ -14,3 +14,12 @@ export type GetSignApiRes = {
   fileName: string;
   signUrl: string;
 };
+
+export type ApiResponse<T = any> = {
+  success: boolean;
+  title: string;
+  description?: string;
+  code: string;
+  status: "success" | "error";
+  data?: T;
+};

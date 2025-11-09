@@ -92,52 +92,42 @@ enum Status {
   INACTIVE
 }
 
-model SalesmanHelper {
-  id         String   @id @default(uuid())
-  salemanId  String
-  helperId   String
-  createdAt  DateTime @default(now())
-
-  saleman    SaleMan @relation("SaleManToHelper", fields: [salemanId], references: [id], onDelete: Cascade)
-  helper     Helper  @relation("HelperToSaleMan", fields: [helperId], references: [id], onDelete: Cascade)
-
-  @@unique([salemanId, helperId])
-  @@map("salesman_helper")
-}
-
 model SaleMan {
-  id         String           @id @default(uuid())
-  name       String
-  email      String
-  status     Status           @default(ACTIVE)
-  role       Role             @default(SALEMAN)
-  createdAt  DateTime         @default(now())
-  updatedAt  DateTime         @default(now()) @updatedAt
+  id        String    @id @default(uuid())
+  name      String
+  email     String
+  status    Status    @default(ACTIVE)
+  role      Role      @default(SALEMAN)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
 
-  invoice    Invoice[]
-  userId     String
-  user       User             @relation(fields: [userId], references: [id])
-  helpers    SalesmanHelper[] @relation("SaleManToHelper")
+  invoice   Invoice[]
+  userId    String
+  user      User @relation(fields: [userId], references: [id])
+
+  helpers   Helper[] @relation("SaleManHelpers")
 
   @@unique([name])
 }
 
 model Helper {
-  id        String           @id @default(uuid())
+  id        String    @id @default(uuid())
   name      String
   email     String
-  status    Status           @default(ACTIVE)
-  role      Role             @default(HELPER)
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @default(now()) @updatedAt
+  status    Status    @default(ACTIVE)
+  role      Role      @default(HELPER)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
 
   invoice   Invoice[]
   userId    String
-  user      User             @relation(fields: [userId], references: [id])
-  salemen   SalesmanHelper[] @relation("HelperToSaleMan")
+  user      User @relation(fields: [userId], references: [id])
+
+  salemen   SaleMan[] @relation("SaleManHelpers")
 
   @@unique([name])
 }
+
 
 
 model Company {
@@ -314,6 +304,8 @@ model Invoice {
   paymentMethod       PaymentMethod  @default(CA)
   totalAmount         Float?
   notes               String?
+  reselling           Boolean        @default(false)
+  isReadymade         Boolean        @default(false)
   createdAt           DateTime       @default(now())
   updatedAt           DateTime       @updatedAt
 
