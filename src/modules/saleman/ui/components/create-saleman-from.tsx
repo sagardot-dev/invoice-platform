@@ -33,15 +33,15 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Kbd } from "@/components/ui/kbd";
 import { onBoardSchema } from "@/schema";
 import axios from "axios";
-import { useGetSignUrlMutation } from "../../server/get-signUrl";
-import { headers } from "next/headers";
+import { useEditCompanyData } from "@/modules/dashboard/server/edit-company-data";
+import { useGetComapnyData } from "@/modules/dashboard/server/get-companydat";
+import { useCreateCompany } from "@/modules/dashboard/server/create-company";
+import { useGetSignUrlMutation } from "@/modules/dashboard/server/get-signUrl";
 import Image from "next/image";
-import { useCreateCompany } from "../../server/create-company";
-import { useGetComapnyData } from "../../server/get-companydat";
-import { useEditCompanyData } from "../../server/edit-company-data";
 import { Textarea } from "@/components/ui/textarea";
 
-const OnboradForm = () => {
+
+const SalemanForm = () => {
   const editMuation = useEditCompanyData();
   const getCompanyDataQuery = useGetComapnyData();
   const onboadringMutation = useCreateCompany();
@@ -376,4 +376,4 @@ const OnboradForm = () => {
   );
 };
 
-export default OnboradForm;
+export default SalemanForm;

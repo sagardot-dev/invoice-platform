@@ -33,7 +33,7 @@ const formSchema = z.object({
   password: z.string().min(6, "Password is required, 6 characters"),
 });
 
-export const InvoiceForm = () => {
+export const  InvoiceForm = () => {
   const router = useRouter();
   const [isLoading, setIsloading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -51,7 +51,7 @@ export const InvoiceForm = () => {
   }
 
   return (
-    <Card className="w-full border-none px-3 py-8">
+    <Card className="w-full border-none px-3 py-8 col-span-3">
       <CardHeader className=" border-b">
         <CardTitle className=" text-2xl"> Create a new Invoice </CardTitle>
         <CardDescription>Please Fill all the data</CardDescription>

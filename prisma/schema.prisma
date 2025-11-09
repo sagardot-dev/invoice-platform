@@ -14,6 +14,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  ADMIN
+  SALEMAN
+  HELPER
+}
+
 model User {
   id            String    @id
   name          String
@@ -24,7 +30,11 @@ model User {
   updatedAt     DateTime  @default(now()) @updatedAt
   sessions      Session[]
   accounts      Account[]
-  company       Company[]
+  company       Company?
+  saleman       SaleMan[]
+  helper        Helper[]
+  customer      Customer[]
+  role          Role @default(ADMIN)
 
   @@unique([email])
   @@map("user")
@@ -75,29 +85,60 @@ model Verification {
   @@map("verification")
 }
 
-enum Role {
-  ADMIN
-  SALEMAN
-}
+
 
 enum Status {
   ACTIVE
   INACTIVE
 }
 
+model SalesmanHelper {
+  id         String   @id @default(uuid())
+  salemanId  String
+  helperId   String
+  createdAt  DateTime @default(now())
+
+  saleman    SaleMan @relation("SaleManToHelper", fields: [salemanId], references: [id], onDelete: Cascade)
+  helper     Helper  @relation("HelperToSaleMan", fields: [helperId], references: [id], onDelete: Cascade)
+
+  @@unique([salemanId, helperId])
+  @@map("salesman_helper")
+}
+
 model SaleMan {
-  id           String    @id @default(uuid())
-  name         String   
-  email        String
-  status       Status    
-  role         Role      @default(SALEMAN)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @default(now()) @updatedAt
-  invoice      Invoice[]
+  id         String           @id @default(uuid())
+  name       String
+  email      String
+  status     Status           @default(ACTIVE)
+  role       Role             @default(SALEMAN)
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @default(now()) @updatedAt
+
+  invoice    Invoice[]
+  userId     String
+  user       User             @relation(fields: [userId], references: [id])
+  helpers    SalesmanHelper[] @relation("SaleManToHelper")
 
   @@unique([name])
-  @@unique([status])
 }
+
+model Helper {
+  id        String           @id @default(uuid())
+  name      String
+  email     String
+  status    Status           @default(ACTIVE)
+  role      Role             @default(HELPER)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @default(now()) @updatedAt
+
+  invoice   Invoice[]
+  userId    String
+  user      User             @relation(fields: [userId], references: [id])
+  salemen   SalesmanHelper[] @relation("HelperToSaleMan")
+
+  @@unique([name])
+}
+
 
 model Company {
   id               String @id @default(uuid())
@@ -147,32 +188,6 @@ enum JacketType {
 }
 
 
-model Jacket {
-  id                    String @id @default(uuid())
-  quantity              Int 
-  tailorName            String
-  addVest               Boolean
- 
-  jacketType            JacketType @default(NORMAL)
-  jacketFabricImage           String
-  jacketStyleDrawing    String
-  monogramName          String
-  mongogramImage        String
-  liningImage           String
-
-  ch                    Int
-  wa                    Int
-  hip                   Int
-  nk                    Int
-  sh                    Int
-  sleeve                Int
-  arm                   Int
-  fr                    Int
-  ba                    Int
-  lg                    Int
-  Vlg                   Int
-  invoice               Invoice[]
-}
 
 enum PantType {
   NORMAL
@@ -184,25 +199,6 @@ enum PantType {
   ChINO
 }
 
-model Pant {
-  id                    String @id @default(uuid())
-  quantity              Int 
-  tailorName            String
-  addLining             Boolean
- 
-  pantType              PantType @default(NORMAL)
-  pantFabricImage       String
-  PantstyleDrawing      String
-
-  wa                    Int
-  hip                   Int
-  cr                    Int
-  th                    Int
-  kn                    Int
-  bo                    Int
-  lg                    Int
-  invoice               Invoice[]
-}
 
 
 enum ShirtType {
@@ -213,48 +209,122 @@ enum ShirtType {
   POLO
 }
 
+model Jacket {
+  id                 String     @id @default(uuid())
+  quantity           Int 
+  tailorName         String
+  addVest            Boolean    @default(false)
+  jacketType         JacketType @default(NORMAL)
+  jacketFabricImage  String?
+  jacketStyleDrawing String?
+  monogramName       String?
+  monogramImage      String?
+  liningImage        String?
+  
+  ch                 Float?
+  wa                 Float?
+  hip                Float?
+  nk                 Float?
+  sh                 Float?
+  sleeve             Float?
+  arm                Float?
+  fr                 Float?
+  ba                 Float?
+  lg                 Float?
+  vLg                Float?
+  
+  invoices           Invoice[]
 
-model Shirt {
-  id                    String @id @default(uuid())
-  quantity              Int 
-  tailorName            String
-  addTie                Boolean
- 
-  shirtType                  ShirtType @default(DRESSSHIRT)
-  shirtFabricImage           String
-  shirtStyleDrawing          String
-  shirtMonogramName          String
-  shirtMongogramImage        String
-
-  ch                    Int
-  wa                    Int
-  hip                   Int
-  nk                    Int
-  sh                    Int
-  sleeve                Int
-  arm                   Int
-  fr                    Int
-  ba                    Int
-  lg                    Int
-  Vlg                   Int
-  invoice               Invoice[]
+  @@map("jacket")
 }
 
+model Pant {
+  id               String   @id @default(uuid())
+  quantity         Int 
+  tailorName       String
+  addLining        Boolean  @default(false)
+  pantType         PantType @default(NORMAL)
+  pantFabricImage  String?
+  pantStyleDrawing String?
+  
+  wa               Float?
+  hip              Float?
+  cr               Float?
+  th               Float?
+  kn               Float?
+  bo               Float?
+  lg               Float?
+  
+  invoices         Invoice[]
+
+  @@map("pant")
+}
+
+model Shirt {
+  id                  String    @id @default(uuid())
+  quantity            Int 
+  tailorName          String
+  addTie              Boolean   @default(false)
+  shirtType           ShirtType @default(DRESSSHIRT)
+  shirtFabricImage    String?
+  shirtStyleDrawing   String?
+  shirtMonogramName   String?
+  shirtMonogramImage  String?
+  
+  ch                  Float?
+  wa                  Float?
+  hip                 Float?
+  nk                  Float?
+  sh                  Float?
+  sleeve              Float?
+  arm                 Float?
+  fr                  Float?
+  ba                  Float?
+  lg                  Float?
+  vLg                 Float?
+  
+  invoices            Invoice[]
+
+  @@map("shirt")
+}
+
+model Customer {
+  id              String   @id @default(uuid())
+  phoneNumber     String
+  name            String
+  address         String?
+  gender          Gender   @default(MALE)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Customer's order history
+  invoices        Invoice[]
+
+  @@map("customer")
+}
 
 model Invoice {
-  id                  String @id @default(uuid())
-  invoiceNumber       String @unique
-  name                String
-  email               String
-  address             String
-  phoneNumber         String
-  customerSignature   String
-  gender            Gender @default(MALE)
-  customerStatus    CustomerStatus @default(UNPAID)
-  paymentMethod     PaymentMethod @default(CA)
+  id                  String         @id @default(uuid())
+  invoiceNumber       String         @unique
+  customerSignature   String?
+  customerStatus      CustomerStatus @default(UNPAID)
+  paymentMethod       PaymentMethod  @default(CA)
+  totalAmount         Float?
+  notes               String?
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
 
-  ownerId         String
-  owner           SaleMan @relation(fields: [ownerId], references: [id])
+  customerId          String
+  customer            Customer       @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  salesmanId          String
+  salesman            SaleMan?      @relation(fields: [salesmanId], references: [id], onDelete: SetNull)
+  
+  helperId            String?
+  helper              Helper?        @relation(fields: [helperId], references: [id], onDelete: SetNull)
 
   jacketId         String
   jecket           Jacket  @relation(fields: [jacketId], references:[id])
