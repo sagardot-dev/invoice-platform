@@ -9,7 +9,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
       <AppSidebar />
       <SidebarInset className=" bg-accent/20">
         <AppHeader />
-        <main className="p-6 w-full h-full">
+        <main className="p-4 w-full h-full">
           {children}
         </main>
       </SidebarInset>

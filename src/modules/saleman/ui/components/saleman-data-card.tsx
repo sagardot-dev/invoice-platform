@@ -21,6 +21,7 @@ import { BoxIcon, MoreVertical } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Kbd } from "@/components/ui/kbd";
 import { SaleMan } from "@/generated/prisma/client";
+import { SaleManAction } from "./saleman-action";
 
 export const SalemanDataCard = () => {
   const [mouthed, setMounted] = useState(false);
@@ -71,9 +72,7 @@ export const SalemanDataCard = () => {
                     {data.role}
                   </CardDescription>
                   <CardAction>
-                    <Kbd>
-                      <MoreVertical />
-                    </Kbd>
+                    <SaleManAction/>
                   </CardAction>
                 </CardHeader>
                 <CardContent className=" text-xs">

@@ -75,3 +75,114 @@ export const helperSchema = z.object({
   email: z.string().email().min(1, "email is required"),
   status: z.enum(["ACTIVE", "INACTIVE"]).optional(),
 });
+
+
+
+
+export const GenderEnum = z.enum(["FEMALE", "MALE"]);
+export const CustomerStatusEnum = z.enum(["PAID", "BALANCE", "UNPAID", "PENDING"]);
+export const PaymentMethodEnum = z.enum(["CC", "CA", "BANKTRANSFER", "CRYPTO", "CHECK"]);
+export const JacketTypeEnum = z.enum(["NORMAL", "LEATHER", "WEEDING", "SPORT", "LINEN", "DENIM", "CROCODILE", "WINTER"]);
+export const PantTypeEnum = z.enum(["NORMAL", "LEATHER", "WEEDING", "LINEN", "DENIM", "CROCODILE", "ChINO"]);
+export const ShirtTypeEnum = z.enum(["DRESSSHIRT", "DESIGNER", "LINEN", "TUXEDO", "POLO"]);
+
+
+export const customerSchema = z.object({
+  name: z.string().min(1),
+  phoneNumber: z.string().min(5),
+  address: z.string().optional(),
+  gender: GenderEnum.default("MALE"),
+  userId: z.string().uuid(),
+});
+
+
+export const jacketSchema = z.object({
+  quantity: z.number().min(1),
+  tailorName: z.string().min(1),
+  addVest: z.boolean().default(false),
+  jacketType: JacketTypeEnum.default("NORMAL"),
+  jacketFabricImage: z.string().optional(),
+  jacketStyleDrawing: z.string().optional(),
+  monogramName: z.string().optional(),
+  monogramImage: z.string().optional(),
+  liningImage: z.string().optional(),
+  ch: z.number().optional(),
+  wa: z.number().optional(),
+  hip: z.number().optional(),
+  nk: z.number().optional(),
+  sh: z.number().optional(),
+  sleeve: z.number().optional(),
+  arm: z.number().optional(),
+  fr: z.number().optional(),
+  ba: z.number().optional(),
+  lg: z.number().optional(),
+  vLg: z.number().optional(),
+});
+
+export const pantSchema = z.object({
+  quantity: z.number().min(1),
+  tailorName: z.string().min(1),
+  addLining: z.boolean().default(false),
+  pantType: PantTypeEnum.default("NORMAL"),
+  pantFabricImage: z.string().optional(),
+  pantStyleDrawing: z.string().optional(),
+  wa: z.number().optional(),
+  hip: z.number().optional(),
+  cr: z.number().optional(),
+  th: z.number().optional(),
+  kn: z.number().optional(),
+  bo: z.number().optional(),
+  lg: z.number().optional(),
+});
+
+export const shirtSchema = z.object({
+  quantity: z.number().min(1),
+  tailorName: z.string().min(1),
+  addTie: z.boolean().default(false),
+  shirtType: ShirtTypeEnum.default("DRESSSHIRT"),
+  shirtFabricImage: z.string().optional(),
+  shirtStyleDrawing: z.string().optional(),
+  shirtMonogramName: z.string().optional(),
+  shirtMonogramImage: z.string().optional(),
+  ch: z.number().optional(),
+  wa: z.number().optional(),
+  hip: z.number().optional(),
+  nk: z.number().optional(),
+  sh: z.number().optional(),
+  sleeve: z.number().optional(),
+  arm: z.number().optional(),
+  fr: z.number().optional(),
+  ba: z.number().optional(),
+  lg: z.number().optional(),
+  vLg: z.number().optional(),
+});
+
+
+export const invoiceSchema = z.object({
+  invoiceNumber: z.string().min(1),
+  customerSignature: z.string().optional(),
+  customerStatus: CustomerStatusEnum.default("UNPAID"),
+  paymentMethod: PaymentMethodEnum.default("CA"),
+  totalAmount: z.number().optional(),
+  notes: z.string().optional(),
+  reselling: z.boolean().default(false),
+  isReadymade: z.boolean().default(false),
+
+  // Customer relation (existing or new)
+  customerId: z.string().uuid().optional(),
+  customer: customerSchema.optional(),
+
+  salesmanId: z.string().uuid(),
+  helperId: z.string().uuid().optional(),
+
+  jacket: jacketSchema,
+  pant: pantSchema,
+  shirt: shirtSchema,
+});
+
+
+export type InvoiceFormValues = z.infer<typeof invoiceSchema>;
+
+
+
+

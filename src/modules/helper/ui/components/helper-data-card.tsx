@@ -21,6 +21,7 @@ import { Badge } from "@/components/ui/badge";
 import { Kbd } from "@/components/ui/kbd";
 import { SaleMan } from "@/generated/prisma/client";
 import { useGetHelpersData } from "../../server/get-many-helper";
+import { HelperAction } from "./helper-action";
 
 export const HelperDataCard = () => {
   const [mouthed, setMounted] = useState(false);
@@ -71,9 +72,7 @@ export const HelperDataCard = () => {
                     {data.role}
                   </CardDescription>
                   <CardAction>
-                    <Kbd>
-                      <MoreVertical />
-                    </Kbd>
+                    <HelperAction/>
                   </CardAction>
                 </CardHeader>
                 <CardContent className=" text-xs">

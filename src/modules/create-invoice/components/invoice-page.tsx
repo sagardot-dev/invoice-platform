@@ -6,6 +6,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Card,
+  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
@@ -20,6 +21,8 @@ import {
 } from "@/components/ui/field";
 
 import { useRouter } from "next/navigation";
+import { InvoiceForm } from "./invoice-from";
+import { Printer } from "lucide-react";
 
 const formSchema = z.object({
   email: z.string().email("Please enter valid email"),
@@ -44,13 +47,18 @@ export const InvoiceFormWrapper = () => {
   }
 
   return (
-    <Card className="w-full border-none px-3 py-8 col-span-3">
+    <Card className="w-full border-none px-3 py-6 col-span-3">
       <CardHeader className=" border-b">
         <CardTitle className=" text-2xl"> Create a new Invoice </CardTitle>
         <CardDescription>Please Fill all the data</CardDescription>
+        <CardAction>
+          <Button variant={"custom"}>
+            <Printer />
+          </Button>
+        </CardAction>
       </CardHeader>
       <CardContent>
-        
+        <InvoiceForm />
       </CardContent>
     </Card>
   );
