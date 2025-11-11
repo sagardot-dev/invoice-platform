@@ -48,11 +48,10 @@ export const InvoiceFormWrapper = () => {
   }
 
   return (
-    <Card className="w-full border-none px-3 py-5 ">
-      <CardHeader className=" border-b">
+    <Card className="w-full border-none  py-5 ">
+      <CardHeader className=" border-b pb-5! px-8">
         <div className=" flex flex-col justify-start items-start gap-y-2 ">
           <CardTitle className=" text-xl"> Create a new Invoice </CardTitle>
-          <CardDescription></CardDescription>
         </div>
         <div className=" flex gap-x-4">
           <Button className=" h-8! bg-linear-0 from-chart-5 via-primary/30 to-primary text-shadow-xs">

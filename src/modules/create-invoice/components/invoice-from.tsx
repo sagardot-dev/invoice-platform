@@ -165,9 +165,9 @@ export const InvoiceForm = () => {
         </div>
 
         <div className="space-y-6 grid grid-cols-2 gap-x-3 border border-accent-foreground/5 px-4 rounded-2xl py-5  ">
-          <div className=" flex flex-col gap-y-4 p-4 w-full h-full justify-start  ">
+          <div className=" flex flex-col gap-y-5 p-4 w-full h-full justify-start  ">
             <Badge className=" rounded-lg bg-chart-2">From</Badge>
-            <div className=" gap-x-3 flex w-full justify-start items-center">
+            <div className=" gap-x-3 grid grid-cols-2 w-full justify-start items-center">
               <FormField
                 control={form.control}
                 name="username"
@@ -196,7 +196,7 @@ export const InvoiceForm = () => {
               />
             </div>
 
-            <div className=" flex w-full gap-x-3 justify-start items-center">
+            <div className=" grid grid-cols-2  w-full gap-x-3 justify-start items-center">
               <FormField
                 control={form.control}
                 name="username"
@@ -257,7 +257,7 @@ export const InvoiceForm = () => {
             <div>
               <Badge className=" rounded-lg bg-chart-2">To</Badge>
             </div>
-            <div className=" flex justify-start items-center gap-x-3 w-full">
+            <div className=" grid grid-cols-2  justify-start items-center gap-x-3 w-full">
               <FormField
                 control={form.control}
                 name="username"
@@ -286,7 +286,7 @@ export const InvoiceForm = () => {
               />
             </div>
 
-            <div className=" flex justify-start items-center gap-x-3 w-full">
+            <div className=" grid grid-cols-2  justify-start items-center gap-x-3 w-full">
               <FormField
                 control={form.control}
                 name="username"

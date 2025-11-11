@@ -117,7 +117,29 @@ export const jacketSchema = z.object({
   ba: z.number().optional(),
   lg: z.number().optional(),
   vLg: z.number().optional(),
+  note: z.string().optional()
 });
+
+
+const measurementType = jacketSchema.pick({
+  ch: true,
+  wa: true,
+  hip: true,
+  nk: true,
+  sh: true,
+  sleeve: true,
+  arm: true,
+  fr: true,
+  ba: true,
+  lg: true,
+  vLg: true,
+});
+
+export type MeasurementType = z.infer<typeof measurementType>;
+
+
+
+
 
 export const pantSchema = z.object({
   quantity: z.number().min(1),
