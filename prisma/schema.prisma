@@ -283,6 +283,9 @@ model Customer {
   phoneNumber     String
   name            String
   address         String?
+  hotel           String
+  RoomNo          String
+  email           String
   gender          Gender   @default(MALE)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt

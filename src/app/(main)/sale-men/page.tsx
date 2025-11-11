@@ -5,7 +5,7 @@ import { SalemanDataCard } from "@/modules/saleman/ui/components/saleman-data-ca
 
 const Page = () => {
   return (
-    <div className=" w-full overflow-hidden flex-1 container mx-auto  grid grid-cols-2 grid-rows-2 gap-6">
+    <div className=" w-full overflow-x-hidden-hidden flex-1 container  mx-auto  grid grid-cols-2 grid-rows-2 gap-6">
       <SalemanForm />
       <HelperForm />
       <SalemanDataCard/>

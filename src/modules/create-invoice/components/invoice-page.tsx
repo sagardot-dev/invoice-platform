@@ -23,6 +23,7 @@ import {
 import { useRouter } from "next/navigation";
 import { InvoiceForm } from "./invoice-from";
 import { Printer } from "lucide-react";
+import { InvoiceJacketForm } from "./invoice-jacket";
 
 const formSchema = z.object({
   email: z.string().email("Please enter valid email"),
@@ -47,10 +48,27 @@ export const InvoiceFormWrapper = () => {
   }
 
   return (
-    <Card className="w-full border-none px-3 py-6 col-span-3">
+    <Card className="w-full border-none px-3 py-5 ">
       <CardHeader className=" border-b">
-        <CardTitle className=" text-2xl"> Create a new Invoice </CardTitle>
-        <CardDescription>Please Fill all the data</CardDescription>
+        <div className=" flex flex-col justify-start items-start gap-y-2 ">
+          <CardTitle className=" text-xl"> Create a new Invoice </CardTitle>
+          <CardDescription></CardDescription>
+        </div>
+        <div className=" flex gap-x-4">
+          <Button className=" h-8! bg-linear-0 from-chart-5 via-primary/30 to-primary text-shadow-xs">
+            Customer information
+          </Button>
+          <Button className=" h-8! bg-linear-0 from-chart-5 via-primary/30 to-primary text-shadow-xs">
+            Jacket Size
+          </Button>
+          <Button className=" h-8! bg-linear-0 from-chart-5 via-primary/30 to-primary text-shadow-xs">
+            Pant Size
+          </Button>
+          <Button className=" h-8! bg-linear-0 from-chart-5 via-primary/30 to-primary text-shadow-xs">
+            Check Out
+          </Button>
+        </div>
+
         <CardAction>
           <Button variant={"custom"}>
             <Printer />
@@ -58,7 +76,7 @@ export const InvoiceFormWrapper = () => {
         </CardAction>
       </CardHeader>
       <CardContent>
-        <InvoiceForm />
+        <InvoiceJacketForm />
       </CardContent>
     </Card>
   );

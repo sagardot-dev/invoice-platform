@@ -27,7 +27,7 @@ const formSchema = z.object({
   username: z.string().min(2).max(50),
 });
 
-export const InvoiceForm = () => {
+export const InvoiceJacketForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -42,10 +42,10 @@ export const InvoiceForm = () => {
   return (
     <Form {...form}>
       <form
-        className=" flex flex-col gap-y-7 w-full"
+        className=" flex flex-col gap-y-3  w-full"
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <div className="flex flex-wrap gap-6 justify-between items-center w-full">
+        <div className="flex flex-wrap gap-6 justify-start items-center w-full px-5">
           {/* Invoice Number */}
           <FormField
             control={form.control}
@@ -54,126 +54,53 @@ export const InvoiceForm = () => {
               <FormItem className="flex flex-col">
                 <FormLabel>Invoice Number</FormLabel>
                 <FormControl>
-                  <Input className="w-50" placeholder="INV-001" {...field} />
+                  <Input className="w-50 border-0 " placeholder="INV-001" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-
-          {/* Payment Method */}
           <FormField
             control={form.control}
             name="username"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Payment Method</FormLabel>
+              <FormItem className="flex flex-col">
+                <FormLabel>Tailor Name</FormLabel>
                 <FormControl>
-                  <NativeSelect {...field}>
-                    <NativeSelectOption value="">
-                      Select method
-                    </NativeSelectOption>
-                    <NativeSelectOption value="CC">
-                      Credit Card
-                    </NativeSelectOption>
-                    <NativeSelectOption value="CA">Cash</NativeSelectOption>
-                    <NativeSelectOption value="BANKTRANSFER">
-                      Bank Transfer
-                    </NativeSelectOption>
-                    <NativeSelectOption value="CRYPTO">
-                      Crypto
-                    </NativeSelectOption>
-                    <NativeSelectOption value="CHECK">Check</NativeSelectOption>
-                  </NativeSelect>
+                  <Input className="w-50 border-0" placeholder="Chan dee" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-
-          {/* Date */}
           <FormField
             control={form.control}
             name="username"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Date</FormLabel>
+              <FormItem className="flex flex-col">
+                <FormLabel>Jacket Type</FormLabel>
                 <FormControl>
-                  <DatePicker {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Ready Made */}
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem className="flex flex-col-reverse  items-start">
-                <FormControl>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <FormLabel>Ready made?</FormLabel>
-              </FormItem>
-            )}
-          />
-
-          {/* Reselling */}
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem className="flex flex-col-reverse  items-start">
-                <FormControl>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <FormLabel>Reselling?</FormLabel>
-              </FormItem>
-            )}
-          />
-
-          {/* Salesman */}
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Salesman</FormLabel>
-                <FormControl>
-                  <NativeSelect {...field}>
-                    <NativeSelectOption value="">
-                      Select salesman
-                    </NativeSelectOption>
-                    <NativeSelectOption value="apple">Apple</NativeSelectOption>
-                    <NativeSelectOption value="banana">
-                      Banana
-                    </NativeSelectOption>
-                  </NativeSelect>
+                  <Input className="w-50 border-0" placeholder="INV-001" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
-
-        <div className="space-y-6 grid grid-cols-2 gap-x-3 border border-accent-foreground/5 px-4 rounded-2xl py-5  ">
-          <div className=" flex flex-col gap-y-4 p-4 w-full h-full justify-start  ">
-            <Badge className=" rounded-lg bg-chart-2">From</Badge>
+        <div className="space-y-6 grid grid-cols-3 gap-x-3 border border-chart-2/5 px-6 rounded-2xl py-7  ">
+          <div className=" col-span-2 flex flex-col gap-y-5  w-full h-full justify-start  ">
+            <div>
+              <Badge className=" py-px rounded-md bg-chart-3">
+                Jacket sizes
+              </Badge>
+            </div>
             <div className=" gap-x-3 flex w-full justify-start items-center">
               <FormField
                 control={form.control}
                 name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel>Ch</FormLabel>
                     <FormControl>
                       <Input placeholder="shadcn" {...field} />
                     </FormControl>
@@ -186,7 +113,20 @@ export const InvoiceForm = () => {
                 name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>Wa</FormLabel>
+                    <FormControl>
+                      <Input placeholder="shadcn" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Hp</FormLabel>
                     <FormControl>
                       <Input placeholder="shadcn" {...field} />
                     </FormControl>
@@ -196,13 +136,95 @@ export const InvoiceForm = () => {
               />
             </div>
 
+            <div className=" gap-x-3 flex w-full justify-start items-center">
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Sh</FormLabel>
+                    <FormControl>
+                      <Input placeholder="shadcn" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Sleeve</FormLabel>
+                    <FormControl>
+                      <Input placeholder="shadcn" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Arm</FormLabel>
+                    <FormControl>
+                      <Input placeholder="shadcn" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className=" gap-x-3 flex w-full justify-start items-center">
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Neck</FormLabel>
+                    <FormControl>
+                      <Input placeholder="shadcn" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Fr</FormLabel>
+                    <FormControl>
+                      <Input placeholder="shadcn" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Ba</FormLabel>
+                    <FormControl>
+                      <Input placeholder="shadcn" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <div className=" flex w-full gap-x-3 justify-start items-center">
               <FormField
                 control={form.control}
                 name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Phone Number</FormLabel>
+                    <FormLabel>Jacket Length</FormLabel>
                     <FormControl>
                       <Input placeholder="shadcn" {...field} />
                     </FormControl>
@@ -215,68 +237,7 @@ export const InvoiceForm = () => {
                 name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Username</FormLabel>
-                    <FormControl>
-                      <Input placeholder="shadcn" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className=" w-full justify-start flex gap-y-4 flex-col">
-              <FormField
-                control={form.control}
-                name="username"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Company Address</FormLabel>
-                    <FormControl>
-                      <Textarea placeholder="shadcn" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="username"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Website Url</FormLabel>
-                    <FormControl>
-                      <Textarea placeholder="shadcn" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div className=" flex flex-col gap-y-4 p-4 w-full h-full ">
-            <div>
-              <Badge className=" rounded-lg bg-chart-2">To</Badge>
-            </div>
-            <div className=" flex justify-start items-center gap-x-3 w-full">
-              <FormField
-                control={form.control}
-                name="username"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Customer Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="shadcn" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="username"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>Additional</FormLabel>
                     <FormControl>
                       <Input placeholder="shadcn" {...field} />
                     </FormControl>
@@ -286,17 +247,20 @@ export const InvoiceForm = () => {
               />
             </div>
 
-            <div className=" flex justify-start items-center gap-x-3 w-full">
+            
+            <div className=" flex items-center justify-between mt-2 border-t pt-6">
               <FormField
                 control={form.control}
                 name="username"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Phone Number </FormLabel>
+                  <FormItem className="flex flex-col-reverse  items-start">
                     <FormControl>
-                      <Input className="" placeholder="shadcn" {...field} />
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
                     </FormControl>
-                    <FormMessage />
+                    <FormLabel>Ready made?</FormLabel>
                   </FormItem>
                 )}
               />
@@ -304,47 +268,48 @@ export const InvoiceForm = () => {
                 control={form.control}
                 name="username"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Gender</FormLabel>
+                  <FormItem className="flex flex-col-reverse  items-start">
                     <FormControl>
-                      <NativeSelect className="w-full" {...field}>
-                        <NativeSelectOption value="">
-                          Select method
-                        </NativeSelectOption>
-                        <NativeSelectOption value="CC">
-                          Credit Card
-                        </NativeSelectOption>
-                        <NativeSelectOption value="CA">Cash</NativeSelectOption>
-                        <NativeSelectOption value="BANKTRANSFER">
-                          Bank Transfer
-                        </NativeSelectOption>
-                        <NativeSelectOption value="CRYPTO">
-                          Crypto
-                        </NativeSelectOption>
-                        <NativeSelectOption value="CHECK">
-                          Check
-                        </NativeSelectOption>
-                      </NativeSelect>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
                     </FormControl>
-                    <FormMessage />
+                    <FormLabel>Ready made?</FormLabel>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col-reverse  items-start">
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel>Ready made?</FormLabel>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col-reverse  items-start">
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel>Ready made?</FormLabel>
                   </FormItem>
                 )}
               />
             </div>
-
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Hotel</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="shadcn" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
               name="username"
@@ -352,16 +317,24 @@ export const InvoiceForm = () => {
                 <FormItem>
                   <FormLabel>Note</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="shadcn" {...field} />
+                    <Textarea
+                      className=" w-full h-5! resize-none border-0"
+                      placeholder="Add jacket more information"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
+
+          <div className=" flex flex-col gap-y-4 p-4 w-full h-full border border-dashed rounded-lg ">
+            draw
+          </div>
         </div>
         <div className=" w-full flex justify-end">
-          <Button className=" h-8! bg-linear-0 from-chart-5 via-primary/30 to-primary text-shadow-xs w-fit"type="submit">
+          <Button className=" h-8! bg-linear-0 from-chart-5 via-primary/30 to-primary text-shadow-xs"type="submit">
             Submit
           </Button>
         </div>
