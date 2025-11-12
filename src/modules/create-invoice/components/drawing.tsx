@@ -153,7 +153,6 @@ export const Drawing = ({ onSave }: DrawingProps) => {
       <ReactSketchCanvas
         ref={canvasRef}
         width="100%"
-        height="540px"
         canvasColor="transparent"
         strokeColor="#000000"
         className="border! border-primary/30! bg-white flex-1"

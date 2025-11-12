@@ -25,6 +25,7 @@ import { InvoiceForm } from "./invoice-from";
 import { Printer } from "lucide-react";
 import { InvoiceJacketForm } from "./invoice-jacket";
 import { InvoicePantForm } from "./invoice-pant";
+import { InvoiceShirttForm } from "./invoice-shirt";
 
 const formSchema = z.object({
   email: z.string().email("Please enter valid email"),
@@ -65,6 +66,9 @@ export const InvoiceFormWrapper = () => {
             Pant Size
           </Button>
           <Button className=" h-8! bg-linear-0 from-chart-5 via-primary/30 to-primary text-shadow-xs">
+            Shirt Size
+          </Button>
+          <Button className=" h-8! bg-linear-0 from-chart-5 via-primary/30 to-primary text-shadow-xs">
             Check Out
           </Button>
         </div>
@@ -76,7 +80,7 @@ export const InvoiceFormWrapper = () => {
         </CardAction>
       </CardHeader>
       <CardContent>
-        <InvoicePantForm />
+        <InvoiceShirttForm />
       </CardContent>
     </Card>
   );

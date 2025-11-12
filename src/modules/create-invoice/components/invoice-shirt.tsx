@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import {
   NativeSelect,
@@ -23,99 +22,102 @@ import {
 import { DatePicker } from "./date-picker";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  pantSchema,
-  PantTypeEnum,
-  PantMeasurementType,
-  PantStyleType,
-  PantLengthEnum,
+  shirtSchema,
+  ShirtTypeEnum,
+  ShirtMeasurementType,
+  ShirtShapeType,
 } from "@/schema";
 
 import { Save, UploadCloud } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Drawing } from "./drawing";
-import { Pencil, Eraser, RotateCcw, RotateCw, Trash2 } from "lucide-react";
 import { useGetSignUrlMutation } from "@/modules/dashboard/server/get-signUrl";
 import { toast } from "sonner";
 import axios from "axios";
 import { useJacketFromStore } from "../store/store";
 
-export const InvoicePantForm = () => {
+export const InvoiceShirttForm = () => {
+  const { data, setData, reset } = useJacketFromStore();
   const signUrlMutation = useGetSignUrlMutation();
   const [pending, setPending] = useState(false);
-  const measurementFields: (keyof PantMeasurementType)[] = [
-    "wa",
-    "hip",
-    "cr",
-    "th",
-    "kn",
-    "bo",
-    "lg",
+const measurementFields: (keyof ShirtMeasurementType)[] = [
+  "ch",
+  "wa",
+  "hip",
+  "nk",
+  "sh",
+  "sleeve",
+  "arm",
+  "fr",
+  "ba",
+  "lg",
+  "stb",
+  "stw",
+  "ah",
+  "dressLg",
+  "skirtLg",
+  "nLow",
+];
+
+  const shapeFields: (keyof ShirtShapeType)[] = [
+    "sqSho",
+    "rdSho",
+    "sloSho",
+    "brBly",
+    "sloNk",
   ];
 
-  const styleFields: (keyof PantStyleType)[] = [
-    "slantingPkt",
-    "straightPkt",
-    "americanPkt",
-    "backRhtPkt",
-    "backLhtPkt",
-    "cuffs",
-    "wpIn",
-    "wpOut",
-    "flatB",
-    "lowFront",
-    "underBelly",
-  ];
-
-  const form = useForm<z.infer<typeof pantSchema>>({
-    resolver: zodResolver(pantSchema) as any,
+  const form = useForm<z.infer<typeof shirtSchema>>({
+    resolver: zodResolver(shirtSchema) as any,
     defaultValues: {
       quantity: 1,
       tailorName: "",
+      addMonogram: false,
       fittingDate: new Date(),
-      addInnerLining: false,
+      addTie: false,
+      shirtType: "DRESSSHIRT",
+      shirtFabricImage: "",
+      shirtStyleDrawing: "",
+      shirtCustomStyle: "",
+      shirtMonogramName: "",
+      shirtMonogramImage: "",
 
-      pantType: "NORMAL",
-      pantLength: "TROUSER",
-      pantFabricImage: "",
-      pantStyleDrawing: "",
-      pantCustomStyle: "",
-      monogramImage: "",
-      monogramName: "",
-
-      // measurements
+      ch: 0,
       wa: 0,
       hip: 0,
-      cr: 0,
-      th: 0,
-      kn: 0,
-      bo: 0,
+      nk: 0,
+      sh: 0,
+      sleeve: 0,
+      arm: 0,
+      fr: 0,
+      ba: 0,
       lg: 0,
 
-      // style options
-      slantingPkt: false,
-      straightPkt: false,
-      americanPkt: false,
-      backRhtPkt: false,
-      backLhtPkt: false,
-      cuffs: false,
-      wpIn: false,
-      wpOut: false,
-      flatB: false,
-      lowFront: false,
-      underBelly: false,
+      stb: 0,
+      stw: 0,
+      ah: 0,
+      dressLg: 0,
+      skirtLg: 0,
+      nLow: 0,
 
-      // notes
+      sqSho: false,
+      rdSho: false,
+      sloSho: false,
+      brBly: false,
+      sloNk: false,
+
       note: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof pantSchema>) {
+  function onSubmit(values: z.infer<typeof shirtSchema>) {
     console.log(values);
+    reset();
   }
 
   const onUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
-    fieldName: keyof z.infer<typeof pantSchema>
+    fieldName: keyof z.infer<typeof shirtSchema>
   ) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -148,10 +150,10 @@ export const InvoicePantForm = () => {
   return (
     <Form {...form}>
       <form
-        className=" flex flex-col gap-y-5  w-full"
+        className=" flex flex-col gap-y-3  w-full"
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <div className=" flex flex-wrap gap-x-7 md:gap-x-12 gap-y-5  justify-start items-center px-4 pb-3  w-full">
+        <div className=" flex flex-wrap gap-x-7 md:gap-x-9 gap-y-5  justify-start items-center px-4 pb-3  w-full">
           {/* Invoice Number */}
           <FormField
             control={form.control}
@@ -161,7 +163,7 @@ export const InvoicePantForm = () => {
                 <FormLabel>Quantity</FormLabel>
                 <FormControl>
                   <Input
-                  className=" w-45"
+                    className=" w-50"
                     type="number"
                     min={1}
                     {...field}
@@ -180,7 +182,7 @@ export const InvoicePantForm = () => {
               <FormItem>
                 <FormLabel>Tailor Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Chan Dee" {...field} />
+                  <Input className=" w-55" placeholder="Chan Dee" {...field} />
                 </FormControl>
               </FormItem>
             )}
@@ -201,13 +203,13 @@ export const InvoicePantForm = () => {
 
           <FormField
             control={form.control}
-            name="pantType"
+            name="shirtType"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Pant Type</FormLabel>
+                <FormLabel>Jacket Type</FormLabel>
                 <FormControl>
                   <NativeSelect className=" bg-accent" {...field}>
-                    {PantTypeEnum.options.map((type) => (
+                    {ShirtTypeEnum.options.map((type) => (
                       <option
                         className=" bg-accent ring-0! border-0"
                         key={type}
@@ -223,32 +225,25 @@ export const InvoicePantForm = () => {
           />
           <FormField
             control={form.control}
-            name="pantType"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Pant Length</FormLabel>
-                <FormControl>
-                  <NativeSelect className=" bg-accent" {...field}>
-                    {PantLengthEnum.options.map((type) => (
-                      <option
-                        className=" bg-accent ring-0! border-0"
-                        key={type}
-                        value={type}
-                      >
-                        {type.charAt(0) + type.slice(1).toLowerCase()}
-                      </option>
-                    ))}
-                  </NativeSelect>
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="addInnerLining"
+            name="addMonogram"
             render={({ field }) => (
               <FormItem className="flex flex-col items-center justify-between ">
-                <FormLabel>Add InnerLining</FormLabel>
+                <FormLabel>Add MonoGram</FormLabel>
+                <FormControl>
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+           <FormField
+            control={form.control}
+            name="addTie"
+            render={({ field }) => (
+              <FormItem className="flex flex-col items-center justify-between ">
+                <FormLabel>Add MonoGram</FormLabel>
                 <FormControl>
                   <Switch
                     checked={field.value}
@@ -261,14 +256,14 @@ export const InvoicePantForm = () => {
         </div>
 
         <div className="space-y-4 bar grid xl:grid-cols-3 xl:grid-rows-1  grid-cols-1 grid-rows-2 gap-y-3 gap-x-3 rounded-2xl  pt-5 px-2">
-          <div className=" col-span-2  gap-y-5  w-full h-full justify-start grid grid-cols-2 bar ">
+          <div className=" col-span-2  gap-y-5  w-full h-full justify-start flex bar ">
             <div className="border col-span-2 border-chart-1/10 rounded-2xl p-6 space-y-4 bar">
               <div className=" flex flex-col gap-y-3">
                 <Badge className="bg-primary/20 text-primary backdrop-blur-2xl">
-                  Pant Sizes
+                  Shirt Sizes
                 </Badge>
 
-                <div className="grid grid-cols-4 gap-5">
+                <div className="grid grid-cols-4 gap-x-5 gap-y-3">
                   {measurementFields.map((m) => (
                     <FormField
                       key={m}
@@ -303,22 +298,22 @@ export const InvoicePantForm = () => {
                     type="file"
                     accept="image/*"
                     className="hidden"
-                    id="fabricUpload"
-                    onChange={(e) => onUpload(e, "pantFabricImage")}
-                  />
-                  <input
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    id="pantCustomStyleUplaod"
-                    onChange={(e) => onUpload(e, "pantCustomStyle")}
+                    id="shirtFabricUpload"
+                    onChange={(e) => onUpload(e, "shirtFabricImage")}
                   />
                   <input
                     type="file"
                     accept="image/*"
                     className="hidden"
                     id="monogramUpload"
-                    onChange={(e) => onUpload(e, "monogramImage")}
+                    onChange={(e) => onUpload(e, "shirtMonogramImage")}
+                  />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    id="shirtCustomUpload"
+                    onChange={(e) => onUpload(e, "shirtCustomStyle")}
                   />
 
                   {/* Buttons */}
@@ -327,11 +322,23 @@ export const InvoicePantForm = () => {
                     variant="secondary"
                     className="justify-start gap-2 h-7! bg-linear-0 from-chart-4/40 via-secondary to-secondary text-shadow-xs"
                     onClick={() =>
-                      document.getElementById("fabricUpload")?.click()
+                      document.getElementById("shirtFabricUpload")?.click()
                     }
                   >
                     <UploadCloud className="h-4 w-4" />
                     Fabric Image
+                  </Button>
+
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    className="justify-start gap-2 h-7! bg-linear-0 from-chart-4/40 via-secondary to-secondary text-shadow-xs"
+                    onClick={() =>
+                      document.getElementById("liningUpload")?.click()
+                    }
+                  >
+                    <UploadCloud className="h-4 w-4" />
+                    Lining Image
                   </Button>
 
                   <Button
@@ -351,24 +358,24 @@ export const InvoicePantForm = () => {
                     variant="secondary"
                     className="justify-start gap-2 h-7! bg-linear-0 from-chart-4/40 via-secondary to-secondary text-shadow-xs"
                     onClick={() =>
-                      document.getElementById("pantCustomStyleUplaod")?.click()
+                      document.getElementById("shirtCustomUpload")?.click()
                     }
                   >
                     <UploadCloud className="h-4 w-4" />
-                    Pant Image
+                    Shirt Image
                   </Button>
                 </div>
 
                 <div className=" grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-3 w-full">
                   <FormField
                     control={form.control}
-                    name="monogramName"
+                    name="shirtMonogramName"
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
                           <Textarea
-                            className=" border border-border max-h-13! bar resize-none"
-                            placeholder="add monogramname ect.John..."
+                            className=" w-full bar border border-border max-h-13! resize-none"
+                            placeholder="Monogram Name ect.. JOHN"
                             {...field}
                           />
                         </FormControl>
@@ -392,8 +399,8 @@ export const InvoicePantForm = () => {
                   />
                 </div>
 
-                <div className="w-full grid lg:grid-cols-5 md:grid-cols-3 grid-cols-3 grid-rows-3  gap-4 flex-wrap items-center">
-                  {styleFields.map((m) => (
+                <div className="w-full grid lg:grid-cols-5 md:grid-cols-3 grid-cols-3 grid-rows-1 lg:grid-rows-1  gap-4 flex-wrap items-center">
+                  {shapeFields.map((m) => (
                     <FormField
                       key={m}
                       control={form.control}
@@ -417,7 +424,9 @@ export const InvoicePantForm = () => {
           </div>
 
           <div className=" flex flex-col gap-y-1  w-full h-full border border-dashed rounded-lg px-1 py-1 overflow-hidden items-center ">
-            <Drawing onSave={(url) => form.setValue("pantStyleDrawing", url)} />
+            <Drawing
+              onSave={(url) => form.setValue("shirtStyleDrawing", url)}
+            />
           </div>
         </div>
         <div className=" w-full items-start flex gap-x-4">
@@ -431,6 +440,7 @@ export const InvoicePantForm = () => {
             variant={"outline"}
             onClick={() => {
               form.reset();
+              reset();
             }}
             className=" h-8!"
             type="button"
