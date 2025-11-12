@@ -105,6 +105,7 @@ export const jacketSchema = z.object({
   jacketType: JacketTypeEnum.default("NORMAL"),
   jacketFabricImage: z.string().optional(),
   jacketStyleDrawing: z.string().optional(),
+  jacketCustomStyle: z.string().optional(),
   monogramName: z.string().optional(),
   monogramImage: z.string().optional(),
   liningImage: z.string().optional(),
@@ -187,10 +188,13 @@ export type shapeType = z.infer<typeof shapeType>
 export const pantSchema = z.object({
   quantity: z.number().min(1),
   tailorName: z.string().min(1),
+
   addLining: z.boolean().default(false),
   pantType: PantTypeEnum.default("NORMAL"),
   pantFabricImage: z.string().optional(),
   pantStyleDrawing: z.string().optional(),
+
+  // measurements
   wa: z.number().optional(),
   hip: z.number().optional(),
   cr: z.number().optional(),
@@ -198,6 +202,22 @@ export const pantSchema = z.object({
   kn: z.number().optional(),
   bo: z.number().optional(),
   lg: z.number().optional(),
+
+  // style options from image
+  slantingPkt: z.boolean().default(false),
+  straightPkt: z.boolean().default(false),
+  americanPkt: z.boolean().default(false),
+  backRhtPkt: z.boolean().default(false),
+  backLhtPkt: z.boolean().default(false),
+  cuffs: z.boolean().default(false),
+  wpIn: z.boolean().default(false),
+  wpOut: z.boolean().default(false),
+  flatB: z.boolean().default(false),
+  lowFront: z.boolean().default(false),
+  underBelly: z.boolean().default(false),
+
+  // notes
+  note: z.string().optional(),
 });
 
 export const shirtSchema = z.object({

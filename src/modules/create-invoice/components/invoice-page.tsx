@@ -24,6 +24,7 @@ import { useRouter } from "next/navigation";
 import { InvoiceForm } from "./invoice-from";
 import { Printer } from "lucide-react";
 import { InvoiceJacketForm } from "./invoice-jacket";
+import { InvoicePantForm } from "./invoice-pant";
 
 const formSchema = z.object({
   email: z.string().email("Please enter valid email"),
@@ -48,12 +49,12 @@ export const InvoiceFormWrapper = () => {
   }
 
   return (
-    <Card className="w-full border-none  py-5 ">
+    <Card className="w-full border-none  py-6 ">
       <CardHeader className=" border-b pb-5! px-8">
         <div className=" flex flex-col justify-start items-start gap-y-2 ">
           <CardTitle className=" text-xl"> Create a new Invoice </CardTitle>
         </div>
-        <div className=" flex gap-x-4">
+        <div className=" flex gap-x-4 flex-wrap gap-3">
           <Button className=" h-8! bg-linear-0 from-chart-5 via-primary/30 to-primary text-shadow-xs">
             Customer information
           </Button>
@@ -75,7 +76,7 @@ export const InvoiceFormWrapper = () => {
         </CardAction>
       </CardHeader>
       <CardContent>
-        <InvoiceJacketForm />
+        <InvoicePantForm />
       </CardContent>
     </Card>
   );

@@ -33,7 +33,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import { useJacketFromStore } from "../store/store";
 
-export const InvoiceJacketForm = () => {
+export const InvoicePantForm = () => {
   const { data, setData, reset } = useJacketFromStore();
   const signUrlMutation = useGetSignUrlMutation();
   const [pending, setPending] = useState(false);
