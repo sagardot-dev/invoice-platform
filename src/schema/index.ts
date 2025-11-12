@@ -99,7 +99,9 @@ export const customerSchema = z.object({
 export const jacketSchema = z.object({
   quantity: z.number().min(1),
   tailorName: z.string().min(1),
+  fittingDate: z.date(),
   addVest: z.boolean().default(false),
+  addMonogram: z.boolean().default(false),
   jacketType: JacketTypeEnum.default("NORMAL"),
   jacketFabricImage: z.string().optional(),
   jacketStyleDrawing: z.string().optional(),
@@ -117,7 +119,47 @@ export const jacketSchema = z.object({
   ba: z.number().optional(),
   lg: z.number().optional(),
   vLg: z.number().optional(),
+  ocLg: z.number().optional(),
+
+  nSho: z.boolean().optional(),
+  sqSho: z.boolean().optional(),
+  rdSho: z.boolean().optional(),
+  sloSho: z.boolean().optional(),
+
+  hBk: z.boolean().optional(),
+  curveBk: z.boolean().optional(),
+  shoNk: z.boolean().optional(),
+  bigM: z.boolean().optional(),
+
+  holBk: z.boolean().optional(),
+  holCh: z.boolean().optional(),
+  brBly: z.boolean().optional(),
+  lLo: z.boolean().optional(),
+
+  rLo: z.boolean().optional(),
+  erect: z.boolean().optional(),
+  flatB: z.boolean().optional(),
+
   note: z.string().optional()
+});
+
+
+const shapeType = jacketSchema.pick({
+  nSho: true,
+  sqSho: true,
+  rdSho: true,
+  sloSho: true,
+  hBk: true,
+  curveBk: true,
+  shoNk: true,
+  bigM: true,
+  holBk: true,
+  holCh: true,
+  brBly: true,
+  lLo: true,
+  rLo: true,
+  erect: true,
+  flatB: true,
 });
 
 
@@ -133,11 +175,12 @@ const measurementType = jacketSchema.pick({
   ba: true,
   lg: true,
   vLg: true,
+  ocLg: true,
 });
 
 export type MeasurementType = z.infer<typeof measurementType>;
 
-
+export type shapeType = z.infer<typeof shapeType>
 
 
 

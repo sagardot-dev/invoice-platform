@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,9 +22,12 @@ import {
 } from "@/components/ui/native-select";
 import { DatePicker } from "./date-picker";
 import { Textarea } from "@/components/ui/textarea";
-import { jacketSchema, MeasurementType } from "@/schema";
-import { UploadCloud } from "lucide-react";
+import { jacketSchema, MeasurementType, shapeType } from "@/schema";
+
+import { Save, UploadCloud } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Drawing } from "./drawing";
+import { Pencil, Eraser, RotateCcw, RotateCw, Trash2 } from "lucide-react";
 
 export const InvoiceJacketForm = () => {
   const measurementFields: (keyof MeasurementType)[] = [
@@ -39,6 +42,25 @@ export const InvoiceJacketForm = () => {
     "ba",
     "lg",
     "vLg",
+    "ocLg",
+  ];
+
+  const shapeFields: (keyof shapeType)[] = [
+    "nSho",
+    "sqSho",
+    "rdSho",
+    "sloSho",
+    "hBk",
+    "curveBk",
+    "shoNk",
+    "bigM",
+    "holBk",
+    "holCh",
+    "brBly",
+    "lLo",
+    "rLo",
+    "erect",
+    "flatB",
   ];
 
   const form = useForm<z.infer<typeof jacketSchema>>({
@@ -46,23 +68,26 @@ export const InvoiceJacketForm = () => {
     defaultValues: {
       quantity: 1,
       tailorName: "",
+      fittingDate: new Date(),
       addVest: false,
+      addMonogram: false,
       jacketFabricImage: "",
       jacketStyleDrawing: "",
       monogramName: "",
       monogramImage: "",
       liningImage: "",
-      ch: undefined,
-      wa: undefined,
-      hip: undefined,
-      nk: undefined,
-      sh: undefined,
-      sleeve: undefined,
-      arm: undefined,
-      fr: undefined,
-      ba: undefined,
-      lg: undefined,
-      vLg: undefined,
+      ch: 0,
+      wa: 0,
+      hip: 0,
+      nk: 0,
+      sh: 0,
+      sleeve: 0,
+      arm: 0,
+      fr: 0,
+      ba: 0,
+      lg: 0,
+      vLg: 0,
+      ocLg: 0,
       note: "",
     },
   });
@@ -86,7 +111,13 @@ export const InvoiceJacketForm = () => {
               <FormItem>
                 <FormLabel>Quantity</FormLabel>
                 <FormControl>
-                  <Input className=" w-50" type="number" min={1} {...field} />
+                  <Input
+                    className=" w-50"
+                    type="number"
+                    min={1}
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -108,16 +139,12 @@ export const InvoiceJacketForm = () => {
 
           <FormField
             control={form.control}
-            name="tailorName"
+            name="fittingDate"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Fitting Date</FormLabel>
                 <FormControl>
-                  <Input
-                    className=" w-50"
-                    placeholder="11.12.2025"
-                    {...field}
-                  />
+                  <DatePicker value={field.value} onChange={field.onChange} />
                 </FormControl>
               </FormItem>
             )}
@@ -158,7 +185,7 @@ export const InvoiceJacketForm = () => {
 
           <FormField
             control={form.control}
-            name="addVest"
+            name="addMonogram"
             render={({ field }) => (
               <FormItem className="flex flex-col items-center justify-between ">
                 <FormLabel>Add MonoGram</FormLabel>
@@ -205,7 +232,7 @@ export const InvoiceJacketForm = () => {
 
               <div className=" pt-6 border-t flex-col flex gap-y-5 ">
                 {/* Upload Buttons */}
-                <div className="space-y-3  flex gap-x-2.5">
+                <div className="space-y-3  flex flex-wrap gap-x-2.5">
                   <Button
                     type="button"
                     variant="secondary"
@@ -232,150 +259,65 @@ export const InvoiceJacketForm = () => {
                     Monogram Image
                   </Button>
                 </div>
-                <FormField
-                  control={form.control}
-                  name="note"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Note</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          className=" border-0 h-8! resize-none"
-                          placeholder="Note"
-                          {...field}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <div className="w-full grid grid-cols-6 grid-rows-2 gap-4 flex-wrap items-center">
+                <div className=" grid grid-cols-1 md:grid-cols-2 gap-x-3 w-full">
                   <FormField
                     control={form.control}
-                    name="nSho"
+                    name="monogramName"
                     render={({ field }) => (
-                      <FormItem className="flex flex-col items-center justify-between">
-                        <FormLabel>N.SHO</FormLabel>
+                      <FormItem>
                         <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
+                          <Textarea
+                            className=" w-full bar border-0 max-h-13! resize-none"
+                            placeholder="Monogram Name ect.. JOHN"
+                            {...field}
                           />
                         </FormControl>
                       </FormItem>
                     )}
                   />
-
                   <FormField
                     control={form.control}
-                    name="sqSho"
+                    name="note"
                     render={({ field }) => (
-                      <FormItem className="flex flex-col items-center justify-between">
-                        <FormLabel>SQ.SHO</FormLabel>
+                      <FormItem>
                         <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="rdSho"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col items-center justify-between">
-                        <FormLabel>RD.SHO</FormLabel>
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="sloSho"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col items-center justify-between">
-                        <FormLabel>SLO.SHO</FormLabel>
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="hBk"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col items-center justify-between">
-                        <FormLabel>H.BK</FormLabel>
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="curveBk"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col items-center justify-between">
-                        <FormLabel>Curve.BK</FormLabel>
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="shoNk"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col items-center justify-between">
-                        <FormLabel>SHO.NK</FormLabel>
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
+                          <Textarea
+                            className=" border-0 max-h-13! bar resize-none"
+                            placeholder="Note"
+                            {...field}
                           />
                         </FormControl>
                       </FormItem>
                     )}
                   />
                 </div>
+
+                <div className="w-full grid lg:grid-cols-6 md:grid-cols-3 grid-cols-3 grid-rows-3  gap-4 flex-wrap items-center">
+                  {shapeFields.map((m) => (
+                    <FormField
+                      key={m}
+                      control={form.control}
+                      name={m}
+                      render={({ field }) => (
+                        <FormItem className="flex items-center space-x-2">
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                          <FormLabel className="capitalize">{m}</FormLabel>
+                        </FormItem>
+                      )}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
 
-          <div className=" flex flex-col gap-y-4  w-full h-full border border-dashed rounded-lg ">
-            <div className=" w-full flex justify-end border-b pb-2 p-3">
-              <Button
-                type="button"
-                variant={"customsm"}
-                className=" justify-start gap-2"
-              >
-                <UploadCloud className=" size-3" />
-              </Button>
-            </div>
-            draw
+          <div className=" flex flex-col gap-y-1  w-full h-full border border-dashed rounded-lg px-1 py-1 overflow-hidden justify-center items-center ">
+            <Drawing />
           </div>
         </div>
         <div className=" w-full items-end flex justify-end">
