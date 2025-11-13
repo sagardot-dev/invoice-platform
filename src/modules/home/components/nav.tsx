@@ -14,7 +14,7 @@ const Nav = () => {
   const isMobile = useIsMobile();
   return (
     <div className=" w-full h-21  flex justify-center items-center  ">
-      <Container className="  flex justify-between items-center px-7 md:px-9  border-b py-6 border-border/20">
+      <Container className="  flex justify-between items-center px-7   border-b py-6 border-border/20">
         <Link href={"/"} className=" flex justify-center items-center gap-x-3">
           <Image src="/logo.svg" alt="logo" width={16} height={16} />
           <p className=" text-md font-bold ">D-invoice</p>
@@ -40,10 +40,8 @@ const Nav = () => {
           <Button className=" bg-linear-0 from-primary via-chart-5 to-primary h-8! text-shadow-xs hover:shadow-brand border-0">
             Login
           </Button>
-          <Button 
-          variant={'ghost'}
-          className=" h-8!">
-         Sign Up
+          <Button variant={"ghost"} className=" h-8!">
+            Sign Up
           </Button>
           <ModeToggle />
         </div>
