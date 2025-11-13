@@ -19,9 +19,9 @@ import { InvoiceForm } from "./invoice-from";
 import { InvoiceJacketForm } from "./invoice-jacket";
 import { InvoicePantForm } from "./invoice-pant";
 import { InvoiceShirttForm } from "./invoice-shirt";
+import { cn } from "@/lib/utils";
 
 export const InvoiceFormWrapper = () => {
-  const router = useRouter();
   const [step, setStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -178,18 +178,44 @@ export const InvoiceFormWrapper = () => {
   const isPending = form.formState.isSubmitting || isLoading;
 
   async function onSubmit(data: z.infer<typeof invoiceSchema>) {
-    console.log("Invoice Data:", data);
+    console.log("✅ Invoice data:", data);
   }
 
   const nextStep = () => setStep((s) => Math.min(s + 1, 3));
   const prevStep = () => setStep((s) => Math.max(s - 1, 0));
+  const getStepButtons = () => {
+    const steps = [
+      { label: "Invoice", index: 0 },
+      { label: "Jacket", index: 1 },
+      { label: "Pant", index: 2 },
+      { label: "Shirt", index: 3 },
+    ];
+
+    return steps.map((stepItem) => (
+      <Button
+        className={cn(
+          " h-7 px-4 ",
+          step === stepItem.index &&
+            " bg-linear-0 from-chart-5 via-primary to-chart-5"
+        )}
+        key={stepItem.index}
+        type="button"
+        variant={step === stepItem.index ? "default" : "outline"}
+        onClick={() => setStep(stepItem.index)}
+        disabled={isPending}
+      >
+        {stepItem.label}
+      </Button>
+    ));
+  };
 
   return (
     <Card className="w-full border-none py-6">
-      <CardHeader className="border-b pb-5! px-8 flex justify-between items-center">
+      <CardHeader className="border-b pb-5! px-8 flex justify-between items-center gap-x-19">
         <div>
           <CardTitle className="text-xl">Create a new Invoice</CardTitle>
         </div>
+        <div className="flex gap-x-4 flex-1 ">{getStepButtons()}</div>
         <CardAction>
           <Button variant="custom">
             <Printer />
@@ -197,19 +223,9 @@ export const InvoiceFormWrapper = () => {
         </CardAction>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className=" flex w-full  items-center">
         <FormProvider {...form}>
-          <form
-            onSubmit={form.handleSubmit(
-              async (data) => {
-                console.log("✅ Invoice data:", data);
-              },
-              (errors) => {
-                console.error("❌ Validation errors:", errors);
-              }
-            )}
-            className="space-y-6"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {step === 0 && <InvoiceForm />}
             {step === 1 && <InvoiceJacketForm />}
             {step === 2 && <InvoicePantForm />}
@@ -222,6 +238,7 @@ export const InvoiceFormWrapper = () => {
                   variant="outline"
                   onClick={prevStep}
                   disabled={isPending}
+                  className=" h-8"
                 >
                   Back
                 </Button>
@@ -234,7 +251,7 @@ export const InvoiceFormWrapper = () => {
                   type="button"
                   onClick={nextStep}
                   disabled={isPending}
-                  className="bg-primary text-white"
+                  className="bg-linear-0 from-chart-5 via-primary to-chart-5 h-8"
                 >
                   Next
                 </Button>
@@ -242,7 +259,7 @@ export const InvoiceFormWrapper = () => {
                 <Button
                   type="submit"
                   disabled={isPending}
-                  className="bg-linear-0 from-chart-5/10 via-primary to-chart-5 border border-primary"
+                  className="bg-linear-0 from-chart-5 via-primary to-chart-5 border border-primary h-8"
                 >
                   Create Invoice
                 </Button>

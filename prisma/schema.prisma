@@ -34,6 +34,7 @@ model User {
   saleman       SaleMan[]
   helper        Helper[]
   customer      Customer[]
+  invoice       Invoice[]
   role          Role @default(ADMIN)
 
   @@unique([email])
@@ -356,7 +357,7 @@ model Customer {
   name            String
   phoneNumber     String
   address         String?
-  email           String
+  email           String   @unique
   gender          Gender
   height          Float?
   weight          Float?
@@ -387,14 +388,19 @@ model Invoice {
   createdAt           DateTime       @default(now())
   updatedAt           DateTime       @updatedAt
 
-  customerId          String
-  customer            Customer       @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  userId              String
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  salesMan            String
-  moreSaleMan         String[]       // Array of salesman IDs
+  customerId          String
+  customer           Customer       @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  salesmanId          String
+  salesman            SaleMan?      @relation(fields: [salesmanId], references: [id], onDelete: SetNull)
   
   helperId            String?
   helper              Helper?        @relation(fields: [helperId], references: [id], onDelete: SetNull)
+  moreSaleMan         String[]
+  
 
   jacketId            String?
   jacket              Jacket?        @relation(fields: [jacketId], references: [id])

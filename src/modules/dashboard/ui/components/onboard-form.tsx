@@ -139,7 +139,7 @@ const OnboradForm = () => {
 
   return (
     <>
-      <Card className=" w-1/2 h-full md:min-w-2xl   space-y-2 py-10 border-accent-foreground/4 shadow-sm">
+      <Card className=" space-y-2 py-10 border-accent-foreground/4 shadow-sm">
         <CardHeader className=" border-b px-9">
           <CardTitle className=" md:text-2xl text-lg ">
             Fill Conpany Information

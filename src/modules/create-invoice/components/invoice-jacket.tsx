@@ -110,7 +110,8 @@ export const InvoiceJacketForm = () => {
 
   return (
     <>
-      <div className=" flex flex-wrap gap-4.5 justify-around items-center px-4 pb-3  w-full">
+    <div className="flex flex-col h-full gap-x-8 gap-y-8 w-full">
+      <div className=" flex flex-wrap gap-7 md:gap-x-12 justify-start items-center px-4  w-full">
         {/* Invoice Number */}
         <FormField
           control={control}
@@ -389,6 +390,7 @@ export const InvoiceJacketForm = () => {
         <div className=" flex flex-col gap-y-1  w-full h-full border border-dashed rounded-lg px-1 py-1 overflow-hidden items-center ">
           <Drawing onSave={(url) => setValue("jacket.jacketStyleDrawing", url)} />
         </div>
+      </div>
       </div>
     </>
   );

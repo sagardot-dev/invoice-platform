@@ -102,7 +102,7 @@ export const InvoiceShirttForm = () => {
 
   return (
     <>
-      <div className=" flex flex-wrap gap-x-7 md:gap-x-9 gap-y-5  justify-start items-center px-4 pb-3  w-full">
+      <div className=" flex flex-wrap gap-x-7 md:gap-x-9 gap-y-5  justify-start items-center px-4  w-full">
         {/* Invoice Number */}
         <FormField
           control={control}
@@ -112,7 +112,6 @@ export const InvoiceShirttForm = () => {
               <FormLabel>Quantity</FormLabel>
               <FormControl>
                 <Input
-                  className=" w-50"
                   type="number"
                   {...field}
                   onChange={(e) => field.onChange(Number(e.target.value))}
