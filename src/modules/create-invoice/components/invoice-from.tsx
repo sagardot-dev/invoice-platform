@@ -47,7 +47,7 @@ export const InvoiceForm = () => {
   return (
     <>
       <div className="flex flex-col h-full gap-x-8 gap-y-8 w-full">
-      <div className=" flex flex-wrap gap-7 md:gap-x-12 justify-start items-center px-4  w-full pb-4">
+        <div className=" flex flex-wrap gap-7 md:gap-x-12 justify-start items-center px-4  w-full pb-4">
           <FormField
             control={control}
             name="invoiceNumber"
@@ -376,6 +376,23 @@ export const InvoiceForm = () => {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={control}
+                name="notes"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Note</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        className=" resize-none"
+                        placeholder="Additional notes"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
           </div>
 
@@ -494,7 +511,7 @@ export const InvoiceForm = () => {
               />
             </div>
 
-            <div className="grid gap-y-4 md:grid-cols-2  gap-x-3 w-full">
+            <div className="grid gap-y-4  gap-x-3 w-full">
               <FormField
                 control={control}
                 name="customer.address"
@@ -503,25 +520,10 @@ export const InvoiceForm = () => {
                     <FormLabel>Customer Address</FormLabel>
                     <FormControl>
                       <Textarea
-                      className=" resize-none"
+                        className=" resize-none"
                         placeholder="Enter customer address"
                         {...field}
                       />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={control}
-                name="notes"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Note</FormLabel>
-                    <FormControl>
-                      <Textarea 
-                      className=" resize-none"
-                      placeholder="Additional notes" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

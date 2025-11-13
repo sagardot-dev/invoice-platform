@@ -38,23 +38,20 @@ export const AppSidebar = () => {
   return (
     <Sidebar className="" collapsible="icon">
       <SidebarHeader className="flex border-b">
-        <div className=" flex items-center justify-between">
-          <div>
-            <SidebarMenu className="flex items-center ">
-              <SidebarMenuButton asChild className="flex items-center">
-                <Link
-                  href="/dashboard"
-                  className="flex items-center gap-2 group-data-[collapsible=icon]:hidden"
-                >
-                  <Image width={15} height={15} alt="logo" src="/logo.svg" />
-                  <span className=" font-semibold text-sm">D-invoice</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenu>
-          </div>
-          <div>
-            <SidebarTrigger />
-          </div>
+        <div className=" flex items-center w-full justify-between">
+          <SidebarMenu className="flex w-full">
+            <SidebarMenuButton asChild className="flex w-full">
+              <Link
+                href="/dashboard"
+                className="flex gap-2 group-data-[collapsible=icon]:hidden"
+              >
+                <Image width={15} height={15} alt="logo" src="/logo.svg" />
+                <span className=" font-semibold text-sm">D-invoice</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenu>
+
+          <SidebarTrigger />
         </div>
       </SidebarHeader>
       <SidebarContent>
@@ -98,9 +95,7 @@ export const AppSidebar = () => {
                   <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
                   <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
                   <span className="sr-only">Toggle theme</span>
-                  <span>
-                    Switch theme
-                  </span>
+                  <span>Switch theme</span>
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
 

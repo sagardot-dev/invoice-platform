@@ -214,7 +214,7 @@ export const InvoiceJacketForm = () => {
         />
       </div>
 
-      <div className="space-y-3 bar grid xl:grid-cols-3 xl:grid-rows-1  grid-cols-1 grid-rows-2 gap-y-3 gap-x-3 rounded-2xl  pt-5 px-2">
+      <div className="space-y-4 bar grid xl:grid-cols-3 xl:grid-rows-1  grid-cols-1 grid-rows-2 gap-y-3 gap-x-3 rounded-2xl  pt-5 px-2">
         <div className=" col-span-2  gap-y-3  w-full h-full justify-start grid grid-cols-2 bar ">
           <div className="border col-span-2 border-chart-1/10 rounded-2xl p-6 space-y-4 bar">
             <div className=" flex flex-col gap-y-3">
