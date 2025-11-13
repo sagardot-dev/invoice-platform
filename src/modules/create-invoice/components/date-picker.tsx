@@ -35,7 +35,9 @@ export function DatePicker({ value, onChange }: DatePickerProps) {
             id="date"
             className="w-48 justify-between font-normal"
           >
-            {date ? date.toLocaleDateString() : "Select date"}
+            {date instanceof Date && !isNaN(date.getTime())
+              ? date.toLocaleDateString()
+              : "Select date"}
             <ChevronDownIcon />
           </Button>
         </PopoverTrigger>

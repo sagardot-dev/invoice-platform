@@ -76,7 +76,7 @@ export const helperSchema = z.object({
   status: z.enum(["ACTIVE", "INACTIVE"]).optional(),
 });
 
-export const GenderEnum = z.enum(["FEMALE", "MALE"]);
+export const GenderEnum = z.enum(["MALE", "FEMALE"]);
 export const CustomerStatusEnum = z.enum([
   "PAID",
   "BALANCE",
@@ -124,27 +124,20 @@ export const ShirtTypeEnum = z.enum([
 
 export const PantLengthEnum = z.enum(["TROUSER", "SHORT"]);
 
-export const customerSchema = z.object({
-  name: z.string().min(1),
-  phoneNumber: z.string().min(5),
-  address: z.string().optional(),
-  gender: GenderEnum.default("MALE"),
-  userId: z.string().uuid(),
-});
-
 export const jacketSchema = z.object({
-  quantity: z.number().min(1),
-  tailorName: z.string().min(1),
-  fittingDate: z.date(),
-  addVest: z.boolean().default(false),
-  addMonogram: z.boolean().default(false),
-  jacketType: JacketTypeEnum.default("NORMAL"),
+  quantity: z.number().optional(),
+  tailorName: z.string().optional(),
+  fittingDate: z.date().optional(),
+  addVest: z.boolean().optional(),
+  addMonogram: z.boolean().optional(),
+  jacketType: JacketTypeEnum.optional(),
   jacketFabricImage: z.string().optional(),
   jacketStyleDrawing: z.string().optional(),
   jacketCustomStyle: z.string().optional(),
   monogramName: z.string().optional(),
   monogramImage: z.string().optional(),
   liningImage: z.string().optional(),
+
   ch: z.number().optional(),
   wa: z.number().optional(),
   hip: z.number().optional(),
@@ -179,6 +172,87 @@ export const jacketSchema = z.object({
 
   note: z.string().optional(),
 });
+
+
+export const pantSchema = z.object({
+  quantity: z.number().optional(),
+  tailorName: z.string().optional(),
+  fittingDate: z.date().optional(),
+  addInnerLining: z.boolean().optional(),
+
+  pantType: PantTypeEnum.optional(),
+  pantLength: PantLengthEnum.optional(),
+  pantFabricImage: z.string().optional(),
+  pantStyleDrawing: z.string().optional(),
+  pantCustomStyle: z.string().optional(),
+  monogramName: z.string().optional(),
+  monogramImage: z.string().optional(),
+
+  wa: z.number().optional(),
+  hip: z.number().optional(),
+  cr: z.number().optional(),
+  th: z.number().optional(),
+  kn: z.number().optional(),
+  bo: z.number().optional(),
+  lg: z.number().optional(),
+
+  slantingPkt: z.boolean().optional(),
+  straightPkt: z.boolean().optional(),
+  americanPkt: z.boolean().optional(),
+  backRhtPkt: z.boolean().optional(),
+  backLhtPkt: z.boolean().optional(),
+  cuffs: z.boolean().optional(),
+  wpIn: z.boolean().optional(),
+  wpOut: z.boolean().optional(),
+  flatB: z.boolean().optional(),
+  lowFront: z.boolean().optional(),
+  underBelly: z.boolean().optional(),
+
+  note: z.string().optional(),
+});
+
+
+export const shirtSchema = z.object({
+  quantity: z.number().optional(),
+  tailorName: z.string().optional(),
+  fittingDate: z.date().optional(),
+  addMonogram: z.boolean().optional(),
+  addTie: z.boolean().optional(),
+  shirtType: ShirtTypeEnum.optional(),
+
+  shirtFabricImage: z.string().optional(),
+  shirtStyleDrawing: z.string().optional(),
+  shirtCustomStyle: z.string().optional(),
+  shirtMonogramName: z.string().optional(),
+  shirtMonogramImage: z.string().optional(),
+
+  ch: z.number().optional(),
+  wa: z.number().optional(),
+  hip: z.number().optional(),
+  nk: z.number().optional(),
+  sh: z.number().optional(),
+  sleeve: z.number().optional(),
+  arm: z.number().optional(),
+  fr: z.number().optional(),
+  ba: z.number().optional(),
+  lg: z.number().optional(),
+
+  stb: z.number().optional(),
+  stw: z.number().optional(),
+  ah: z.number().optional(),
+  dressLg: z.number().optional(),
+  skirtLg: z.number().optional(),
+  nLow: z.number().optional(),
+
+  sqSho: z.boolean().optional(),
+  rdSho: z.boolean().optional(),
+  sloSho: z.boolean().optional(),
+  brBly: z.boolean().optional(),
+  sloNk: z.boolean().optional(),
+
+  note: z.string().optional(),
+});
+
 
 const shapeType = jacketSchema.pick({
   nSho: true,
@@ -217,46 +291,6 @@ export type MeasurementType = z.infer<typeof measurementType>;
 
 export type shapeType = z.infer<typeof shapeType>;
 
-export const pantSchema = z.object({
-  quantity: z.number().min(1),
-  tailorName: z.string().min(1),
-  fittingDate: z.date(),
-  addInnerLining: z.boolean().default(false),
-
-  pantType: PantTypeEnum.default("NORMAL"),
-  pantLength: PantLengthEnum.default("TROUSER"),
-  pantFabricImage: z.string().optional(),
-  pantStyleDrawing: z.string().optional(),
-  pantCustomStyle: z.string().optional(),
-  monogramName: z.string().optional(),
-  monogramImage: z.string().optional(),
-
-  // measurements
-  wa: z.number().optional(),
-  hip: z.number().optional(),
-  cr: z.number().optional(),
-  th: z.number().optional(),
-  kn: z.number().optional(),
-  bo: z.number().optional(),
-  lg: z.number().optional(),
-
-  // style options from image
-  slantingPkt: z.boolean().default(false),
-  straightPkt: z.boolean().default(false),
-  americanPkt: z.boolean().default(false),
-  backRhtPkt: z.boolean().default(false),
-  backLhtPkt: z.boolean().default(false),
-  cuffs: z.boolean().default(false),
-  wpIn: z.boolean().default(false),
-  wpOut: z.boolean().default(false),
-  flatB: z.boolean().default(false),
-  lowFront: z.boolean().default(false),
-  underBelly: z.boolean().default(false),
-
-  // notes
-  note: z.string().optional(),
-});
-
 const pantMeasurementType = pantSchema.pick({
   wa: true,
   hip: true,
@@ -283,47 +317,6 @@ const pantStyleType = pantSchema.pick({
 
 export type PantMeasurementType = z.infer<typeof pantMeasurementType>;
 export type PantStyleType = z.infer<typeof pantStyleType>;
-
-export const shirtSchema = z.object({
-  quantity: z.number().min(1),
-  tailorName: z.string().min(1),
-  fittingDate: z.date(),
-  addMonogram: z.boolean().default(false),
-  addTie: z.boolean().default(false),
-  shirtType: ShirtTypeEnum.default("DRESSSHIRT"),
-
-  shirtFabricImage: z.string().optional(),
-  shirtStyleDrawing: z.string().optional(),
-  shirtCustomStyle: z.string().optional(),
-  shirtMonogramName: z.string().optional(),
-  shirtMonogramImage: z.string().optional(),
-
-  ch: z.number().optional(),
-  wa: z.number().optional(),
-  hip: z.number().optional(),
-  nk: z.number().optional(),
-  sh: z.number().optional(),
-  sleeve: z.number().optional(),
-  arm: z.number().optional(),
-  fr: z.number().optional(),
-  ba: z.number().optional(),
-  lg: z.number().optional(),
-
-  stb: z.number().optional(),
-  stw: z.number().optional(),
-  ah: z.number().optional(),
-  dressLg: z.number().optional(),
-  skirtLg: z.number().optional(),
-  nLow: z.number().optional(),
-
-  sqSho: z.boolean().optional(),
-  rdSho: z.boolean().optional(),
-  sloSho: z.boolean().optional(),
-  brBly: z.boolean().optional(),
-  sloNk: z.boolean().optional(),
-
-  note: z.string().optional(),
-});
 
 const shirtMeasurementType = shirtSchema.pick({
   ch: true,
@@ -355,26 +348,40 @@ const shirtShapeType = shirtSchema.pick({
 export type ShirtMeasurementType = z.infer<typeof shirtMeasurementType>;
 export type ShirtShapeType = z.infer<typeof shirtShapeType>;
 
+export const customerSchema = z.object({
+  name: z.string().min(1),
+  phoneNumber: z.string().min(5),
+  address: z.string().optional(),
+  email: z.string().min(1, "email is required"),
+  gender: GenderEnum,
+  userId: z.string().uuid(),
+  height: z.number().optional(),
+  weight: z.number().optional(),
+  stayDays: z.number().optional(),
+});
+
 export const invoiceSchema = z.object({
-  invoiceNumber: z.string().min(1),
-  customerSignature: z.string().optional(),
-  customerStatus: CustomerStatusEnum.default("UNPAID"),
-  paymentMethod: PaymentMethodEnum.default("CA"),
-  totalAmount: z.number().optional(),
+  invoiceNumber: z.string().min(1, "Invoice number is required"),
+  date: z.date(),
+  customerStatus: CustomerStatusEnum,
+  paymentMethod: PaymentMethodEnum,
+  totalAmount: z.number().min(0),
   notes: z.string().optional(),
-  reselling: z.boolean().default(false),
-  isReadymade: z.boolean().default(false),
+  reselling: z.boolean(),
+  isReadymade: z.boolean(),
+  isMultiSaleMan: z.boolean(),
+  customerId: z.string().optional(),
+  customer: customerSchema,
 
-  // Customer relation (existing or new)
-  customerId: z.string().uuid().optional(),
-  customer: customerSchema.optional(),
+  salesMan: z.string(),
+  moreSaleMan: z.array(z.string().optional()),
 
-  salesmanId: z.string().uuid(),
-  helperId: z.string().uuid().optional(),
-
-  jacket: jacketSchema,
-  pant: pantSchema,
-  shirt: shirtSchema,
+  helperId: z.string().optional(),
+  customerSignature: z.string().optional(),
+  jacket: jacketSchema.optional(),
+  pant: pantSchema.optional(),
+  shirt: shirtSchema.optional(),
+  onBoard: onBoardSchema,
 });
 
 export type InvoiceFormValues = z.infer<typeof invoiceSchema>;
