@@ -202,9 +202,9 @@ export const InvoiceShirttForm = () => {
         />
       </div>
 
-      <div className="space-y-4 bar grid xl:grid-cols-3 xl:grid-rows-1  grid-cols-1 grid-rows-2 gap-y-3 gap-x-3 rounded-2xl  pt-5 px-2">
+      <div className="space-y-4 bar grid lg:grid-cols-3 xl:grid-rows-1  grid-cols-1 grid-rows-2 gap-y-3 gap-x-3 rounded-2xl  pt-5 px-2 w-full">
         <div className=" col-span-2  gap-y-5  w-full h-full justify-start flex bar ">
-          <div className="border col-span-2 border-chart-1/10 rounded-2xl p-6 space-y-4 bar">
+          <div className="border w-full col-span-2 border-chart-1/10 rounded-2xl p-6 space-y-4 bar">
             <div className=" flex flex-col gap-y-3">
               <Badge className="bg-primary/20 text-primary backdrop-blur-2xl">
                 Shirt Sizes
@@ -357,7 +357,7 @@ export const InvoiceShirttForm = () => {
           </div>
         </div>
 
-        <div className=" flex flex-col gap-y-1  w-full h-full border border-dashed rounded-lg px-1 py-1 overflow-hidden items-center ">
+        <div className=" flex flex-col gap-y-1  w-full h-full border border-dashed rounded-lg px-1 py-1 overflow-hidden items-center col-span-1 ">
           <Drawing onSave={(url) => setValue("shirt.shirtStyleDrawing", url)} />
         </div>
       </div>

@@ -511,7 +511,7 @@ export const InvoiceForm = () => {
               />
             </div>
 
-            <div className="grid gap-y-4  gap-x-3 w-full">
+            <div className="grid gap-y-4 md:grid-cols-  gap-x-3 w-full">
               <FormField
                 control={control}
                 name="customer.address"

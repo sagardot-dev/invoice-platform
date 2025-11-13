@@ -1,10 +1,10 @@
 import { getServerSessionOrRedirect } from "@/components/global/check-session-server";
-import InvoiceLandingPage from "@/modules/home/components/home-components";
+import { HomeView } from "@/modules/home/view/view";
 
 export default async function Home() {
   return (
     <div className=" h-screen w-full ">
-      <InvoiceLandingPage />
+      <HomeView />
     </div>
   );
 }

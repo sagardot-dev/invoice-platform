@@ -223,7 +223,7 @@ export const InvoiceFormWrapper = () => {
         </CardAction>
       </CardHeader>
 
-      <CardContent className=" flex w-full  items-center">
+      <CardContent className=" grid">
         <FormProvider {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {step === 0 && <InvoiceForm />}

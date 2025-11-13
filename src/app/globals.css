@@ -63,6 +63,13 @@
   --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
   --tracking-normal: 0em;
   --spacing: 0.25rem;
+
+ --shadow-brand: 
+  -82px 54px 27px 0px rgba(0, 0, 0, 0.01),
+  -52px 35px 25px 0px rgba(0, 0, 0, 0.04),
+  -29px 19px 21px 0px rgba(0, 0, 0, 0.15),
+  -13px 9px 16px 0px rgba(0, 0, 0, 0.25),
+  -3px 2px 9px 0px rgba(0, 0, 0, 0.29);
 }
 
 .dark {
@@ -123,6 +130,14 @@
   --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
     0 8px 10px -1px hsl(0 0% 0% / 0.1);
   --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+--shadow-brand: 
+  -82px 54px 27px 0px rgba(255, 200, 150, 0.01),
+  -52px 35px 25px 0px rgba(255, 200, 150, 0.04),
+  -29px 19px 21px 0px rgba(255, 200, 150, 0.15),
+  -13px 9px 16px 0px rgba(255, 197, 142, 0.25),
+  -3px 2px 9px 0px rgba(255, 177, 104, 0.29);
+
+
 }
 
 @theme inline {
@@ -176,6 +191,7 @@
   --shadow-lg: var(--shadow-lg);
   --shadow-xl: var(--shadow-xl);
   --shadow-2xl: var(--shadow-2xl);
+  --shadow-brand: var(--shadow-brand)
 }
 
 body {
