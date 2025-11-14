@@ -4,7 +4,7 @@ import { Hero } from "../components/hero";
 import InvoiceFeatures from "../components/feature";
 import Footer from "../components/footer";
 import { Logos } from "../components/logo";
-import { SecondFeature } from "../components/feature-secondary";
+import { SecondFeature } from "../components/feature-second/feature-secondary";
 
 export const HomeView = () => {
   return (

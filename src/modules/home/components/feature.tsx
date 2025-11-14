@@ -187,9 +187,9 @@ const InvoiceFeatures = () => {
             ease: "easeOut",
             delay: 0.1,
           }}
-          className=" rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border-10 border-border ring-1 ring-accent-foreground/20 p-1 md:p-2 "
+          className=" rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border-10 border-border/60 ring-1 ring-accent-foreground/10 p-1 md:p-2 "
         >
-          <div className=" grid grid-cols-1 md:grid-cols-2 bg-accent/5  backdrop-blur-2xl rounded-xl ">
+          <div className=" grid grid-cols-1 md:grid-cols-2 bg-accent/5  backdrop-blur-2xl rounded-2xl ">
             {/* Recent Activity */}
             <div className="border-b md:border-b border-border md:border-r pb-5">
               <div className="p-4 md:p-8">
