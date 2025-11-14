@@ -17,7 +17,7 @@ export const Logos = () => {
           From paper to digital without any headache
         </SubHeading>
       </div>
-      <div className=" grid grid-cols-3 grid-rows-2 md:gap-x-50 gap-x-20 md:gap-y-20 gap-y-10 max-w-4xl mx-auto ">
+      <div className=" grid grid-cols-3 grid-rows-2 md:gap-x-60 gap-x-20 md:gap-y-20 gap-y-10 max-w-4xl mx-auto ">
         {logos.map((logo) => (
           <motion.div
             initial={{
