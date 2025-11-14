@@ -20,6 +20,8 @@ import { InvoiceJacketForm } from "./invoice-jacket";
 import { InvoicePantForm } from "./invoice-pant";
 import { InvoiceShirttForm } from "./invoice-shirt";
 import { cn } from "@/lib/utils";
+import { CheckOut } from "./checkout";
+import { toast } from "sonner";
 
 export const InvoiceFormWrapper = () => {
   const [step, setStep] = useState(0);
@@ -38,8 +40,8 @@ export const InvoiceFormWrapper = () => {
       isReadymade: false,
       isMultiSaleMan: false,
       customerId: "",
-      salesMan: "",
-      moreSaleMan: [],
+      saleManId: "",                   
+      otherSalesmanIds: [],
       helperId: "",
       customerSignature: "",
       customer: {
@@ -181,7 +183,7 @@ export const InvoiceFormWrapper = () => {
     console.log("✅ Invoice data:", data);
   }
 
-  const nextStep = () => setStep((s) => Math.min(s + 1, 3));
+  const nextStep = () => setStep((s) => Math.min(s + 1, 4));
   const prevStep = () => setStep((s) => Math.max(s - 1, 0));
   const getStepButtons = () => {
     const steps = [
@@ -189,6 +191,7 @@ export const InvoiceFormWrapper = () => {
       { label: "Jacket", index: 1 },
       { label: "Pant", index: 2 },
       { label: "Shirt", index: 3 },
+      { label: "checkout", index: 4 },
     ];
 
     return steps.map((stepItem) => (
@@ -225,11 +228,19 @@ export const InvoiceFormWrapper = () => {
 
       <CardContent className=" grid">
         <FormProvider {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form
+            onSubmit={form.handleSubmit(onSubmit, (error) => {
+              toast.error("please fill all the nessaey feilds", {
+                description: error.invoiceNumber?.message,
+              });
+            })}
+            className="space-y-6"
+          >
             {step === 0 && <InvoiceForm />}
             {step === 1 && <InvoiceJacketForm />}
             {step === 2 && <InvoicePantForm />}
             {step === 3 && <InvoiceShirttForm />}
+            {step === 4 && <CheckOut />}
 
             <div className="flex justify-between mt-6">
               {step > 0 ? (
@@ -246,7 +257,7 @@ export const InvoiceFormWrapper = () => {
                 <div />
               )}
 
-              {step < 3 ? (
+              {step < 4 ? (
                 <Button
                   type="button"
                   onClick={nextStep}

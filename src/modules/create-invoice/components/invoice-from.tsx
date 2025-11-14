@@ -46,8 +46,8 @@ export const InvoiceForm = () => {
 
   return (
     <>
-      <div className="flex flex-col h-full gap-x-8 gap-y-8 w-full">
-        <div className=" flex flex-wrap gap-7 md:gap-x-12 justify-start items-center px-4  w-full pb-4">
+      <div className="flex flex-col h-full gap-x-8 gap-y-6 w-full">
+        <div className=" flex flex-wrap gap-6 md:gap-x-12 justify-start items-center px-4  w-full pb-4">
           <FormField
             control={control}
             name="invoiceNumber"
@@ -112,7 +112,7 @@ export const InvoiceForm = () => {
           {/* Salesman */}
           <FormField
             control={control}
-            name="salesMan"
+            name="saleManId"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Salesman</FormLabel>
@@ -185,7 +185,7 @@ export const InvoiceForm = () => {
           {!!isMultiSaleMan && (
             <FormField
               control={control}
-              name="moreSaleMan"
+              name="otherSalesmanIds"
               render={({ field }) => (
                 <FormItem className="">
                   <FormLabel>Select Salesmen</FormLabel>

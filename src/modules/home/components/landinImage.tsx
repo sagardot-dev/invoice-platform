@@ -6,7 +6,7 @@ import { motion } from "motion/react";
 
 export const Landing = () => {
   return (
-    <div className=" relative min-h-140 w-full  pt-18 perspective-distant transform-3d pr-8 p-2 md:p-4 ">
+    <div className=" relative md:min-h-140 min-h-70  w-full  pt-21 perspective-distant transform-3d pr-8 p-2 md:p-4 ">
       <motion.div
       initial={{
         opacity: 0,

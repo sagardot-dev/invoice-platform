@@ -14,10 +14,10 @@ const Nav = () => {
   const isMobile = useIsMobile();
   return (
     <div className=" w-full h-21  flex justify-center items-center  ">
-      <Container className="  flex justify-between items-center px-7   border-b py-6 border-border/20">
-        <Link href={"/"} className=" flex justify-center items-center gap-x-3">
+      <Container className="  flex justify-between items-center px-7 py-6">
+        <Link href={"/"} className=" flex justify-center items-center md:gap-x-3 gap-x-1">
           <Image src="/logo.svg" alt="logo" width={16} height={16} />
-          <p className=" text-md font-bold ">D-invoice</p>
+          <p className=" md:text-md text-sm font-bold ">D-invoice</p>
         </Link>
         {!isMobile && (
           <div className=" flex flex-1 justify-center items-center gap-x-13">
@@ -36,7 +36,7 @@ const Nav = () => {
             ))}
           </div>
         )}
-        <div className="  flex justify-center items-center gap-x-4">
+        <div className="  flex justify-center items-center md:gap-x-4 gap-x-2">
           <Button className=" bg-linear-0 from-primary via-chart-5 to-primary h-8! text-shadow-xs hover:shadow-brand border-0">
             Login
           </Button>

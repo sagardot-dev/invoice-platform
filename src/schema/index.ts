@@ -173,7 +173,6 @@ export const jacketSchema = z.object({
   note: z.string().optional(),
 });
 
-
 export const pantSchema = z.object({
   quantity: z.number().optional(),
   tailorName: z.string().optional(),
@@ -210,7 +209,6 @@ export const pantSchema = z.object({
 
   note: z.string().optional(),
 });
-
 
 export const shirtSchema = z.object({
   quantity: z.number().optional(),
@@ -252,7 +250,6 @@ export const shirtSchema = z.object({
 
   note: z.string().optional(),
 });
-
 
 const shapeType = jacketSchema.pick({
   nSho: true,
@@ -370,18 +367,22 @@ export const invoiceSchema = z.object({
   reselling: z.boolean(),
   isReadymade: z.boolean(),
   isMultiSaleMan: z.boolean(),
-  customerId: z.string().optional(),
-  customer: customerSchema,
 
-  salesMan: z.string(),
-  moreSaleMan: z.array(z.string().optional()),
+  customerId: z.string().optional(),
+  customer: customerSchema.optional(),
+
+  saleManId: z.string().min(1, "Primary salesman is required"),
+
+  otherSalesmanIds: z.array(z.string()).optional(),
 
   helperId: z.string().optional(),
   customerSignature: z.string().optional(),
+
   jacket: jacketSchema.optional(),
   pant: pantSchema.optional(),
   shirt: shirtSchema.optional(),
-  onBoard: onBoardSchema,
+
+  onBoard: onBoardSchema.optional(),
 });
 
 export type InvoiceFormValues = z.infer<typeof invoiceSchema>;

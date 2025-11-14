@@ -190,7 +190,7 @@ export const InvoiceShirttForm = () => {
           name="shirt.addTie"
           render={({ field }) => (
             <FormItem className="flex flex-col items-center justify-between ">
-              <FormLabel>Add MonoGram</FormLabel>
+              <FormLabel>Add Tie</FormLabel>
               <FormControl>
                 <Switch
                   checked={field.value}
