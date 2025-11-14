@@ -167,7 +167,7 @@ const InvoiceFeatures = () => {
         }
       `}</style>
 
-      <div className="max-w-7xl px-4 md:px-8 mx-auto md:py-10 md:pt-60 py-5 ">
+      <div className="max-w-7xl px-5 lg:px-0 mx-auto  py-5 ">
         {/* Section Header */}
         <div className="mb-10 px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-2 text-center">
@@ -187,7 +187,7 @@ const InvoiceFeatures = () => {
             ease: "easeOut",
             delay: 0.1,
           }}
-          className=" rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border-10 border-border/70 p-2 "
+          className=" rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border-10 border-border ring-1 ring-accent-foreground/20 p-1 md:p-2 "
         >
           <div className=" grid grid-cols-1 md:grid-cols-2 bg-accent/5  backdrop-blur-2xl rounded-xl ">
             {/* Recent Activity */}
