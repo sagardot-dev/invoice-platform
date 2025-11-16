@@ -24,11 +24,15 @@ import { CheckOut } from "./checkout";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { useGetComapnyData } from "@/modules/dashboard/server/get-companydat";
-import { Company } from "@/generated/prisma/client";
+import { Company, Helper, SaleMan } from "@/generated/prisma/client";
 import { useCreateInvoice } from "../server/create-invoice";
+import { useGetInvoice } from "@/modules/invoices/server/use-get-invoice";
+import { useUpdateInvoice } from "@/modules/invoices/server/use-mutate-invoice";
 
-export const InvoiceFormWrapper = () => {
+export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId: string }) => {
+  const { data: invoice } = useGetInvoice(invoiceId);
   const invoiceMutation = useCreateInvoice();
+  const updateMutationInvoice = useUpdateInvoice();
   const getCompanyDataQuery = useGetComapnyData() as {
     data: Company | undefined;
     isLoading: boolean;
@@ -38,10 +42,10 @@ export const InvoiceFormWrapper = () => {
   const { data } = getCompanyDataQuery;
 
   const form = useForm<z.infer<typeof invoiceSchema>>({
-    resolver: zodResolver(invoiceSchema),
+    resolver: zodResolver(invoiceSchema) as any,
     defaultValues: {
       invoiceNumber: "",
-      date: new Date,
+      date: new Date(),
       customerStatus: "UNPAID",
       paymentMethod: "CA",
       totalAmount: 0,
@@ -185,27 +189,168 @@ export const InvoiceFormWrapper = () => {
   });
 
   useEffect(() => {
-    if (data) {
-      form.reset({
-        onBoard: {
-          name: data.name || "",
-          email: data.email || "",
-          image: data.image || "",
-          address: data.address || "",
-          phoneNumber: data.phoneNumber || "",
-          taxId: data.taxId || "",
-          websiteUrl: data.websiteUrl || "",
-          whatsappNumber: data.whatsappNumber || "",
-        },
-      });
-    }
-  }, [getCompanyDataQuery.data, form]);
+    if (!invoice) return;
+
+    form.reset({
+      invoiceNumber: invoice.invoiceNumber ?? "",
+      date: invoice.date ? new Date(invoice.date) : new Date(),
+      customerStatus: invoice.customerStatus ?? "UNPAID",
+      paymentMethod: invoice.paymentMethod ?? "CA",
+      totalAmount: invoice.totalAmount ?? 0,
+      notes: invoice.notes ?? "",
+      reselling: invoice.reselling ?? false,
+      isReadymade: invoice.isReadymade ?? false,
+      customerId: invoice.customer?.id ?? "",
+      saleManIds: invoice.saleMen?.map((s: SaleMan) => s.id) ?? [],
+      helperIds: invoice.helpers?.map((h: Helper) => h.id) ?? [],
+      customerSignature: invoice.customerSignature ?? "",
+      customer: {
+        name: invoice.customer?.name ?? "",
+        phoneNumber: invoice.customer?.phoneNumber ?? "",
+        email: invoice.customer?.email ?? "",
+        address: invoice.customer?.address ?? "",
+        gender: invoice.customer?.gender ?? "MALE",
+        height: invoice.customer?.height ?? 0,
+        weight: invoice.customer?.weight ?? 0,
+        stayDays: invoice.customer?.stayDays ?? 0,
+      },
+      jacket: {
+        quantity: invoice.jacket?.quantity ?? 0,
+        tailorName: invoice.jacket?.tailorName ?? "NORMAL",
+        fittingDate: invoice.jacket?.fittingDate
+          ? new Date(invoice.jacket.fittingDate)
+          : new Date(),
+        addVest: invoice.jacket?.addVest ?? false,
+        addMonogram: invoice.jacket?.addMonogram ?? false,
+        jacketType: invoice.jacket?.jacketType ?? "",
+        jacketFabricImage: invoice.jacket?.jacketFabricImage ?? "",
+        jacketStyleDrawing: invoice.jacket?.jacketStyleDrawing ?? "",
+        jacketCustomStyle: invoice.jacket?.jacketCustomStyle ?? "",
+        monogramName: invoice.jacket?.monogramName ?? "",
+        monogramImage: invoice.jacket?.monogramImage ?? "",
+        liningImage: invoice.jacket?.liningImage ?? "",
+        ch: invoice.jacket?.ch ?? 0,
+        wa: invoice.jacket?.wa ?? 0,
+        hip: invoice.jacket?.hip ?? 0,
+        nk: invoice.jacket?.nk ?? 0,
+        sh: invoice.jacket?.sh ?? 0,
+        sleeve: invoice.jacket?.sleeve ?? 0,
+        arm: invoice.jacket?.arm ?? 0,
+        fr: invoice.jacket?.fr ?? 0,
+        ba: invoice.jacket?.ba ?? 0,
+        lg: invoice.jacket?.lg ?? 0,
+        vLg: invoice.jacket?.vLg ?? 0,
+        ocLg: invoice.jacket?.ocLg ?? 0,
+        nSho: invoice.jacket?.nSho ?? false,
+        sqSho: invoice.jacket?.sqSho ?? false,
+        rdSho: invoice.jacket?.rdSho ?? false,
+        sloSho: invoice.jacket?.sloSho ?? false,
+        hBk: invoice.jacket?.hBk ?? false,
+        curveBk: invoice.jacket?.curveBk ?? false,
+        shoNk: invoice.jacket?.shoNk ?? false,
+        bigM: invoice.jacket?.bigM ?? false,
+        holBk: invoice.jacket?.holBk ?? false,
+        holCh: invoice.jacket?.holCh ?? false,
+        brBly: invoice.jacket?.brBly ?? false,
+        lLo: invoice.jacket?.lLo ?? false,
+        rLo: invoice.jacket?.rLo ?? false,
+        erect: invoice.jacket?.erect ?? false,
+        flatB: invoice.jacket?.flatB ?? false,
+        note: invoice.jacket?.note ?? "",
+      },
+      pant: {
+        quantity: invoice.pant?.quantity ?? 0,
+        tailorName: invoice.pant?.tailorName ?? "",
+        fittingDate: invoice.pant?.fittingDate
+          ? new Date(invoice.pant.fittingDate)
+          : new Date(),
+        addInnerLining: invoice.pant?.addInnerLining ?? false,
+        pantType: invoice.pant?.pantType ?? "NORMAL",
+        pantLength: invoice.pant?.pantLength ?? "",
+        pantFabricImage: invoice.pant?.pantFabricImage ?? "",
+        pantStyleDrawing: invoice.pant?.pantStyleDrawing ?? "",
+        pantCustomStyle: invoice.pant?.pantCustomStyle ?? "",
+        monogramName: invoice.pant?.monogramName ?? "",
+        monogramImage: invoice.pant?.monogramImage ?? "",
+        wa: invoice.pant?.wa ?? 0,
+        hip: invoice.pant?.hip ?? 0,
+        cr: invoice.pant?.cr ?? 0,
+        th: invoice.pant?.th ?? 0,
+        kn: invoice.pant?.kn ?? 0,
+        bo: invoice.pant?.bo ?? 0,
+        lg: invoice.pant?.lg ?? 0,
+        slantingPkt: invoice.pant?.slantingPkt ?? false,
+        straightPkt: invoice.pant?.straightPkt ?? false,
+        americanPkt: invoice.pant?.americanPkt ?? false,
+        backRhtPkt: invoice.pant?.backRhtPkt ?? false,
+        backLhtPkt: invoice.pant?.backLhtPkt ?? false,
+        cuffs: invoice.pant?.cuffs ?? false,
+        wpIn: invoice.pant?.wpIn ?? false,
+        wpOut: invoice.pant?.wpOut ?? false,
+        flatB: invoice.pant?.flatB ?? false,
+        lowFront: invoice.pant?.lowFront ?? false,
+        underBelly: invoice.pant?.underBelly ?? false,
+        note: invoice.pant?.note ?? "",
+      },
+      shirt: {
+        quantity: invoice.shirt?.quantity ?? 0,
+        tailorName: invoice.shirt?.tailorName ?? "",
+        fittingDate: invoice.shirt?.fittingDate
+          ? new Date(invoice.shirt.fittingDate)
+          : new Date(),
+        addMonogram: invoice.shirt?.addMonogram ?? false,
+        addTie: invoice.shirt?.addTie ?? false,
+        shirtType: invoice.shirt?.shirtType ?? "DRESSSHIRT",
+        shirtFabricImage: invoice.shirt?.shirtFabricImage ?? "",
+        shirtStyleDrawing: invoice.shirt?.shirtStyleDrawing ?? "",
+        shirtCustomStyle: invoice.shirt?.shirtCustomStyle ?? "",
+        shirtMonogramName: invoice.shirt?.shirtMonogramName ?? "",
+        shirtMonogramImage: invoice.shirt?.shirtMonogramImage ?? "",
+        ch: invoice.shirt?.ch ?? 0,
+        wa: invoice.shirt?.wa ?? 0,
+        hip: invoice.shirt?.hip ?? 0,
+        nk: invoice.shirt?.nk ?? 0,
+        sh: invoice.shirt?.sh ?? 0,
+        sleeve: invoice.shirt?.sleeve ?? 0,
+        arm: invoice.shirt?.arm ?? 0,
+        fr: invoice.shirt?.fr ?? 0,
+        ba: invoice.shirt?.ba ?? 0,
+        lg: invoice.shirt?.lg ?? 0,
+        stb: invoice.shirt?.stb ?? 0,
+        stw: invoice.shirt?.stw ?? 0,
+        ah: invoice.shirt?.ah ?? 0,
+        dressLg: invoice.shirt?.dressLg ?? 0,
+        skirtLg: invoice.shirt?.skirtLg ?? 0,
+        nLow: invoice.shirt?.nLow ?? 0,
+        sqSho: invoice.shirt?.sqSho ?? false,
+        rdSho: invoice.shirt?.rdSho ?? false,
+        sloSho: invoice.shirt?.sloSho ?? false,
+        brBly: invoice.shirt?.brBly ?? false,
+        sloNk: invoice.shirt?.sloNk ?? false,
+        note: invoice.shirt?.note ?? "",
+      },
+      onBoard: {
+        name: data?.name ?? "",
+        email: data?.email ?? "",
+        image: data?.image ?? "",
+        address: data?.address ?? "",
+        phoneNumber: data?.phoneNumber ?? "",
+        taxId: data?.taxId ?? "",
+        websiteUrl: data?.websiteUrl ?? "",
+        whatsappNumber: data?.whatsappNumber ?? "",
+      },
+    });
+  }, [invoice, data]);
 
   const isPending = form.formState.isSubmitting || isLoading;
 
   async function onSubmit(data: z.infer<typeof invoiceSchema>) {
     console.log("✅ Invoice data:", data);
-    invoiceMutation.mutate({ data });
+    if (invoice && invoiceId) {
+      updateMutationInvoice.mutateAsync({ id: invoiceId, data });
+    } else {
+      invoiceMutation.mutate({ data });
+    }
   }
 
   const nextStep = () => setStep((s) => Math.min(s + 1, 4));
@@ -296,7 +441,7 @@ export const InvoiceFormWrapper = () => {
                   disabled={isPending}
                   className="bg-linear-0 from-chart-5 via-primary to-chart-5 border border-primary h-8"
                 >
-                  Create Invoice
+                  {invoice ? "Update Invoice" : "Create Invoice"}
                 </Button>
               )}
             </div>

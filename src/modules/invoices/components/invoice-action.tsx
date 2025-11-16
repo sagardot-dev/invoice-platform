@@ -20,7 +20,11 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-export const InvoiceAction = () => {
+interface InvoiceActionProps {
+  invoiceId: string;
+}
+
+export const InvoiceAction = ({ invoiceId }: InvoiceActionProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -32,7 +36,7 @@ export const InvoiceAction = () => {
         <DropdownMenuLabel>Action</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link prefetch href={""}>
+          <Link prefetch href={`invoices/${invoiceId}`}>
             <Pencil className=" size-3" /> Edit
           </Link>
         </DropdownMenuItem>
@@ -44,16 +48,6 @@ export const InvoiceAction = () => {
         <DropdownMenuItem asChild>
           <Link prefetch href={""}>
             <MailIcon className=" size-3" /> Reminder Email
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem className=" bg-destructive/10" asChild>
-          <Link prefetch href={""}>
-            <Trash className=" text-destructive size-3" /> Delete
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem className=" bg-emerald-500/10" asChild>
-          <Link prefetch href={""}>
-            <CheckCircle className=" text-emerald-400 size-3" /> Mark as paid
           </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>

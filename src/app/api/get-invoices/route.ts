@@ -1,16 +1,11 @@
-import {
-  DEFAULT_PAGE,
-  DEFAULT_PAGE_SIZE,
-  MAX_PAGE_SIZE,
-  MIN_PAGE_SIZE,
-} from "@/const";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { createResponse } from "@/lib/server/api-res";
 import { HttpStatus, ResponseTitle } from "@/lib/server/response-api-help";
 import { headers } from "next/headers";
+import { NextRequest } from "next/server";
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -29,12 +24,10 @@ export async function GET(req: Request) {
     );
   }
 
-  const body = await req.json();
-  const {
-    defaultPage = DEFAULT_PAGE,
-    defaultPageSize = DEFAULT_PAGE_SIZE,
-    serach,
-  } = body;
+  const searchParams = req.nextUrl.searchParams;
+  const defaultPage = parseInt(searchParams.get("page") || "1");
+  const defaultPageSize = parseInt(searchParams.get("pageSize") || "10");
+  const search = searchParams.get("search") || "";
 
   const skip = (defaultPage - 1) * defaultPageSize;
 
@@ -43,15 +36,15 @@ export async function GET(req: Request) {
       userId: session.user.id,
     };
 
-    if (serach && serach.trim() !== "") {
+    if (search && search.trim() !== "") {
       whereClause.OR = [
-        { invoiceNumber: { contains: serach, mode: "insensitive" } },
-        { customer: { name: { contains: serach, mode: "insensitive" } } },
-        { customer: { email: { contains: serach, mode: "insensitive" } } },
+        { invoiceNumber: { contains: search, mode: "insensitive" } },
+        { customer: { name: { contains: search, mode: "insensitive" } } },
+        { customer: { email: { contains: search, mode: "insensitive" } } },
         {
-          customer: { phoneNumber: { contains: serach, mode: "insensitive" } },
+          customer: { phoneNumber: { contains: search, mode: "insensitive" } },
         },
-        { notes: { contains: serach, mode: "insensitive" } },
+        { notes: { contains: search, mode: "insensitive" } },
       ];
     }
 
@@ -62,6 +55,15 @@ export async function GET(req: Request) {
     const invoices = await prisma.invoice.findMany({
       where: whereClause,
       select: {
+        id: true,
+        invoiceNumber: true,
+        date: true,
+        customerStatus: true,
+        paymentMethod: true,
+        totalAmount: true,
+        notes: true,
+        reselling: true,
+        isReadymade: true,
         customer: {
           select: {
             id: true,
@@ -74,7 +76,7 @@ export async function GET(req: Request) {
       orderBy: {
         createdAt: "desc",
       },
-      take: defaultPage,
+      take: defaultPageSize,
       skip: skip,
     });
     const totalPages = Math.ceil(totalCount / defaultPageSize);

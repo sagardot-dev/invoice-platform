@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useInvoiceFilter } from "@/modules/invoices/hooks/param";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -46,6 +47,7 @@ export function DataTable<TData, TValue>({
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
+  const [filter, setFilter] = useInvoiceFilter();
   const table = useReactTable({
     data,
     columns,
@@ -66,10 +68,10 @@ export function DataTable<TData, TValue>({
     <div>
       <div className="flex items-center py-4 overflow-hidden rounded-md px-2">
         <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          placeholder="Search invoice..."
+          value={filter.search ?? ""}
           onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            setFilter({ ...filter, search: event.target.value, page: 1 })
           }
           className="max-w-sm"
         />
@@ -159,15 +161,15 @@ export function DataTable<TData, TValue>({
         <Button
           variant="outline"
           size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
+          onClick={() => setFilter({ ...filter, page: filter.page - 1 })}
+          disabled={filter.page <= 1}
         >
           Previous
         </Button>
         <Button
           variant="outline"
           size="sm"
-          onClick={() => table.nextPage()}
+          onClick={() => setFilter({ ...filter, page: filter.page + 1 })}
           disabled={!table.getCanNextPage()}
         >
           Next

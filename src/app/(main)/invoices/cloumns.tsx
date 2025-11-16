@@ -1,20 +1,38 @@
 "use client";
 
-import { InvoiceAction } from "@/modules/invoices/components/invoice-action";
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox"
+import { Checkbox } from "@/components/ui/checkbox";
+import { InvoiceAction } from "@/modules/invoices/components/invoice-action";
+import { format } from "date-fns";
+import { CustomerStatus, PaymentMethod } from "@/generated/prisma/enums";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
+export type Invoice = {
+  id: string,
+  invoiceNumber: string;
+  date: string | Date;
+  customerStatus: CustomerStatus;
+  paymentMethod: PaymentMethod;
+  totalAmount: number | null;
+
+  customer: {
+    id: string;
+    name: string;
+    email: string;
+  };
+
+  saleMen: {
+    id: string;
+    name: string;
+    email: string;
+    status: string;
+    role: string;
+    createdAt: string;
+    updatedAt: string;
+    userId: string;
+  }[];
 };
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Invoice>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -38,36 +56,55 @@ export const columns: ColumnDef<Payment>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "invoiceNumber",
+    header: "Invoice #",
   },
   {
-    accessorKey: "email",
-    header: "Email",
-  },
-  {
-    accessorKey: "amount",
-    header: () => <div className="text-right mr-6">Amount</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
+    accessorKey: "date",
+    header: "Date",
+    cell: ({ getValue }) => {
+      const dateValue = getValue() as string | Date | undefined;
+      if (!dateValue) return "-";
 
-      return <div className="text-right font-medium mr-6">{formatted}</div>;
+      const date = new Date(dateValue);
+      if (isNaN(date.getTime())) return "-";
+
+      return format(date, "dd/MM/yyyy");
+    },
+  },
+
+  {
+    accessorFn: (row) => row.customer.name,
+    id: "customerName",
+    header: "Customer Name",
+  },
+  {
+    accessorFn: (row) => row.customer.email,
+    id: "customerEmail",
+    header: "Customer Email",
+  },
+  {
+    accessorFn: (row) => row.saleMen.map((s) => s.name).join(", "),
+    id: "saleMen",
+    header: "Salesmen",
+  },
+  {
+    accessorKey: "totalAmount",
+    header: "Amount",
+    cell: ({ getValue }) => {
+      const value = getValue() as number | null;
+      if (value == null) return "-";
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "THB",
+      }).format(value);
     },
   },
   {
     id: "actions",
     cell: ({ row }) => {
-      const payment = row.original;
-
-      return (
-        <>
-          <InvoiceAction />
-        </>
-      );
+      const invoice = row.original;
+      return <InvoiceAction invoiceId={invoice?.id} />;
     },
   },
 ];

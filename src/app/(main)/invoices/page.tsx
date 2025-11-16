@@ -1,3 +1,4 @@
+"use client";
 import { MainCard } from "@/modules/invoices/components/main-card";
 import { columns } from "./cloumns";
 import { DataTable } from "./data-table";
@@ -11,6 +12,8 @@ import {
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { PlusIcon } from "lucide-react";
+import { useGetInvoices } from "@/modules/invoices/server/use-get-invoices";
+import { useInvoiceFilter } from "@/modules/invoices/hooks/param";
 
 type Payment = {
   id: string;
@@ -19,23 +22,16 @@ type Payment = {
   email: string;
 };
 
-export const payments: Payment[] = [
-  {
-    id: "728ed52f",
-    amount: 100,
-    status: "pending",
-    email: "m@example.com",
-  },
-  {
-    id: "489e1d42",
-    amount: 125,
-    status: "processing",
-    email: "example@gmail.com",
-  },
-  // ...
-];
-
 const page = () => {
+  const [filter] = useInvoiceFilter();
+  const { data, isLoading } = useGetInvoices({
+    serach: filter.search,
+    page: filter.page,
+    pageSize: filter.pageSize,
+  });
+
+  console.log(data)
+
   return (
     <>
       <Card className=" border-none space-y-2 ">
@@ -59,7 +55,7 @@ const page = () => {
               Previous Invoices
             </p>
           </div>
-          <DataTable columns={columns} data={payments} />
+          <DataTable columns={columns} data={data?.data.invoices || []} />
         </CardContent>
       </Card>
     </>

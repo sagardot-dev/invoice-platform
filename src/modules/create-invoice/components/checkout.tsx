@@ -23,7 +23,7 @@ export const CheckOut = () => {
     Object.entries(sizes).map(([key, value]) => (
       <Badge
         key={key}
-        className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm mr-1 mb-1"
+        className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1"
       >
         {key.toLowerCase()}: {value ?? "-"}
       </Badge>
@@ -35,7 +35,7 @@ export const CheckOut = () => {
       .map(([key]) => (
         <Badge
           key={key}
-          className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-sm mr-1 mb-1"
+          className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1"
         >
           {key}
         </Badge>
@@ -48,28 +48,28 @@ export const CheckOut = () => {
         <CardHeader>
           <CardTitle className="w-fit px-2 py-1 rounded-md">Invoice Details</CardTitle>
           <CardAction>
-            <Badge className="py-0 bg-primary/5 border border-primary/50 text-primary">
+             <Badge className="py-0 bg-primary/5 border border-primary/50 text-primary">
               Invoice Details
             </Badge>
           </CardAction>
         </CardHeader>
-        <CardContent className="grid grid-cols-2 gap-4 text-sm">
-          <div>Invoice Number: <Badge>{data.invoiceNumber || "-"}</Badge></div>
-          <div>Date: <Badge>{data.date ? new Date(data.date).toLocaleDateString() : "-"}</Badge></div>
-          <div>Customer Status: <Badge>{data.customerStatus || "-"}</Badge></div>
-          <div>Payment Method: <Badge>{data.paymentMethod || "-"}</Badge></div>
-          <div>Total Amount: <Badge>{data.totalAmount ?? "-"}</Badge></div>
-          <div>Notes: <Badge>{data.notes || "-"}</Badge></div>
-          <div>Reselling: <Badge>{data.reselling ? "Yes" : "No"}</Badge></div>
-          <div>Readymade: <Badge>{data.isReadymade ? "Yes" : "No"}</Badge></div>
-          <div>Customer Name: <Badge>{customer.name || "-"}</Badge></div>
-          <div>Phone: <Badge>{customer.phoneNumber || "-"}</Badge></div>
-          <div>Email: <Badge>{customer.email || "-"}</Badge></div>
-          <div>Address: <Badge>{customer.address || "-"}</Badge></div>
-          <div>Gender: <Badge>{customer.gender || "-"}</Badge></div>
-          <div>Height: <Badge>{customer.height ?? "-"}</Badge></div>
-          <div>Weight: <Badge>{customer.weight ?? "-"}</Badge></div>
-          <div>Stay Days: <Badge>{customer.stayDays ?? "-"}</Badge></div>
+        <CardContent className="grid grid-cols-2 gap-3 text-sm">
+          <div>Invoice Number: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{data.invoiceNumber || "-"}</Badge></div>
+          <div>Date: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{data.date ? new Date(data.date).toLocaleDateString() : "-"}</Badge></div>
+          <div>Customer Status: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{data.customerStatus || "-"}</Badge></div>
+          <div>Payment Method: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{data.paymentMethod || "-"}</Badge></div>
+          <div>Total Amount: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{data.totalAmount ?? "-"}</Badge></div>
+          <div>Notes: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{data.notes || "-"}</Badge></div>
+          <div>Reselling: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{data.reselling ? "Yes" : "No"}</Badge></div>
+          <div>Readymade: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{data.isReadymade ? "Yes" : "No"}</Badge></div>
+          <div>Customer Name: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{customer.name || "-"}</Badge></div>
+          <div>Phone: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{customer.phoneNumber || "-"}</Badge></div>
+          <div>Email: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{customer.email || "-"}</Badge></div>
+          <div>Address: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{customer.address || "-"}</Badge></div>
+          <div>Gender: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{customer.gender || "-"}</Badge></div>
+          <div>Height: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{customer.height ?? "-"}</Badge></div>
+          <div>Weight: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{customer.weight ?? "-"}</Badge></div>
+          <div>Stay Days: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{customer.stayDays ?? "-"}</Badge></div>
         </CardContent>
       </Card>
 
@@ -80,15 +80,15 @@ export const CheckOut = () => {
           <CardHeader>
             <CardTitle className="px-3 py-1 rounded-md">Jacket</CardTitle>
             <CardAction>
-              <Badge className="py-0 bg-primary/5 border border-primary/50 text-primary">
+               <Badge className="py-0 bg-primary/5 border border-primary/50 text-primary">
                 Jacket Details
               </Badge>
             </CardAction>
           </CardHeader>
           <CardContent className="space-y-2 text-sm">
-            <div>Quantity: <Badge>{jacket.quantity ?? "-"}</Badge></div>
-            <div>Tailor: <Badge>{jacket.tailorName || "-"}</Badge></div>
-            <div>Fitting Date: <Badge>{jacket.fittingDate ? new Date(jacket.fittingDate).toLocaleDateString() : "-"}</Badge></div>
+            <div>Quantity: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{jacket.quantity ?? "-"}</Badge></div>
+            <div>Tailor: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{jacket.tailorName || "-"}</Badge></div>
+            <div>Fitting Date: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{jacket.fittingDate ? new Date(jacket.fittingDate).toLocaleDateString() : "-"}</Badge></div>
             <div className="flex flex-wrap">
               Sizes: {renderSizes({
                 CH: jacket.ch,
@@ -124,7 +124,7 @@ export const CheckOut = () => {
                 flatB: jacket.flatB,
               })}
             </div>
-            <div>Note: <Badge>{jacket.note || "-"}</Badge></div>
+            <div>Note: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{jacket.note || "-"}</Badge></div>
           </CardContent>
         </Card>
 
@@ -133,15 +133,15 @@ export const CheckOut = () => {
           <CardHeader>
             <CardTitle className="px-3 py-1 rounded-md">Pant</CardTitle>
             <CardAction>
-              <Badge className="py-0 bg-primary/5 border border-primary/50 text-primary">
+               <Badge className="py-0 bg-primary/5 border border-primary/50 text-primary">
                 Pant Details
               </Badge>
             </CardAction>
           </CardHeader>
           <CardContent className="space-y-2 text-sm">
-            <div>Quantity: <Badge>{pant.quantity ?? "-"}</Badge></div>
-            <div>Tailor: <Badge>{pant.tailorName || "-"}</Badge></div>
-            <div>Fitting Date: <Badge>{pant.fittingDate ? new Date(pant.fittingDate).toLocaleDateString() : "-"}</Badge></div>
+            <div>Quantity: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{pant.quantity ?? "-"}</Badge></div>
+            <div>Tailor: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{pant.tailorName || "-"}</Badge></div>
+            <div>Fitting Date: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{pant.fittingDate ? new Date(pant.fittingDate).toLocaleDateString() : "-"}</Badge></div>
             <div className="flex flex-wrap">
               Sizes: {renderSizes({
                 WA: pant.wa,
@@ -168,7 +168,7 @@ export const CheckOut = () => {
                 underBelly: pant.underBelly,
               })}
             </div>
-            <div>Note: <Badge>{pant.note || "-"}</Badge></div>
+            <div>Note: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{pant.note || "-"}</Badge></div>
           </CardContent>
         </Card>
 
@@ -177,15 +177,15 @@ export const CheckOut = () => {
           <CardHeader>
             <CardTitle className="px-3 py-1 rounded-md">Shirt</CardTitle>
             <CardAction>
-              <Badge className="py-0 bg-primary/5 border border-primary/50 text-primary">
+               <Badge className="py-0 bg-primary/5 border border-primary/50 text-primary">
                 Shirt Details
               </Badge>
             </CardAction>
           </CardHeader>
           <CardContent className="space-y-2 text-sm">
-            <div>Quantity: <Badge>{shirt.quantity ?? "-"}</Badge></div>
-            <div>Tailor: <Badge>{shirt.tailorName || "-"}</Badge></div>
-            <div>Fitting Date: <Badge>{shirt.fittingDate ? new Date(shirt.fittingDate).toLocaleDateString() : "-"}</Badge></div>
+            <div>Quantity: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{shirt.quantity ?? "-"}</Badge></div>
+            <div>Tailor: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{shirt.tailorName || "-"}</Badge></div>
+            <div>Fitting Date: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{shirt.fittingDate ? new Date(shirt.fittingDate).toLocaleDateString() : "-"}</Badge></div>
             <div className="flex flex-wrap">
               Sizes: {renderSizes({
                 CH: shirt.ch,
@@ -217,7 +217,7 @@ export const CheckOut = () => {
                 sloNk: shirt.sloNk,
               })}
             </div>
-            <div>Note: <Badge>{shirt.note || "-"}</Badge></div>
+            <div>Note: <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 px-1 rounded-sm text-xs mr-1 mb-1">{shirt.note || "-"}</Badge></div>
           </CardContent>
         </Card>
       </div>
