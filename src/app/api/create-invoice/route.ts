@@ -79,7 +79,6 @@ export async function POST(req: Request) {
           data.jacket.tailorName ||
           data.jacket.jacketType)
       ) {
-      
         jacketRecord = await tx.jacket.create({
           data: data.jacket,
         });
@@ -93,7 +92,7 @@ export async function POST(req: Request) {
         (data.pant.quantity || data.pant.tailorName || data.pant.pantType)
       ) {
         pantRecord = await tx.pant.create({
-          data: data.pant, 
+          data: data.pant,
         });
       }
 
