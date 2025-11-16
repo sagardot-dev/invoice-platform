@@ -102,7 +102,7 @@ model SaleMan {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now()) @updatedAt
 
-  invoice   Invoice[]
+  invoices  Invoice[] @relation("InvoiceSaleMen")
   userId    String
   user      User @relation(fields: [userId], references: [id])
 
@@ -120,7 +120,7 @@ model Helper {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now()) @updatedAt
 
-  invoice   Invoice[]
+  invoices  Invoice[] @relation("InvoiceHelpers") 
   userId    String
   user      User @relation(fields: [userId], references: [id])
 
@@ -379,7 +379,7 @@ model Invoice {
   date                DateTime
   customerStatus      CustomerStatus
   paymentMethod       PaymentMethod
-  totalAmount         Decimal        @db.Decimal(12,2)
+  totalAmount         Int?
   notes               String?
   reselling           Boolean        @default(false)
   isReadymade         Boolean        @default(false)
@@ -393,13 +393,10 @@ model Invoice {
   customerId          String
   customer            Customer       @relation(fields: [customerId], references: [id], onDelete: Cascade)
 
-  helperId            String?
-  helper              Helper?        @relation(fields: [helperId], references: [id], onDelete: SetNull)
+  helpers             Helper[]       @relation("InvoiceHelpers")
 
   
-  saleManId           String
-  saleMan             SaleMan        @relation(fields: [saleManId], references: [id])
-  otherSalesmanIds    String[]       @default([]) 
+  saleMen             SaleMan[]      @relation("InvoiceSaleMen")
   
   jacketId            String?
   jacket              Jacket?        @relation(fields: [jacketId], references: [id])

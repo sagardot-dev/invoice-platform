@@ -15,7 +15,6 @@ import {
   NativeSelect,
   NativeSelectOption,
 } from "@/components/ui/native-select";
-import { DatePicker } from "./date-picker";
 import { Textarea } from "@/components/ui/textarea";
 import { PaymentMethodEnum } from "@/schema";
 import {
@@ -28,21 +27,39 @@ import { Command, CommandGroup, CommandItem } from "@/components/ui/command";
 import { Check } from "lucide-react";
 import { toast } from "sonner";
 import { Drawing } from "./drawing";
+import { useGetHelpersData } from "@/modules/helper/server/get-many-helper";
+import { Company, Helper } from "@/generated/prisma/client";
+import { useGetSalemenData } from "@/modules/saleman/server/get-many-saleman";
+import { useGetComapnyData } from "@/modules/dashboard/server/get-companydat";
+import { Calendar28 } from "./date-picker";
 
 export const InvoiceForm = () => {
-  const [isMultiSaleMan, setIsMultiSaleMan] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const getCompanyDataQuery = useGetComapnyData() as {
+    data: Company | undefined;
+    isLoading: boolean;
+  };
+  const queryHelper = useGetHelpersData();
+  const querySalemen = useGetSalemenData();
   const [reselling, setReselling] = useState(false);
   const [isReadymade, setIsReadymade] = useState(false);
   const { control, watch, setValue } = useFormContext();
 
+  const { data } = getCompanyDataQuery;
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useEffect(() => {
     const subscription = watch((value) => {
-      setIsMultiSaleMan(value.isMultiSaleMan);
       setReselling(value.reselling);
       setIsReadymade(value.isReadymade);
     });
     return () => subscription.unsubscribe();
   }, [watch]);
+
+  if (!mounted) return null;
 
   return (
     <>
@@ -102,30 +119,10 @@ export const InvoiceForm = () => {
               <FormItem>
                 <FormLabel>Date</FormLabel>
                 <FormControl>
-                  <DatePicker value={field.value} onChange={field.onChange} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Salesman */}
-          <FormField
-            control={control}
-            name="saleManId"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Salesman</FormLabel>
-                <FormControl>
-                  <NativeSelect {...field}>
-                    <NativeSelectOption value="">
-                      Select salesman
-                    </NativeSelectOption>
-                    <NativeSelectOption value="apple">Apple</NativeSelectOption>
-                    <NativeSelectOption value="banana">
-                      Banana
-                    </NativeSelectOption>
-                  </NativeSelect>
+                  <Calendar28
+                    value={field.value}
+                    onChange={(date) => field.onChange(date)}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -167,106 +164,150 @@ export const InvoiceForm = () => {
 
           <FormField
             control={control}
-            name="isMultiSaleMan"
-            render={({ field }) => (
-              <FormItem className="flex flex-col-reverse items-start">
-                <FormControl>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <FormLabel>Multiple Salesmen?</FormLabel>
-              </FormItem>
-            )}
-          />
+            name="saleManIds"
+            render={({ field }) => {
+              const safeValue = Array.isArray(field.value) ? field.value : [];
 
-          {/* Multiple Salesmen */}
-          {!!isMultiSaleMan && (
-            <FormField
-              control={control}
-              name="otherSalesmanIds"
-              render={({ field }) => (
-                <FormItem className="">
-                  <FormLabel>Select Salesmen</FormLabel>
+              return (
+                <FormItem>
+                  <FormLabel>Select Saleman</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
                         variant="outline"
                         className="w-full justify-between"
                       >
-                        Select Salesmen
+                        Select Saleman
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-full p-0">
                       <Command>
-                        <CommandGroup>
-                          {["John", "Mike", "Sara", "Ali"].map((name) => (
-                            <CommandItem
-                              key={name}
-                              onSelect={() => {
-                                if (field.value.includes(name)) {
-                                  field.onChange(
-                                    field.value.filter(
-                                      (v: string) => v !== name
-                                    )
-                                  );
-                                } else {
-                                  field.onChange([...field.value, name]);
-                                }
-                              }}
-                            >
-                              <Check
-                                className={`mr-2 h-4 w-4 ${
-                                  field.value.includes(name)
-                                    ? "opacity-100"
-                                    : "opacity-0"
-                                }`}
-                              />
-                              {name}
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
+                        {querySalemen.data && (
+                          <CommandGroup>
+                            {querySalemen.data.map((data: Helper) => (
+                              <CommandItem
+                                key={data.id}
+                                onSelect={() => {
+                                  if (safeValue.includes(data.id)) {
+                                    field.onChange(
+                                      safeValue.filter((v) => v !== data.id)
+                                    );
+                                  } else {
+                                    field.onChange([...safeValue, data.id]);
+                                  }
+                                }}
+                              >
+                                <Check
+                                  className={`mr-2 h-4 w-4 ${
+                                    safeValue.includes(data.id)
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  }`}
+                                />
+                                {data.name}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        )}
                       </Command>
                     </PopoverContent>
                   </Popover>
-                  <div className="flex flex-wrap gap-2 mt-2 absolute right-44 top-10">
-                    {field.value.map((name: string) => (
-                      <Badge className="py-0" key={name} variant="secondary">
-                        <p className="text-2xs">{name}</p>
-                      </Badge>
-                    ))}
-                  </div>
+
+                  {safeValue.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mt-2 absolute right-49 top-14">
+                      {safeValue.map((id: string) => {
+                        const helper = querySalemen.data?.find(
+                          (h: Helper) => h.id === id
+                        );
+                        if (!helper) return null;
+                        return (
+                          <Badge className="py-0" key={id} variant="outline">
+                            <p className="text-2xs">{helper.name}</p>
+                          </Badge>
+                        );
+                      })}
+                    </div>
+                  )}
+
                   <FormMessage />
                 </FormItem>
-              )}
-            />
-          )}
+              );
+            }}
+          />
 
           {/* Helper - only when resale is true */}
           {!!reselling && (
             <FormField
               control={control}
-              name="helperId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Helper</FormLabel>
-                  <FormControl>
-                    <NativeSelect {...field}>
-                      <NativeSelectOption value="">
-                        Select Helper
-                      </NativeSelectOption>
-                      <NativeSelectOption value="apple">
-                        Apple
-                      </NativeSelectOption>
-                      <NativeSelectOption value="banana">
-                        Banana
-                      </NativeSelectOption>
-                    </NativeSelect>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              name="helperIds"
+              render={({ field }) => {
+                const safeValue = Array.isArray(field.value) ? field.value : [];
+
+                return (
+                  <FormItem className="">
+                    <FormLabel>Select Helpers</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className="w-full justify-between"
+                        >
+                          Select helper
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-full p-0">
+                        <Command>
+                          {queryHelper.data && (
+                            <CommandGroup>
+                              {queryHelper.data.map((data: Helper) => (
+                                <CommandItem
+                                  key={data.id}
+                                  onSelect={() => {
+                                    if (safeValue.includes(data.id)) {
+                                      field.onChange(
+                                        safeValue.filter((v) => v !== data.id)
+                                      );
+                                    } else {
+                                      field.onChange([...safeValue, data.id]);
+                                    }
+                                  }}
+                                >
+                                  <Check
+                                    className={`mr-2 h-4 w-4 ${
+                                      safeValue.includes(data.id)
+                                        ? "opacity-100"
+                                        : "opacity-0"
+                                    }`}
+                                  />
+                                  {data.name}
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          )}
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+
+                    {safeValue.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mt-2 absolute right-49 top-5">
+                        {safeValue.map((id: string) => {
+                          const helper = queryHelper.data?.find(
+                            (h: Helper) => h.id === id
+                          );
+                          if (!helper) return null;
+                          return (
+                            <Badge className="py-0" key={id} variant="outline">
+                              <p className="text-2xs">{helper.name}</p>
+                            </Badge>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
             />
           )}
         </div>
@@ -460,6 +501,7 @@ export const InvoiceForm = () => {
                         type="number"
                         placeholder="Weight"
                         {...field}
+                        value={field.value ?? 0}
                         onChange={(e) =>
                           field.onChange(Number(e.target.value) || 0)
                         }
@@ -480,6 +522,7 @@ export const InvoiceForm = () => {
                         type="number"
                         placeholder="Days"
                         {...field}
+                        value={field.value ?? 0}
                         onChange={(e) =>
                           field.onChange(Number(e.target.value) || 0)
                         }

@@ -8,7 +8,7 @@ import { motion } from "motion/react";
 
 export const Logos = () => {
   return (
-    <Container className=" md:py-10 lg:pt-60 flex flex-col justify-center items-center md:gap-y-14 gap-y-9 py-20">
+    <Container className=" md:py-20 lg:pt-60 flex flex-col justify-center items-center md:gap-y-14 gap-y-9 py-10 pb-20 md:pb-0">
       <div className=" flex flex-col justify-center items-center ">
         <h2 className=" py-2 tracking-tight font-bold text-xl">
           Trusted by 1000+ Tailor Brand

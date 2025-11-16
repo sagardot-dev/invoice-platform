@@ -19,7 +19,6 @@ import {
 import { menuItems } from "@/const";
 import { CreditCardIcon, LogOutIcon, StarIcon } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
-import { ModeToggle } from "./mode-toggle";
 import { useTheme } from "next-themes";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -29,7 +28,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Badge } from "../ui/badge";
 
 export const AppSidebar = () => {
   const { setTheme } = useTheme();

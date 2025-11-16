@@ -5,6 +5,7 @@ import InvoiceFeatures from "../components/feature";
 import Footer from "../components/footer";
 import { Logos } from "../components/logo";
 import { SecondFeature } from "../components/feature-second/feature-secondary";
+import { Features, Testimonial } from "../components/home-components";
 
 export const HomeView = () => {
   return (
@@ -15,6 +16,8 @@ export const HomeView = () => {
       <Logos />
       <InvoiceFeatures />
       <SecondFeature />
+      <Testimonial/>
+      <Features/>
       <Footer />
     </div>
   );

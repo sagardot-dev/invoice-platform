@@ -15,7 +15,6 @@ import {
   NativeSelect,
   NativeSelectOption,
 } from "@/components/ui/native-select";
-import { DatePicker } from "./date-picker";
 import { Textarea } from "@/components/ui/textarea";
 import {
   PantTypeEnum,
@@ -29,6 +28,7 @@ import { Drawing } from "./drawing";
 import { useGetSignUrlMutation } from "@/modules/dashboard/server/get-signUrl";
 import { toast } from "sonner";
 import axios from "axios";
+import { Calendar28 } from "./date-picker";
 
 export const InvoicePantForm = () => {
   const { control, setValue } = useFormContext();
@@ -105,6 +105,7 @@ export const InvoicePantForm = () => {
                   type="number"
                   min={1}
                   {...field}
+                  value={field.value ?? 0}
                   onChange={(e) => field.onChange(Number(e.target.value))}
                 />
               </FormControl>
@@ -120,7 +121,12 @@ export const InvoicePantForm = () => {
             <FormItem>
               <FormLabel>Tailor Name</FormLabel>
               <FormControl>
-                <Input placeholder="Chan Dee" {...field} />
+                <Input
+                  placeholder="Chan Dee"
+                  {...field}
+                  value={field.value ?? ""}
+                  onChange={(e) => field.onChange(e.target.value)}
+                />
               </FormControl>
             </FormItem>
           )}
@@ -133,7 +139,10 @@ export const InvoicePantForm = () => {
             <FormItem>
               <FormLabel>Fitting Date</FormLabel>
               <FormControl>
-                <DatePicker value={field.value} onChange={field.onChange} />
+                <Calendar28
+                  value={field.value}
+                  onChange={(date) => field.onChange(date)}
+                />
               </FormControl>
             </FormItem>
           )}
@@ -193,7 +202,7 @@ export const InvoicePantForm = () => {
               <FormLabel>Add InnerLining</FormLabel>
               <FormControl>
                 <Switch
-                  checked={field.value}
+                  checked={!!field.value}
                   onCheckedChange={field.onChange}
                 />
               </FormControl>
@@ -222,9 +231,10 @@ export const InvoicePantForm = () => {
                         <FormControl>
                           <Input
                             type="number"
-                            step="0.1"
+                            step="1"
                             className="bg-background/40 border border-border"
                             {...field}
+                            value={field.value ?? 0}
                             onChange={(e) =>
                               field.onChange(Number(e.target.value) || 0)
                             }
@@ -342,7 +352,7 @@ export const InvoicePantForm = () => {
                       <FormItem className="flex items-center space-x-2">
                         <FormControl>
                           <Checkbox
-                            checked={field.value}
+                            checked={!!field.value}
                             onCheckedChange={field.onChange}
                           />
                         </FormControl>

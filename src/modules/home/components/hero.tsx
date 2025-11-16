@@ -12,7 +12,7 @@ export const Hero = () => {
   return (
     <div className=" pt-15 md:pt-26 lg:pt-36  px-8">
       <Container className=" gap-y-5 ">
-        <Heading as="h1" className=" font-bold ">
+        <Heading as="h1" className=" font-bold  ">
           Simplify <span className=" text-primary px-3">Invoice</span>
           and Get Paid Faster <br /> All From a Single Easy-to-Use Platform.
         </Heading>

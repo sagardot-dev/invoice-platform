@@ -1,10 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { ChevronDownIcon } from "lucide-react";
+import { CalendarIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Popover,
@@ -12,48 +13,102 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-type DatePickerProps = {
+type Calendar28Props = {
   value?: Date;
   onChange?: (date: Date) => void;
 };
 
-export function DatePicker({ value, onChange }: DatePickerProps) {
-  const [open, setOpen] = React.useState(false);
-  const [date, setDate] = React.useState<Date | undefined>(value); // INIT FROM RHF
+function formatDate(date: Date | undefined) {
+  if (!date) {
+    return "";
+  }
 
-  // Sync internal state when RHF value changes (important for reset)
+  return date.toLocaleDateString("en-US", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+}
+
+function isValidDate(date: Date | undefined) {
+  if (!date) {
+    return false;
+  }
+  return !isNaN(date.getTime());
+}
+
+export function Calendar28({ value, onChange }: Calendar28Props) {
+  const [open, setOpen] = React.useState(false);
+  const [date, setDate] = React.useState<Date | undefined>(
+    value ?? new Date("2025-06-01")
+  );
+  const [month, setMonth] = React.useState<Date | undefined>(date);
+  const [inputValue, setInputValue] = React.useState(formatDate(date));
+
+  // Sync when prop `value` changes (important for RHF reset)
   React.useEffect(() => {
     setDate(value);
+    setInputValue(formatDate(value));
   }, [value]);
 
   return (
     <div className="flex flex-col gap-3">
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            id="date"
-            className="w-48 justify-between font-normal"
-          >
-            {date instanceof Date && !isNaN(date.getTime())
-              ? date.toLocaleDateString()
-              : "Select date"}
-            <ChevronDownIcon />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto overflow-hidden p-0" align="start">
-          <Calendar
-            mode="single"
-            selected={date}
-            captionLayout="dropdown"
-            onSelect={(d) => {
+      <div className="relative flex gap-2">
+        <Input
+          id="date"
+          value={inputValue}
+          placeholder="June 01, 2025"
+          className="bg-background pr-10"
+          onChange={(e) => {
+            const d = new Date(e.target.value);
+            setInputValue(e.target.value);
+            if (!isNaN(d.getTime())) {
               setDate(d);
-              onChange?.(d!); // update RHF value
-              setOpen(false);
-            }}
-          />
-        </PopoverContent>
-      </Popover>
+              setMonth(d);
+              onChange?.(d); // propagate change to RHF
+            }
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "ArrowDown") {
+              e.preventDefault();
+              setOpen(true);
+            }
+          }}
+        />
+        <Popover open={open} onOpenChange={setOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              id="date-picker"
+              variant="ghost"
+              className="absolute top-1/2 right-2 size-6 -translate-y-1/2"
+            >
+              <CalendarIcon className="size-3.5" />
+              <span className="sr-only">Select date</span>
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent
+            className="w-auto overflow-hidden p-0"
+            align="end"
+            alignOffset={-8}
+            sideOffset={10}
+          >
+            <Calendar
+              mode="single"
+              selected={date}
+              captionLayout="dropdown"
+              month={month}
+              onMonthChange={setMonth}
+              onSelect={(d) => {
+                if (!d) return; 
+                setDate(d);
+                setInputValue(formatDate(d));
+                onChange?.(d);
+                setOpen(false);
+              }}
+            />
+          </PopoverContent>
+        </Popover>
+      </div>
     </div>
   );
 }

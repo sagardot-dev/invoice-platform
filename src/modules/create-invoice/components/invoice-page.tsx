@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, FormProvider } from "react-hook-form";
@@ -22,27 +22,35 @@ import { InvoiceShirttForm } from "./invoice-shirt";
 import { cn } from "@/lib/utils";
 import { CheckOut } from "./checkout";
 import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
+import { useGetComapnyData } from "@/modules/dashboard/server/get-companydat";
+import { Company } from "@/generated/prisma/client";
+import { useCreateInvoice } from "../server/create-invoice";
 
 export const InvoiceFormWrapper = () => {
+  const invoiceMutation = useCreateInvoice();
+  const getCompanyDataQuery = useGetComapnyData() as {
+    data: Company | undefined;
+    isLoading: boolean;
+  };
   const [step, setStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const { data } = getCompanyDataQuery;
 
   const form = useForm<z.infer<typeof invoiceSchema>>({
     resolver: zodResolver(invoiceSchema),
     defaultValues: {
       invoiceNumber: "",
-      date: new Date(),
+      date: new Date,
       customerStatus: "UNPAID",
       paymentMethod: "CA",
       totalAmount: 0,
       notes: "",
       reselling: false,
       isReadymade: false,
-      isMultiSaleMan: false,
       customerId: "",
-      saleManId: "",                   
-      otherSalesmanIds: [],
-      helperId: "",
+      saleManIds: [],
+      helperIds: [],
       customerSignature: "",
       customer: {
         name: "",
@@ -50,7 +58,6 @@ export const InvoiceFormWrapper = () => {
         email: "",
         address: "",
         gender: "MALE",
-        userId: crypto.randomUUID(),
         height: 0,
         weight: 0,
         stayDays: 0,
@@ -58,7 +65,7 @@ export const InvoiceFormWrapper = () => {
       jacket: {
         quantity: 0,
         tailorName: "",
-        fittingDate: undefined,
+        fittingDate: new Date(),
         addVest: false,
         addMonogram: false,
         jacketType: undefined,
@@ -100,7 +107,7 @@ export const InvoiceFormWrapper = () => {
       pant: {
         quantity: 0,
         tailorName: "",
-        fittingDate: undefined,
+        fittingDate: new Date(),
         addInnerLining: false,
         pantType: undefined,
         pantLength: undefined,
@@ -132,7 +139,7 @@ export const InvoiceFormWrapper = () => {
       shirt: {
         quantity: 0,
         tailorName: "",
-        fittingDate: undefined,
+        fittingDate: new Date(),
         addMonogram: false,
         addTie: false,
         shirtType: undefined,
@@ -165,22 +172,40 @@ export const InvoiceFormWrapper = () => {
         note: "",
       },
       onBoard: {
-        name: "",
-        email: "",
-        image: "",
-        address: "",
-        phoneNumber: "",
-        taxId: "",
-        websiteUrl: "",
-        whatsappNumber: "",
+        name: data?.name || "",
+        email: data?.email || "",
+        image: data?.image || "",
+        address: data?.address || "",
+        phoneNumber: data?.phoneNumber || "",
+        taxId: data?.taxId || "",
+        websiteUrl: data?.websiteUrl || "",
+        whatsappNumber: data?.whatsappNumber || "",
       },
     },
   });
+
+  useEffect(() => {
+    if (data) {
+      form.reset({
+        onBoard: {
+          name: data.name || "",
+          email: data.email || "",
+          image: data.image || "",
+          address: data.address || "",
+          phoneNumber: data.phoneNumber || "",
+          taxId: data.taxId || "",
+          websiteUrl: data.websiteUrl || "",
+          whatsappNumber: data.whatsappNumber || "",
+        },
+      });
+    }
+  }, [getCompanyDataQuery.data, form]);
 
   const isPending = form.formState.isSubmitting || isLoading;
 
   async function onSubmit(data: z.infer<typeof invoiceSchema>) {
     console.log("✅ Invoice data:", data);
+    invoiceMutation.mutate({ data });
   }
 
   const nextStep = () => setStep((s) => Math.min(s + 1, 4));
@@ -220,16 +245,15 @@ export const InvoiceFormWrapper = () => {
         </div>
         <div className="flex gap-x-4 flex-1 ">{getStepButtons()}</div>
         <CardAction>
-          <Button variant="custom">
-            <Printer />
-          </Button>
+          <Badge className=" py-0 rounded-sm bg-accent">invoice data</Badge>
         </CardAction>
       </CardHeader>
 
-      <CardContent className=" grid">
+      <CardContent className="">
         <FormProvider {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit, (error) => {
+              console.log(error);
               toast.error("please fill all the nessaey feilds", {
                 description: error.invoiceNumber?.message,
               });

@@ -13,7 +13,7 @@ import {
 
 export const CardSkeletonTwo = () => {
   return (
-    <div className=" flex-1 absolute  mx-auto w-full h-full inset-x-0 rounded-t-3xl  p-2 gap-y-3 flex items-center justify-center mask-b-from-90% transform rotate-20 -skew-x-10 -skew-y-12 mask-t-from-90%   ">
+    <div className=" flex-1 absolute  mx-auto w-full h-full inset-x-0 rounded-t-3xl  p-2 gap-y-3 flex items-center justify-center mask-b-from-90% transform rotate-20 -skew-x-10 -skew-y-12 mask-t-from-90% mask-r-from-50% mask-l-from-50% md:mask-l-from-100% md:mask-r-from-190%     ">
       <Circle
         duration={3}
         className="size-20 flex items-center justify-center border-accent/50 shadow-md bg-muted-foreground/10 z-99"

@@ -107,7 +107,7 @@ export const PantTypeEnum = z.enum([
   "LINEN",
   "DENIM",
   "CROCODILE",
-  "ChINO",
+  "CHINO",
 ]);
 export const ShirtTypeEnum = z.enum([
   "DRESSSHIRT",
@@ -127,7 +127,7 @@ export const PantLengthEnum = z.enum(["TROUSER", "SHORT"]);
 export const jacketSchema = z.object({
   quantity: z.number().optional(),
   tailorName: z.string().optional(),
-  fittingDate: z.date().optional(),
+  fittingDate: z.coerce.date().optional(),
   addVest: z.boolean().optional(),
   addMonogram: z.boolean().optional(),
   jacketType: JacketTypeEnum.optional(),
@@ -176,7 +176,7 @@ export const jacketSchema = z.object({
 export const pantSchema = z.object({
   quantity: z.number().optional(),
   tailorName: z.string().optional(),
-  fittingDate: z.date().optional(),
+  fittingDate: z.coerce.date().optional(),
   addInnerLining: z.boolean().optional(),
 
   pantType: PantTypeEnum.optional(),
@@ -213,7 +213,7 @@ export const pantSchema = z.object({
 export const shirtSchema = z.object({
   quantity: z.number().optional(),
   tailorName: z.string().optional(),
-  fittingDate: z.date().optional(),
+  fittingDate: z.coerce.date().optional(),
   addMonogram: z.boolean().optional(),
   addTie: z.boolean().optional(),
   shirtType: ShirtTypeEnum.optional(),
@@ -351,7 +351,7 @@ export const customerSchema = z.object({
   address: z.string().optional(),
   email: z.string().min(1, "email is required"),
   gender: GenderEnum,
-  userId: z.string().uuid(),
+  userId: z.string().optional(),
   height: z.number().optional(),
   weight: z.number().optional(),
   stayDays: z.number().optional(),
@@ -359,28 +359,25 @@ export const customerSchema = z.object({
 
 export const invoiceSchema = z.object({
   invoiceNumber: z.string().min(1, "Invoice number is required"),
-  date: z.date(),
+  date: z.coerce.date(),
   customerStatus: CustomerStatusEnum,
   paymentMethod: PaymentMethodEnum,
   totalAmount: z.number().min(0),
   notes: z.string().optional(),
   reselling: z.boolean(),
   isReadymade: z.boolean(),
-  isMultiSaleMan: z.boolean(),
-
-  customerId: z.string().optional(),
-  customer: customerSchema.optional(),
-
-  saleManId: z.string().min(1, "Primary salesman is required"),
-
-  otherSalesmanIds: z.array(z.string()).optional(),
-
-  helperId: z.string().optional(),
   customerSignature: z.string().optional(),
 
-  jacket: jacketSchema.optional(),
-  pant: pantSchema.optional(),
-  shirt: shirtSchema.optional(),
+  customerId: z.string().optional(),
+  customer: customerSchema,
+
+  saleManIds: z.array(z.string()).min(1, "At least one salesman is required"),
+
+  helperIds: z.array(z.string()).optional(),
+
+  jacket: jacketSchema.partial().optional(),
+  pant: pantSchema.partial().optional(),
+  shirt: shirtSchema.partial().optional(),
 
   onBoard: onBoardSchema.optional(),
 });

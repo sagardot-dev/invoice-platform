@@ -12,7 +12,7 @@ export const Landing = () => {
   const image2 = theme === "dark" ? "/black2.png" : "/white1.png";
 
   return (
-    <div className="relative md:min-h-140 min-h-70 w-full pt-21 perspective-distant transform-3d pr-8 p-2 md:p-4">
+    <div className="relative md:min-h-140 min-h-70 w-full pt-21 perspective-distant transform-3d pr-8 p-2 md:p-4 ">
       <motion.div
         initial={{ opacity: 0, y: -100 }}
         animate={{ opacity: 1, y: 0 }}
@@ -35,7 +35,7 @@ export const Landing = () => {
         initial={{ opacity: 0, y: -300 }}
         animate={{ opacity: 1, y: -10 }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
-        className="perspective-[4000px] translate-x-30 -translate-y-20 shadow-2xl rounded-2xl"
+        className="perspective-[4000px] translate-x-15 -translate-y-15 shadow-2xl rounded-2xl"
       >
         <Image
           src={image2}

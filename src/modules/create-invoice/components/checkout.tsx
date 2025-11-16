@@ -12,19 +12,24 @@ import { Badge } from "@/components/ui/badge";
 
 export const CheckOut = () => {
   const { getValues } = useFormContext();
-  const data = getValues();
+  const data = getValues() || {};
 
-  const renderSizes = (sizes: Record<string, any>) =>
+  const customer = data.customer || {};
+  const jacket = data.jacket || {};
+  const pant = data.pant || {};
+  const shirt = data.shirt || {};
+
+  const renderSizes = (sizes: Record<string, any> = {}) =>
     Object.entries(sizes).map(([key, value]) => (
       <Badge
         key={key}
-        className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm  mr-1 mb-1"
+        className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm mr-1 mb-1"
       >
-        {key.toLowerCase()}: {value}
+        {key.toLowerCase()}: {value ?? "-"}
       </Badge>
     ));
 
-  const renderOptions = (options: Record<string, boolean>) =>
+  const renderOptions = (options: Record<string, boolean> = {}) =>
     Object.entries(options)
       .filter(([, val]) => val)
       .map(([key]) => (
@@ -38,332 +43,181 @@ export const CheckOut = () => {
 
   return (
     <div className="space-y-6">
-      {/* Invoice - full width */}
+      {/* Invoice Details */}
       <Card className="w-full">
         <CardHeader>
-          <CardTitle className=" w-fit px-2 py-1 rounded-md">
-            Invoice Details
-          </CardTitle>
+          <CardTitle className="w-fit px-2 py-1 rounded-md">Invoice Details</CardTitle>
           <CardAction>
-            <Badge className=" py-0 bg-primary/5 border border-primary/50 text-primary ">
+            <Badge className="py-0 bg-primary/5 border border-primary/50 text-primary">
               Invoice Details
             </Badge>
           </CardAction>
         </CardHeader>
         <CardContent className="grid grid-cols-2 gap-4 text-sm">
-          <div>
-            Invoice Number:{" "}
-            <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm">
-              {data.invoiceNumber || "-"}
-            </Badge>
-          </div>
-          <div>
-            Date:{" "}
-            <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm">
-              {new Date(data.date).toLocaleDateString()}
-            </Badge>
-          </div>
-          <div>
-            Customer Status:{" "}
-            <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm">
-              {data.customerStatus}
-            </Badge>
-          </div>
-          <div>
-            Payment Method:{" "}
-            <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm">
-              {data.paymentMethod}
-            </Badge>
-          </div>
-          <div>
-            Total Amount:{" "}
-            <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm">
-              {data.totalAmount}
-            </Badge>
-          </div>
-          <div>
-            Notes:{" "}
-            <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm">
-              {data.notes || "-"}
-            </Badge>
-          </div>
-          <div>
-            Reselling:{" "}
-            <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm">
-              {data.reselling ? "Yes" : "No"}
-            </Badge>
-          </div>
-          <div>
-            Readymade:{" "}
-            <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm">
-              {data.isReadymade ? "Yes" : "No"}
-            </Badge>
-          </div>
-          <div>
-            Customer Name:{" "}
-            <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm">
-              {data.customer.name || "-"}
-            </Badge>
-          </div>
-          <div>
-            Phone:{" "}
-            <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm">
-              {data.customer.phoneNumber || "-"}
-            </Badge>
-          </div>
-          <div>
-            Email:{" "}
-            <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm">
-              {data.customer.email || "-"}
-            </Badge>
-          </div>
-          <div>
-            Address:{" "}
-            <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm">
-              {data.customer.address || "-"}
-            </Badge>
-          </div>
-          <div>
-            Gender:{" "}
-            <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm">
-              {data.customer.gender}
-            </Badge>
-          </div>
-          <div>
-            Height:{" "}
-            <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm">
-              {data.customer.height}
-            </Badge>
-          </div>
-          <div>
-            Weight:{" "}
-            <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm">
-              {data.customer.weight}
-            </Badge>
-          </div>
-          <div>
-            Stay Days:{" "}
-            <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm">
-              {data.customer.stayDays}
-            </Badge>
-          </div>
+          <div>Invoice Number: <Badge>{data.invoiceNumber || "-"}</Badge></div>
+          <div>Date: <Badge>{data.date ? new Date(data.date).toLocaleDateString() : "-"}</Badge></div>
+          <div>Customer Status: <Badge>{data.customerStatus || "-"}</Badge></div>
+          <div>Payment Method: <Badge>{data.paymentMethod || "-"}</Badge></div>
+          <div>Total Amount: <Badge>{data.totalAmount ?? "-"}</Badge></div>
+          <div>Notes: <Badge>{data.notes || "-"}</Badge></div>
+          <div>Reselling: <Badge>{data.reselling ? "Yes" : "No"}</Badge></div>
+          <div>Readymade: <Badge>{data.isReadymade ? "Yes" : "No"}</Badge></div>
+          <div>Customer Name: <Badge>{customer.name || "-"}</Badge></div>
+          <div>Phone: <Badge>{customer.phoneNumber || "-"}</Badge></div>
+          <div>Email: <Badge>{customer.email || "-"}</Badge></div>
+          <div>Address: <Badge>{customer.address || "-"}</Badge></div>
+          <div>Gender: <Badge>{customer.gender || "-"}</Badge></div>
+          <div>Height: <Badge>{customer.height ?? "-"}</Badge></div>
+          <div>Weight: <Badge>{customer.weight ?? "-"}</Badge></div>
+          <div>Stay Days: <Badge>{customer.stayDays ?? "-"}</Badge></div>
         </CardContent>
       </Card>
 
-      {/* Jacket / Pant / Shirt row */}
+      {/* Jacket / Pant / Shirt */}
       <div className="grid grid-cols-3 gap-4">
         {/* Jacket */}
         <Card>
           <CardHeader>
-            <CardTitle className="  px-3 py-1 rounded-md">Jacket</CardTitle>
+            <CardTitle className="px-3 py-1 rounded-md">Jacket</CardTitle>
             <CardAction>
-              <Badge className=" py-0 bg-primary/5 border border-primary/50 text-primary ">
-                JAcket Details
+              <Badge className="py-0 bg-primary/5 border border-primary/50 text-primary">
+                Jacket Details
               </Badge>
             </CardAction>
           </CardHeader>
           <CardContent className="space-y-2 text-sm">
-            <div>
-              Quantity:{" "}
-              <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm">
-                {data.jacket.quantity}
-              </Badge>
-            </div>
-            <div>
-              Tailor:{" "}
-              <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm">
-                {data.jacket.tailorName || "-"}
-              </Badge>
-            </div>
-            <div>
-              Fitting Date:{" "}
-              <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm">
-                {data.jacket.fittingDate
-                  ? new Date(data.jacket.fittingDate).toLocaleDateString()
-                  : "-"}
-              </Badge>
-            </div>
-            <div className="flex flex-wrap ">
-              sizes:{"  "}
-              {renderSizes({
-                CH: data.jacket.ch,
-                WA: data.jacket.wa,
-                HIP: data.jacket.hip,
-                NK: data.jacket.nk,
-                SH: data.jacket.sh,
-                Sleeve: data.jacket.sleeve,
-                Arm: data.jacket.arm,
-                FR: data.jacket.fr,
-                BA: data.jacket.ba,
-                LG: data.jacket.lg,
+            <div>Quantity: <Badge>{jacket.quantity ?? "-"}</Badge></div>
+            <div>Tailor: <Badge>{jacket.tailorName || "-"}</Badge></div>
+            <div>Fitting Date: <Badge>{jacket.fittingDate ? new Date(jacket.fittingDate).toLocaleDateString() : "-"}</Badge></div>
+            <div className="flex flex-wrap">
+              Sizes: {renderSizes({
+                CH: jacket.ch,
+                WA: jacket.wa,
+                HIP: jacket.hip,
+                NK: jacket.nk,
+                SH: jacket.sh,
+                Sleeve: jacket.sleeve,
+                Arm: jacket.arm,
+                FR: jacket.fr,
+                BA: jacket.ba,
+                LG: jacket.lg,
               })}
             </div>
-            <div className="flex flex-wrap ">
+            <div className="flex flex-wrap">
               {renderOptions({
-                Vest: data.jacket.addVest,
-                Monogram: data.jacket.addMonogram,
-                nSho: data.jacket.nSho,
-                sqSho: data.jacket.sqSho,
-                rdSho: data.jacket.rdSho,
-                sloSho: data.jacket.sloSho,
-                hBk: data.jacket.hBk,
-                curveBk: data.jacket.curveBk,
-                shoNk: data.jacket.shoNk,
-                bigM: data.jacket.bigM,
-                holBk: data.jacket.holBk,
-                holCh: data.jacket.holCh,
-                brBly: data.jacket.brBly,
-                lLo: data.jacket.lLo,
-                rLo: data.jacket.rLo,
-                erect: data.jacket.erect,
-                flatB: data.jacket.flatB,
+                Vest: jacket.addVest,
+                Monogram: jacket.addMonogram,
+                nSho: jacket.nSho,
+                sqSho: jacket.sqSho,
+                rdSho: jacket.rdSho,
+                sloSho: jacket.sloSho,
+                hBk: jacket.hBk,
+                curveBk: jacket.curveBk,
+                shoNk: jacket.shoNk,
+                bigM: jacket.bigM,
+                holBk: jacket.holBk,
+                holCh: jacket.holCh,
+                brBly: jacket.brBly,
+                lLo: jacket.lLo,
+                rLo: jacket.rLo,
+                erect: jacket.erect,
+                flatB: jacket.flatB,
               })}
             </div>
-            <div>
-              Note:{" "}
-              <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm">
-                {data.jacket.note || "-"}
-              </Badge>
-            </div>
+            <div>Note: <Badge>{jacket.note || "-"}</Badge></div>
           </CardContent>
         </Card>
 
         {/* Pant */}
         <Card>
           <CardHeader>
-            <CardTitle className="  px-3 py-1 rounded-md">Pant</CardTitle>
+            <CardTitle className="px-3 py-1 rounded-md">Pant</CardTitle>
             <CardAction>
-              <Badge className=" py-0 bg-primary/5 border border-primary/50 text-primary ">
+              <Badge className="py-0 bg-primary/5 border border-primary/50 text-primary">
                 Pant Details
               </Badge>
             </CardAction>
           </CardHeader>
           <CardContent className="space-y-2 text-sm">
-            <div>
-              Quantity:{" "}
-              <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm">
-                {data.pant.quantity}
-              </Badge>
-            </div>
-            <div>
-              Tailor:{" "}
-              <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm">
-                {data.pant.tailorName || "-"}
-              </Badge>
-            </div>
-            <div>
-              Fitting Date:{" "}
-              <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm">
-                {data.pant.fittingDate
-                  ? new Date(data.pant.fittingDate).toLocaleDateString()
-                  : "-"}
-              </Badge>
-            </div>
+            <div>Quantity: <Badge>{pant.quantity ?? "-"}</Badge></div>
+            <div>Tailor: <Badge>{pant.tailorName || "-"}</Badge></div>
+            <div>Fitting Date: <Badge>{pant.fittingDate ? new Date(pant.fittingDate).toLocaleDateString() : "-"}</Badge></div>
             <div className="flex flex-wrap">
-              sizes:{"  "}
-              {renderSizes({
-                WA: data.pant.wa,
-                HIP: data.pant.hip,
-                CR: data.pant.cr,
-                TH: data.pant.th,
-                KN: data.pant.kn,
-                BO: data.pant.bo,
-                LG: data.pant.lg,
+              Sizes: {renderSizes({
+                WA: pant.wa,
+                HIP: pant.hip,
+                CR: pant.cr,
+                TH: pant.th,
+                KN: pant.kn,
+                BO: pant.bo,
+                LG: pant.lg,
               })}
             </div>
             <div className="flex flex-wrap">
               {renderOptions({
-                Slanting: data.pant.slantingPkt,
-                Straight: data.pant.straightPkt,
-                American: data.pant.americanPkt,
-                backRhtPkt: data.pant.backRhtPkt,
-                backLhtPkt: data.pant.backLhtPkt,
-                cuffs: data.pant.cuffs,
-                wpIn: data.pant.wpIn,
-                wpOut: data.pant.wpOut,
-                flatB: data.pant.flatB,
-                lowFront: data.pant.lowFront,
-                underBelly: data.pant.underBelly,
+                Slanting: pant.slantingPkt,
+                Straight: pant.straightPkt,
+                American: pant.americanPkt,
+                backRhtPkt: pant.backRhtPkt,
+                backLhtPkt: pant.backLhtPkt,
+                cuffs: pant.cuffs,
+                wpIn: pant.wpIn,
+                wpOut: pant.wpOut,
+                flatB: pant.flatB,
+                lowFront: pant.lowFront,
+                underBelly: pant.underBelly,
               })}
             </div>
-            <div>
-              Note:{" "}
-              <Badge className="bg-linear-0 from-chart-3/40 text-shadow-xs py-0 rounded-sm">
-                {data.pant.note || "-"}
-              </Badge>
-            </div>
+            <div>Note: <Badge>{pant.note || "-"}</Badge></div>
           </CardContent>
         </Card>
 
         {/* Shirt */}
         <Card>
           <CardHeader>
-            <CardTitle className="  px-3 py-1 rounded-md">Shirt</CardTitle>
+            <CardTitle className="px-3 py-1 rounded-md">Shirt</CardTitle>
             <CardAction>
-              <Badge className=" py-0 bg-primary/5 border border-primary/50 text-primary ">
+              <Badge className="py-0 bg-primary/5 border border-primary/50 text-primary">
                 Shirt Details
               </Badge>
             </CardAction>
           </CardHeader>
           <CardContent className="space-y-2 text-sm">
-            <div>
-              Quantity:{" "}
-              <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm">
-                {data.shirt.quantity}
-              </Badge>
-            </div>
-            <div>
-              Tailor:{" "}
-              <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm">
-                {data.shirt.tailorName || "-"}
-              </Badge>
-            </div>
-            <div>
-              Fitting Date:{" "}
-              <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm">
-                {data.shirt.fittingDate
-                  ? new Date(data.shirt.fittingDate).toLocaleDateString()
-                  : "-"}
-              </Badge>
-            </div>
+            <div>Quantity: <Badge>{shirt.quantity ?? "-"}</Badge></div>
+            <div>Tailor: <Badge>{shirt.tailorName || "-"}</Badge></div>
+            <div>Fitting Date: <Badge>{shirt.fittingDate ? new Date(shirt.fittingDate).toLocaleDateString() : "-"}</Badge></div>
             <div className="flex flex-wrap">
-              sizes:{"  "}
-              {renderSizes({
-                CH: data.shirt.ch,
-                WA: data.shirt.wa,
-                HIP: data.shirt.hip,
-                NK: data.shirt.nk,
-                SH: data.shirt.sh,
-                Sleeve: data.shirt.sleeve,
-                Arm: data.shirt.arm,
-                FR: data.shirt.fr,
-                BA: data.shirt.ba,
-                LG: data.shirt.lg,
-                STB: data.shirt.stb,
-                STW: data.shirt.stw,
-                AH: data.shirt.ah,
-                DressLg: data.shirt.dressLg,
-                SkirtLg: data.shirt.skirtLg,
-                nLow: data.shirt.nLow,
+              Sizes: {renderSizes({
+                CH: shirt.ch,
+                WA: shirt.wa,
+                HIP: shirt.hip,
+                NK: shirt.nk,
+                SH: shirt.sh,
+                Sleeve: shirt.sleeve,
+                Arm: shirt.arm,
+                FR: shirt.fr,
+                BA: shirt.ba,
+                LG: shirt.lg,
+                STB: shirt.stb,
+                STW: shirt.stw,
+                AH: shirt.ah,
+                DressLg: shirt.dressLg,
+                SkirtLg: shirt.skirtLg,
+                nLow: shirt.nLow,
               })}
             </div>
             <div className="flex flex-wrap">
               {renderOptions({
-                Monogram: data.shirt.addMonogram,
-                Tie: data.shirt.addTie,
-                sqSho: data.shirt.sqSho,
-                rdSho: data.shirt.rdSho,
-                sloSho: data.shirt.sloSho,
-                brBly: data.shirt.brBly,
-                sloNk: data.shirt.sloNk,
+                Monogram: shirt.addMonogram,
+                Tie: shirt.addTie,
+                sqSho: shirt.sqSho,
+                rdSho: shirt.rdSho,
+                sloSho: shirt.sloSho,
+                brBly: shirt.brBly,
+                sloNk: shirt.sloNk,
               })}
             </div>
-            <div>
-              Note:{" "}
-              <Badge className="bg-linear-0 from-primary via-chart-5 to-primary py-0 rounded-sm">
-                {data.shirt.note || "-"}
-              </Badge>
-            </div>
+            <div>Note: <Badge>{shirt.note || "-"}</Badge></div>
           </CardContent>
         </Card>
       </div>

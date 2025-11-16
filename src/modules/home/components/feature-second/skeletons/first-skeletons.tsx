@@ -7,7 +7,7 @@ import React, { ElementType } from "react";
 
 export const CardSkeletonOne = () => {
   return (
-    <div className=" flex-1 bg-accent absolute max-w-sm mx-auto w-full h-full inset-x-0 rounded-t-3xl border border-border p-2 gap-y-3 flex flex-col mask-b-from-60%">
+    <div className=" flex-1 bg-accent absolute max-w-sm mx-auto w-full h-full inset-x-0 rounded-t-3xl border border-border p-2 gap-y-3 flex flex-col mask-b-from-90%">
       <Card
         heading=" Invoice Management"
         description="Generate and track invoices, keeping your workflow smooth."
@@ -39,7 +39,7 @@ const Tag = ({ stack }: { stack: typeof STACK_THREE }) => {
       {stack.map((item) => (
         <div
           key={item.name}
-          className=" rounded-md  flex items-center gap-1 px-1 py-0.5 border border-border/20 text-sm w-fit justify-center"
+          className=" rounded-md  flex items-center gap-1 px-1 py-0.5 border border-border/80 text-sm w-fit justify-center"
         >
           <item.icon className=" size-3" />
           <span className=" text-sm">{item.name}</span>

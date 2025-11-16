@@ -213,3 +213,38 @@ export const STACK_THREE_D = [
     icon: SiPostgresql,
   },
 ];
+
+export const testimonials = [
+  {
+    name: "David Miller",
+    role: "Founder",
+    company: "Miller Consulting",
+    avatar: "👨‍💼",
+    content:
+      "This invoice platform saved me hours every week. Creating professional invoices is now effortless, and tracking my sales has never been easier. Best investment for my business!",
+    rating: 5,
+  },
+  {
+    name: "Jessica Thompson",
+    role: "Small Business Owner",
+    company: "Thompson Design Studio",
+    avatar: "👩‍💼",
+    content:
+      "Finally, an invoicing solution that actually works! The sales tracking features help me understand my business growth. My clients love how professional the invoices look.",
+    rating: 5,
+  },
+  {
+    name: "Robert Chen",
+    role: "Freelance Developer",
+    company: "Chen Tech Solutions",
+    avatar: "👨‍💻",
+    content:
+      "I've tried many invoicing tools, but this one stands out. The yearly sales analytics give me insights I never had before. Managing my finances has become stress-free.",
+    rating: 5,
+  },
+];
+
+export const DEFAULT_PAGE = 1;
+export const DEFAULT_PAGE_SIZE = 10;
+export const MAX_PAGE_SIZE = 100;
+export const MIN_PAGE_SIZE = 1;

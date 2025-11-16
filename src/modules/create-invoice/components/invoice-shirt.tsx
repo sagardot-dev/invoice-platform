@@ -19,7 +19,6 @@ import {
   NativeSelect,
   NativeSelectOption,
 } from "@/components/ui/native-select";
-import { DatePicker } from "./date-picker";
 import { Textarea } from "@/components/ui/textarea";
 import {
   shirtSchema,
@@ -35,6 +34,7 @@ import { useGetSignUrlMutation } from "@/modules/dashboard/server/get-signUrl";
 import { toast } from "sonner";
 import axios from "axios";
 import { useJacketFromStore } from "../store/store";
+import { Calendar28 } from "./date-picker";
 
 export const InvoiceShirttForm = () => {
   const { control, watch, setValue } = useFormContext();
@@ -114,6 +114,7 @@ export const InvoiceShirttForm = () => {
                 <Input
                   type="number"
                   {...field}
+                  value={field.value ?? 0}
                   onChange={(e) => field.onChange(Number(e.target.value))}
                 />
               </FormControl>
@@ -129,7 +130,13 @@ export const InvoiceShirttForm = () => {
             <FormItem>
               <FormLabel>Tailor Name</FormLabel>
               <FormControl>
-                <Input className=" w-55" placeholder="Chan Dee" {...field} />
+                <Input
+                  className=" w-55"
+                  placeholder="Chan Dee"
+                  {...field}
+                  value={field.value ?? ""}
+                  onChange={(e) => field.onChange(e.target.value)}
+                />
               </FormControl>
             </FormItem>
           )}
@@ -142,7 +149,10 @@ export const InvoiceShirttForm = () => {
             <FormItem>
               <FormLabel>Fitting Date</FormLabel>
               <FormControl>
-                <DatePicker value={field.value} onChange={field.onChange} />
+                <Calendar28
+                  value={field.value}
+                  onChange={(date) => field.onChange(date)}
+                />
               </FormControl>
             </FormItem>
           )}
@@ -178,7 +188,7 @@ export const InvoiceShirttForm = () => {
               <FormLabel>Add MonoGram</FormLabel>
               <FormControl>
                 <Switch
-                  checked={field.value}
+                  checked={!!field.value}
                   onCheckedChange={field.onChange}
                 />
               </FormControl>
@@ -193,7 +203,7 @@ export const InvoiceShirttForm = () => {
               <FormLabel>Add Tie</FormLabel>
               <FormControl>
                 <Switch
-                  checked={field.value}
+                  checked={!!field.value}
                   onCheckedChange={field.onChange}
                 />
               </FormControl>
@@ -202,7 +212,7 @@ export const InvoiceShirttForm = () => {
         />
       </div>
 
-      <div className="space-y-4 bar grid lg:grid-cols-3 xl:grid-rows-1  grid-cols-1 grid-rows-2 gap-y-3 gap-x-3 rounded-2xl  pt-5 px-2 w-full">
+      <div className="space-y-4 bar grid lg:grid-cols-3 xl:grid-rows-1  grid-cols-1 grid-rows-2 lg:grid-rows-1 gap-y-3 gap-x-3 rounded-2xl  pt-5 px-2 w-full">
         <div className=" col-span-2  gap-y-5  w-full h-full justify-start flex bar ">
           <div className="border w-full col-span-2 border-chart-1/10 rounded-2xl p-6 space-y-4 bar">
             <div className=" flex flex-col gap-y-3">
@@ -222,9 +232,10 @@ export const InvoiceShirttForm = () => {
                         <FormControl>
                           <Input
                             type="number"
-                            step="0.1"
+                            step="1"
                             className="bg-background/40 border border-border"
                             {...field}
+                            value={field.value ?? 0}
                             onChange={(e) =>
                               field.onChange(Number(e.target.value) || 0)
                             }
@@ -343,7 +354,7 @@ export const InvoiceShirttForm = () => {
                       <FormItem className="flex items-center space-x-2">
                         <FormControl>
                           <Checkbox
-                            checked={field.value}
+                            checked={!!field.value}
                             onCheckedChange={field.onChange}
                           />
                         </FormControl>
