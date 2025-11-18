@@ -7,6 +7,13 @@ import { useTheme } from "next-themes";
 
 export const Landing = () => {
   const { theme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   const image1 = theme === "dark" ? "/black1.png" : "/white.png";
   const image2 = theme === "dark" ? "/black2.png" : "/white1.png";

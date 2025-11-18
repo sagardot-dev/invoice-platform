@@ -31,6 +31,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useInvoiceFilter } from "@/modules/invoices/hooks/param";
+import { Loader, Loader2 } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -137,7 +138,7 @@ export function DataTable<TData, TValue>({
             ))}
           </TableHeader>
 
-          <TableBody>
+          <TableBody className=" w-full">
             {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
@@ -158,9 +159,12 @@ export function DataTable<TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className="h-24 text-center animate-pulse"
                 >
-                  No results.
+                  <div className="w-full flex flex-col justify-center items-center">
+                    <Loader className="size-4 animate-spin" />
+                    <p>Loading data...</p>
+                  </div>
                 </TableCell>
               </TableRow>
             )}
