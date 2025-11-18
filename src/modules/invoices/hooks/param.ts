@@ -7,8 +7,5 @@ export const useInvoiceFilter = () => {
     page: parseAsInteger
       .withDefault(DEFAULT_PAGE)
       .withOptions({ clearOnDefault: true }),
-    pageSize: parseAsInteger
-      .withDefault(10)
-      .withOptions({ clearOnDefault: true }),
   });
 };

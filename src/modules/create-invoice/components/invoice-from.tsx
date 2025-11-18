@@ -28,10 +28,11 @@ import { Check } from "lucide-react";
 import { toast } from "sonner";
 import { Drawing } from "./drawing";
 import { useGetHelpersData } from "@/modules/helper/server/get-many-helper";
-import { Company, Helper } from "@/generated/prisma/client";
+import { Company, Helper, SaleMan } from "@/generated/prisma/client";
 import { useGetSalemenData } from "@/modules/saleman/server/get-many-saleman";
 import { useGetComapnyData } from "@/modules/dashboard/server/get-companydat";
 import { Calendar28 } from "./date-picker";
+import { generatePrefix } from "@/lib/prefix/invoice-prefix";
 
 export const InvoiceForm = () => {
   const [mounted, setMounted] = useState(false);
@@ -39,13 +40,15 @@ export const InvoiceForm = () => {
     data: Company | undefined;
     isLoading: boolean;
   };
+  const raw = Math.random().toString(36).substring(2) + Date.now().toString(36);
+  const unique = raw.substring(0, 6).toUpperCase();
   const queryHelper = useGetHelpersData();
   const querySalemen = useGetSalemenData();
   const [reselling, setReselling] = useState(false);
   const [isReadymade, setIsReadymade] = useState(false);
   const { control, watch, setValue } = useFormContext();
 
-  const { data } = getCompanyDataQuery;
+  const saleManIds = watch("saleManIds");
 
   useEffect(() => {
     setMounted(true);
@@ -58,6 +61,31 @@ export const InvoiceForm = () => {
     });
     return () => subscription.unsubscribe();
   }, [watch]);
+
+  useEffect(() => {
+    if (!reselling) {
+      setValue("helperIds", []);
+    }
+  }, [reselling]);
+
+  useEffect(() => {
+    if (saleManIds.length > 0) {
+      const selectedSaleMen = querySalemen.data?.filter((s: SaleMan) =>
+        saleManIds.includes(s.id)
+      );
+
+      if (selectedSaleMen && selectedSaleMen.length > 0) {
+        const prefix = selectedSaleMen
+          .map((s: { name: string }) => generatePrefix(s.name))
+          .join("-")
+          .toUpperCase();
+
+        setValue("invoiceNumber", `${prefix}-${unique}`);
+      }
+    } else {
+      setValue("invoiceNumber", "");
+    }
+  }, [saleManIds]);
 
   if (!mounted) return null;
 
@@ -221,7 +249,7 @@ export const InvoiceForm = () => {
                         );
                         if (!helper) return null;
                         return (
-                          <Badge className="py-0" key={id} variant="outline">
+                          <Badge className="py-0" key={id}>
                             <p className="text-2xs">{helper.name}</p>
                           </Badge>
                         );

@@ -20,7 +20,7 @@ const buttonVariants = cva(
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
         custom: 
-        "bg-gradient-to-r from-primary to-chart-1/90 rounded-full !h-6 !p-2 !py-4 cursor-pointer  hover:brightness-110 text-shadow-2xl ",
+        "bg-gradient-to-r from-primary to-chart-1/90 rounded-full !h-6 !p-2 !py-4 cursor-pointer  hover:brightness-110 text-shadow-2xl text-background ",
         customsm: 
         "bg-gradient-to-r from-primary to-chart-1/90 rounded-full !h-5 !p-1 cursor-pointer  hover:brightness-110 text-shadow-2xl "
       },

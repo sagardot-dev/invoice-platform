@@ -12,7 +12,7 @@ export const useGetSalemanData = (id: string | null) => {
       if (!res.data.success) {
         throw new Error(res.data.code);
       }
-      return res.data.data;
+      return res.data;
     },
   });
   return query;

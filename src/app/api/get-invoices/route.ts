@@ -25,8 +25,12 @@ export async function GET(req: NextRequest) {
   }
 
   const searchParams = req.nextUrl.searchParams;
-  const defaultPage = parseInt(searchParams.get("page") || "1");
-  const defaultPageSize = parseInt(searchParams.get("pageSize") || "10");
+  const defaultPage = parseInt(
+    searchParams.get("page") || searchParams.get("defaultPage") || "1"
+  );
+  const defaultPageSize = parseInt(
+    searchParams.get("pageSize") || searchParams.get("defaultPageSize") || "10"
+  );
   const search = searchParams.get("search") || "";
 
   const skip = (defaultPage - 1) * defaultPageSize;
@@ -79,6 +83,7 @@ export async function GET(req: NextRequest) {
       take: defaultPageSize,
       skip: skip,
     });
+
     const totalPages = Math.ceil(totalCount / defaultPageSize);
     return Response.json(
       createResponse(

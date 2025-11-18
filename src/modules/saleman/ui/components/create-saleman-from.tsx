@@ -176,7 +176,7 @@ const SalemanForm = () => {
           <div className="pt-4 text-center text-xs text-muted-foreground gap-y-3 flex flex-col">
             <div className=" w-full flex justify-center items-center">
               <Button variant={"custom"}>
-                <PackagePlusIcon />
+                <PackagePlusIcon className=" text-secondary" />
               </Button>
             </div>
             <div className=" flex-col flex gap-y-1 animate-pulse">

@@ -1,11 +1,12 @@
 import { ApiResponse } from "@/types";
 
-export function createResponse<T>(
+export function createResponse<T, P>(
   success: boolean,
   title: string,
   description: string,
   code: string,
-  data?: T
+  data?: T,
+  pdf?: P,
 ): ApiResponse<T> {
   return {
     success,
@@ -14,5 +15,6 @@ export function createResponse<T>(
     code,
     status: success ? "success" : "error",
     data,
+    pdf
   };
 }

@@ -4,25 +4,26 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 interface InvoicesFilters {
-  serach?: string;
+  search?: string;  // Fixed typo: serach -> search
   page?: number;
   pageSize?: number;
 }
 
 export const useGetInvoices = (filters: InvoicesFilters) => {
   const {
-    serach = "",
+    search = "", 
     page = DEFAULT_PAGE,
     pageSize = DEFAULT_PAGE_SIZE,
   } = filters;
+  
   const query = useQuery({
-    queryKey: ["getInvoices", serach, page, pageSize],
+    queryKey: ["getInvoices", search, page, pageSize],  
     queryFn: async () => {
-      const res = await axios.get<ApiResponse>("/api/get-invoices", {
+      const res = await axios.get("/api/get-invoices", {
         params: {
-          defaultPage: page,
-          defaultPageSize: pageSize,
-          search: serach,
+          page: page,           
+          pageSize: pageSize, 
+          search: search,      
         },
       });
       return res.data;

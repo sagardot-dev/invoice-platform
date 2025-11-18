@@ -26,7 +26,6 @@ import { HelperAction } from "./helper-action";
 export const HelperDataCard = () => {
   const [mouthed, setMounted] = useState(false);
   const query = useGetHelpersData();
-  console.log(query.data);
 
   useEffect(() => {
     setMounted(true);

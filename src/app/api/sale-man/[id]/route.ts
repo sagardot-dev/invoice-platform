@@ -66,8 +66,8 @@ export async function GET(
       createResponse(
         true,
         ResponseTitle.CREATED,
-        "Sale man created",
-        "saleman created succefully",
+        "successfully get the saleman data",
+        "Get the saleman data successfully",
         saleman
       ),
       {

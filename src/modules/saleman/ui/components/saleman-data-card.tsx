@@ -26,7 +26,7 @@ import { SaleManAction } from "./saleman-action";
 export const SalemanDataCard = () => {
   const [mouthed, setMounted] = useState(false);
   const query = useGetSalemenData();
-  console.log(query.data);
+  console.log(query.data)
 
   useEffect(() => {
     setMounted(true);
@@ -72,7 +72,7 @@ export const SalemanDataCard = () => {
                     {data.role}
                   </CardDescription>
                   <CardAction>
-                    <SaleManAction/>
+                    <SaleManAction id={data?.id} />
                   </CardAction>
                 </CardHeader>
                 <CardContent className=" text-xs">

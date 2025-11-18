@@ -4,6 +4,7 @@ import { createResponse } from "@/lib/server/api-res";
 import { HttpStatus, ResponseTitle } from "@/lib/server/response-api-help";
 import { invoiceSchema } from "@/schema";
 import { headers } from "next/headers";
+import { jsPDF } from "jspdf";
 
 export async function POST(req: Request) {
   const json = await req.json();
@@ -43,12 +44,10 @@ export async function POST(req: Request) {
     );
   }
 
-  // ✅ Use validated data
   const data = parsed.data;
 
   try {
     const result = await prisma.$transaction(async (tx) => {
-      // Check if customer already exists
       let customerRecord = await tx.customer.findUnique({
         where: { email: data.customer.email }, // ✅ Use data
       });
@@ -70,7 +69,6 @@ export async function POST(req: Request) {
         });
       }
 
-      // Create jacket if it has meaningful data
       let jacketRecord = null;
       if (
         data.jacket &&
@@ -84,7 +82,6 @@ export async function POST(req: Request) {
         });
       }
 
-      // Create pant if it has meaningful data
       let pantRecord = null;
       if (
         data.pant &&
@@ -96,7 +93,6 @@ export async function POST(req: Request) {
         });
       }
 
-      // Create shirt if it has meaningful data
       let shirtRecord = null;
       if (
         data.shirt &&
@@ -108,7 +104,6 @@ export async function POST(req: Request) {
         });
       }
 
-      // Create invoice
       const invoice = await tx.invoice.create({
         data: {
           invoiceNumber: data.invoiceNumber,
@@ -137,12 +132,15 @@ export async function POST(req: Request) {
       return invoice;
     });
 
+    
+
     return Response.json(
       createResponse(
         true,
         ResponseTitle.CREATED,
         "Invoice created successfully",
-        result.invoiceNumber
+        "Your invoice create successfully",
+        { id: result.id }
       ),
       {
         status: HttpStatus.CREATED,

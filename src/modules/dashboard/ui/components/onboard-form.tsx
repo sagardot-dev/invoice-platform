@@ -362,7 +362,7 @@ const OnboradForm = () => {
           <div className="pt-10 text-center text-xs text-muted-foreground gap-y-7 flex flex-col">
             <div className=" w-full flex justify-center items-center">
               <Button variant={"custom"}>
-                <PackagePlusIcon />
+                <PackagePlusIcon className=" text-secondary" />
               </Button>
             </div>
             <div className=" flex-col flex gap-y-1 animate-pulse">

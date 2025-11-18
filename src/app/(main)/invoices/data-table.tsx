@@ -8,7 +8,6 @@ import {
   VisibilityState,
   flexRender,
   getCoreRowModel,
-  getPaginationRowModel,
   getFilteredRowModel,
   useReactTable,
 } from "@tanstack/react-table";
@@ -21,12 +20,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useInvoiceFilter } from "@/modules/invoices/hooks/param";
@@ -34,12 +35,20 @@ import { useInvoiceFilter } from "@/modules/invoices/hooks/param";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  pagination?: {
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+    totalPages: number;
+    currentPage: number;
+  };
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  pagination,
 }: DataTableProps<TData, TValue>) {
+  // TanStack internal UI states (NOT used for real pagination)
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -47,16 +56,20 @@ export function DataTable<TData, TValue>({
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
+  // Your custom URL-based page + search filter
   const [filter, setFilter] = useInvoiceFilter();
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+
+    // UI handlers
+    onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+
     state: {
       columnFilters,
       columnVisibility,
@@ -64,8 +77,11 @@ export function DataTable<TData, TValue>({
     },
   });
 
+  console.log(pagination);
+
   return (
     <div>
+      {/* SEARCH + COLUMN MENU */}
       <div className="flex items-center py-4 overflow-hidden rounded-md px-2">
         <Input
           placeholder="Search invoice..."
@@ -75,55 +91,54 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm"
         />
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
               Columns
             </Button>
           </DropdownMenuTrigger>
+
           <DropdownMenuContent align="end">
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
+              .map((column) => (
+                <DropdownMenuCheckboxItem
+                  key={column.id}
+                  className="capitalize"
+                  checked={column.getIsVisible()}
+                  onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                >
+                  {column.id}
+                </DropdownMenuCheckboxItem>
+              ))}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
+      {/* TABLE */}
       <div className="overflow-hidden rounded-md border">
         <Table>
           <TableHeader className="bg-chart-5/15">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
@@ -153,11 +168,14 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
 
+      {/* PAGINATION */}
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="text-muted-foreground flex-1 text-sm">
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
+
+        {/* CUSTOM PAGINATION */}
         <Button
           variant="outline"
           size="sm"
@@ -166,11 +184,12 @@ export function DataTable<TData, TValue>({
         >
           Previous
         </Button>
+
         <Button
           variant="outline"
           size="sm"
           onClick={() => setFilter({ ...filter, page: filter.page + 1 })}
-          disabled={!table.getCanNextPage()}
+          disabled={!pagination?.hasNextPage}
         >
           Next
         </Button>

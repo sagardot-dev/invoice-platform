@@ -136,17 +136,17 @@ export const Drawing = ({ onSave }: DrawingProps) => {
             variant="customsm"
             className="justify-start gap-2 bg-rose-500"
           >
-            <Trash2 className="size-3" />
+            <Trash2 className="size-3 text-secondary" />
           </Button>
         </div>
         <Button
-          disabled={isSaved}
+          disabled={isSaved || signUrlMutation.isPending}
           onClick={handleSaveClick}
           type="button"
           variant="customsm"
           className="justify-start gap-2"
         >
-          <Save className="size-3" />
+          <Save className="size-3 text-secondary" />
         </Button>
       </div>
 

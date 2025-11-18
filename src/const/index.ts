@@ -248,3 +248,75 @@ export const DEFAULT_PAGE = 1;
 export const DEFAULT_PAGE_SIZE = 10;
 export const MAX_PAGE_SIZE = 100;
 export const MIN_PAGE_SIZE = 1;
+
+
+
+export const jacketFieldLabels = {
+  ch: "อก",
+  tm: "พุง",
+  wa: "เอว",
+  hp: "สะโพก",
+  sh: "ไหล่",
+  sl: "แขน",
+  fr: "บ่าหน้า",
+  ba: "บ่าหลัง",
+  nk: "คอ",
+  stb: "ไหล่-อก",
+  stw: "ไหล่-เอว",
+  ah: "รักแร้",
+  nSho: "ไหล่ธรรมดา",
+  sqSho: "ไหล่ตั้ง",
+  rdSho: "ไหล่มน",
+  sloSho: "ไหล่เท",
+  hBk: "หลังค่อม",
+  curveBk: "หลังแอ่น",
+  shoNk: "คอสั้น",
+  bigM: "กล้ามใหญ่",
+  holBk: "ไหล่ห่อ",
+  holCh: "อกห่อ",
+  brBly: "พุงใหญ่",
+  lLo: "ซ้ายต่ำ",
+  rLo: "ขวาต่ำ",
+  erect: "ยกอก",
+  flatB: "กันแน่น",
+};
+
+export const pantFieldLabels = {
+  wa: "เอว",
+  hip: "สะโพก",
+  cr: "เป้า",
+  th: "โคนขา",
+  kn: "เข่า",
+  bo: "ปลายขา",
+  slantingPkt: "กระเป๋าเฉียง",
+  straightPkt: "กระเป๋าตรง",
+  americanPkt: "กระเป๋าแบบอเมริกัน",
+  backRhtPkt: "กระเป๋าหลังขวา",
+  backLhtPkt: "กระเป๋าหลังซ้าย",
+  cuffs: "ขาเฉลียง",
+  wpIn: "กระเป๋าใน",
+  wpOut: "กระเป๋านอก",
+  flatB: "กันแน่น",
+  lowFront: "หน้าต่ำ",
+  underBelly: "ใต้พุง",
+};
+
+export const shirtFieldLabels = {
+  ch: "อก",
+  wa: "เอว",
+  hp: "สะโพก",
+  sh: "ไหล่",
+  sl: "แขน",
+  nk: "คอ",
+  fr: "บ่าหน้า",
+  ba: "บ่าหลัง",
+  stb: "ไหล่ถึงอก",
+  stw: "ไหล่ถึงเอว",
+  ah: "รักแร้",
+  nLow: "คอต่ำ",
+  sqSho: "ไหล่ตั้ง",
+  rdSho: "ไหล่มน",
+  sloSho: "ไหล่เท",
+  sloNk: "คอสั้น",
+  brBly: "พุงใหญ่",
+};

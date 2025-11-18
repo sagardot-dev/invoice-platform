@@ -25,7 +25,7 @@ export const HelperAction = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Badge  className=" cursor-pointer rounded-md py-px  bg-secondary-foreground">
+        <Badge  className=" cursor-pointer rounded-md py-px  bg-muted">
           <MoreHorizontalIcon />
         </Badge>
       </DropdownMenuTrigger>

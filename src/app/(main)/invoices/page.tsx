@@ -14,23 +14,19 @@ import Link from "next/link";
 import { PlusIcon } from "lucide-react";
 import { useGetInvoices } from "@/modules/invoices/server/use-get-invoices";
 import { useInvoiceFilter } from "@/modules/invoices/hooks/param";
-
-type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-};
+import { useMemo } from "react";
 
 const page = () => {
   const [filter] = useInvoiceFilter();
-  const { data, isLoading } = useGetInvoices({
-    serach: filter.search,
-    page: filter.page,
-    pageSize: filter.pageSize,
-  });
+  const queryInput = useMemo(
+    () => ({
+      search: filter.search,
+      page: filter.page,
+    }),
+    [filter.search, filter.page]
+  );
 
-  console.log(data)
+  const { data, isLoading } = useGetInvoices(queryInput);
 
   return (
     <>
@@ -55,7 +51,11 @@ const page = () => {
               Previous Invoices
             </p>
           </div>
-          <DataTable columns={columns} data={data?.data.invoices || []} />
+          <DataTable
+            columns={columns}
+            data={data?.data.invoices || []}
+            pagination={data?.data.pagination}
+          />
         </CardContent>
       </Card>
     </>

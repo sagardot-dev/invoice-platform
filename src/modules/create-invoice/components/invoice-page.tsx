@@ -20,7 +20,6 @@ import { InvoiceJacketForm } from "./invoice-jacket";
 import { InvoicePantForm } from "./invoice-pant";
 import { InvoiceShirttForm } from "./invoice-shirt";
 import { cn } from "@/lib/utils";
-import { CheckOut } from "./checkout";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { useGetComapnyData } from "@/modules/dashboard/server/get-companydat";
@@ -28,6 +27,7 @@ import { Company, Helper, SaleMan } from "@/generated/prisma/client";
 import { useCreateInvoice } from "../server/create-invoice";
 import { useGetInvoice } from "@/modules/invoices/server/use-get-invoice";
 import { useUpdateInvoice } from "@/modules/invoices/server/use-mutate-invoice";
+import { CheckOut } from "./checkout";
 
 export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId: string }) => {
   const { data: invoice } = useGetInvoice(invoiceId);
@@ -38,8 +38,10 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId: string }) => {
     isLoading: boolean;
   };
   const [step, setStep] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
   const { data } = getCompanyDataQuery;
+  const router = useRouter();
+
+  console.log(data);
 
   const form = useForm<z.infer<typeof invoiceSchema>>({
     resolver: zodResolver(invoiceSchema) as any,
@@ -189,6 +191,23 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId: string }) => {
   });
 
   useEffect(() => {
+    if (!data) return;
+
+    form.reset({
+      onBoard: {
+        name: data.name ?? "",
+        email: data.email ?? "",
+        image: data.image ?? "",
+        address: data.address ?? "",
+        phoneNumber: data.phoneNumber ?? "",
+        taxId: data.taxId ?? "",
+        websiteUrl: data.websiteUrl ?? "",
+        whatsappNumber: data.whatsappNumber ?? "",
+      },
+    });
+  }, [data]);
+
+  useEffect(() => {
     if (!invoice) return;
 
     form.reset({
@@ -329,27 +348,37 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId: string }) => {
         sloNk: invoice.shirt?.sloNk ?? false,
         note: invoice.shirt?.note ?? "",
       },
-      onBoard: {
-        name: data?.name ?? "",
-        email: data?.email ?? "",
-        image: data?.image ?? "",
-        address: data?.address ?? "",
-        phoneNumber: data?.phoneNumber ?? "",
-        taxId: data?.taxId ?? "",
-        websiteUrl: data?.websiteUrl ?? "",
-        whatsappNumber: data?.whatsappNumber ?? "",
-      },
     });
-  }, [invoice, data]);
+  }, [invoice]);
 
+  const isLoading = getCompanyDataQuery.isLoading;
   const isPending = form.formState.isSubmitting || isLoading;
 
+  const isDisabled = getCompanyDataQuery.isLoading || isPending;
+
   async function onSubmit(data: z.infer<typeof invoiceSchema>) {
-    console.log("✅ Invoice data:", data);
+    toast.loading("Submitting invoice...", {
+      description: "please wait for a minute",
+    });
     if (invoice && invoiceId) {
-      updateMutationInvoice.mutateAsync({ id: invoiceId, data });
+      updateMutationInvoice.mutateAsync(
+        { id: invoiceId, data },
+        {
+          onSuccess: () => router.push(`/pdf/${invoiceId}`),
+        }
+      );
     } else {
-      invoiceMutation.mutate({ data });
+      invoiceMutation.mutate(
+        { data },
+        {
+          onSuccess: (res) => {
+            const id = res.data?.id;
+            if (id) {
+              router.push(`/pdf/${id}`);
+            }
+          },
+        }
+      );
     }
   }
 
@@ -366,6 +395,7 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId: string }) => {
 
     return steps.map((stepItem) => (
       <Button
+        disabled={isDisabled}
         className={cn(
           " h-7 px-4 ",
           step === stepItem.index &&
@@ -375,7 +405,6 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId: string }) => {
         type="button"
         variant={step === stepItem.index ? "default" : "outline"}
         onClick={() => setStep(stepItem.index)}
-        disabled={isPending}
       >
         {stepItem.label}
       </Button>
@@ -417,7 +446,7 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId: string }) => {
                   type="button"
                   variant="outline"
                   onClick={prevStep}
-                  disabled={isPending}
+                  disabled={isDisabled}
                   className=" h-8"
                 >
                   Back
@@ -430,7 +459,7 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId: string }) => {
                 <Button
                   type="button"
                   onClick={nextStep}
-                  disabled={isPending}
+                  disabled={isDisabled}
                   className="bg-linear-0 from-chart-5 via-primary to-chart-5 h-8"
                 >
                   Next
@@ -438,7 +467,7 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId: string }) => {
               ) : (
                 <Button
                   type="submit"
-                  disabled={isPending}
+                  disabled={isDisabled || updateMutationInvoice.isPending}
                   className="bg-linear-0 from-chart-5 via-primary to-chart-5 border border-primary h-8"
                 >
                   {invoice ? "Update Invoice" : "Create Invoice"}

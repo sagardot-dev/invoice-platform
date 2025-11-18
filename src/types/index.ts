@@ -15,11 +15,12 @@ export type GetSignApiRes = {
   signUrl: string;
 };
 
-export type ApiResponse<T = any> = {
+export type ApiResponse<T,P = any> = {
   success: boolean;
   title: string;
   description?: string;
   code: string;
   status: "success" | "error";
   data?: T;
+  pdf?: P
 };
