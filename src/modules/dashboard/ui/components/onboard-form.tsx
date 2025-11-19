@@ -139,7 +139,7 @@ const OnboradForm = () => {
 
   return (
     <>
-      <Card className=" space-y-2 py-10 border-accent-foreground/4 shadow-sm">
+      <Card className=" space-y-2 py-10 border-accent-foreground/4 shadow-sm md:min-w-2xl">
         <CardHeader className=" border-b px-9">
           <CardTitle className=" md:text-2xl text-lg ">
             Fill Conpany Information
@@ -158,7 +158,7 @@ const OnboradForm = () => {
               onSubmit={form.handleSubmit(onSubmit)}
               className="space-y-7 w-full"
             >
-              <div className=" space-y-5 flex flex-col items-start md:items-stretch w-full ">
+              <div className=" space-y-5 flex flex-col items-stretch w-full ">
                 <div className=" flex justify-between items-center pb-3 w-full ">
                   <FormField
                     control={form.control}
@@ -326,7 +326,7 @@ const OnboradForm = () => {
                       <FormLabel>WebSite Url</FormLabel>
                       <FormControl>
                         <Textarea
-                          className=" h-20 w-full "
+                          className=" h-20 w-full! resize-none"
                           disabled={pending || loading}
                           placeholder="www.bespoketailor.com"
                           {...field}

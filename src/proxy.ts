@@ -4,12 +4,13 @@ import { headers } from "next/headers";
 import { auth } from "./lib/auth";
 
 const protectRoute = [
-  "/dashboard/:path*",
-  "/invoices/:path*",
-  "/pdf/:path*",
-  "/sale-men/:path*",
-  "/sale-revenue/:path*",
+  "/dashboard",
+  "/invoices",
+  "/pdf",
+  "/sale-men",
+  "/sale-revenue",
 ];
+
 
 // This function can be marked `async` if using `await` inside
 export async function proxy(request: NextRequest) {
