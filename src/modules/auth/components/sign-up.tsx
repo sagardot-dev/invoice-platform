@@ -65,7 +65,7 @@ export const SignUpForm = () => {
         email: data.email,
         password: data.password,
         name: data.username,
-        callbackURL: "/dashboard",
+        callbackURL: "/",
       },
       {
         onRequest: (ctx) => {

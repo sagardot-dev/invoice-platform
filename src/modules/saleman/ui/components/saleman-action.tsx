@@ -19,7 +19,7 @@ export const SaleManAction = ({ id }: { id: string }) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Badge className=" cursor-pointer rounded-md py-px  bg-muted">
-          <MoreHorizontalIcon />
+          <MoreHorizontalIcon className=" text-muted-foreground" />
         </Badge>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

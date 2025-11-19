@@ -69,6 +69,7 @@ export const InvoiceForm = () => {
   }, [reselling]);
 
   useEffect(() => {
+    if(!saleManIds) return
     if (saleManIds.length > 0) {
       const selectedSaleMen = querySalemen.data?.filter((s: SaleMan) =>
         saleManIds.includes(s.id)
@@ -92,7 +93,7 @@ export const InvoiceForm = () => {
   return (
     <>
       <div className="flex flex-col h-full gap-x-8 gap-y-6 w-full">
-        <div className=" flex flex-wrap gap-6 md:gap-x-12 justify-start items-center px-4  w-full pb-4">
+        <div className=" flex flex-wrap gap-6 md:gap-x-10 justify-start items-center px-4  w-full pb-4">
           <FormField
             control={control}
             name="invoiceNumber"
@@ -212,7 +213,7 @@ export const InvoiceForm = () => {
                       <Command>
                         {querySalemen.data && (
                           <CommandGroup>
-                            {querySalemen.data.map((data: Helper) => (
+                            {querySalemen.data.map((data: SaleMan) => (
                               <CommandItem
                                 key={data.id}
                                 onSelect={() => {

@@ -63,7 +63,7 @@ export const SignInForm = () => {
       {
         email: data.email,
         password: data.password,
-        callbackURL: "/dashboard",
+        callbackURL: "/",
       },
       {
         onRequest: (ctx) => {

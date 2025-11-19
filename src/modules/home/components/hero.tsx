@@ -7,7 +7,6 @@ import { ArrowBigRight, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { Landing } from "./landinImage";
 
-
 export const Hero = () => {
   return (
     <div className=" pt-15 md:pt-26 lg:pt-36  px-8">
@@ -21,8 +20,19 @@ export const Hero = () => {
           platform. Say goodbye to paperwork and stay organized effortlessly."
         </SubHeading>
         <div className=" flex items-center gap-x-6 py-3">
-          <Button className=" shadow-brand">Get Start Now</Button>
-          <Button className=" border border-border" variant={"ghost"} asChild>
+          <Button
+            asChild
+            className=" shadow-brand h-8! bg-linear-0 from-chart-5 via-primary to-chart-1 text-shadow-xs"
+          >
+            <Link prefetch href={"/invoices"}>
+              Get Start Now <ArrowRight className=" size-4" />
+            </Link>
+          </Button>
+          <Button
+            className=" border border-border h-8!"
+            variant={"ghost"}
+            asChild
+          >
             <Link
               className=" flex justify-center items-center gap-x-3"
               href={"#"}
@@ -32,7 +42,7 @@ export const Hero = () => {
             </Link>
           </Button>
         </div>
-       <Landing/>
+        <Landing />
       </Container>
     </div>
   );

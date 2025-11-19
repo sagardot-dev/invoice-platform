@@ -49,8 +49,7 @@ export const menuItems = [
 export const navItems = [
   { id: "home", label: "Home", path: "/" },
   { id: "dashboard", label: "Dashboard", path: "/dashboard" },
-  { id: "settings", label: "Settings", path: "/settings" },
-  { id: "doc", label: "Doc", path: "#" },
+  { id: "invoices", label: "invoices", path: "/invoices" },
 ];
 
 export const logos = [

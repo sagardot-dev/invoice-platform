@@ -395,7 +395,7 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId: string }) => {
 
     return steps.map((stepItem) => (
       <Button
-        disabled={isDisabled}
+        disabled={isPending}
         className={cn(
           " h-7 px-4 ",
           step === stepItem.index &&
