@@ -76,10 +76,12 @@ export async function GET(
             email: true,
           },
         },
+        
 
         jacket: true,
         pant: true,
         shirt: true,
+        
       },
     });
     if (!invoice) {

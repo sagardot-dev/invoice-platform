@@ -11,7 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Printer } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { invoiceSchema } from "@/schema";
@@ -29,8 +28,8 @@ import { useGetInvoice } from "@/modules/invoices/server/use-get-invoice";
 import { useUpdateInvoice } from "@/modules/invoices/server/use-mutate-invoice";
 import { CheckOut } from "./checkout";
 
-export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId: string }) => {
-  const { data: invoice } = useGetInvoice(invoiceId);
+export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId?: string }) => {
+  const { data: invoice } = useGetInvoice(invoiceId || "");
   const invoiceMutation = useCreateInvoice();
   const updateMutationInvoice = useUpdateInvoice();
   const getCompanyDataQuery = useGetComapnyData() as {
@@ -40,8 +39,6 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId: string }) => {
   const [step, setStep] = useState(0);
   const { data } = getCompanyDataQuery;
   const router = useRouter();
-
-  console.log(data);
 
   const form = useForm<z.infer<typeof invoiceSchema>>({
     resolver: zodResolver(invoiceSchema) as any,
@@ -348,8 +345,18 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId: string }) => {
         sloNk: invoice.shirt?.sloNk ?? false,
         note: invoice.shirt?.note ?? "",
       },
+      onBoard: {
+        name: data?.name ?? "",
+        email: data?.email ?? "",
+        image: data?.image ?? "",
+        address: data?.address ?? "",
+        phoneNumber: data?.phoneNumber ?? "",
+        taxId: data?.taxId ?? "",
+        websiteUrl: data?.websiteUrl ?? "",
+        whatsappNumber: data?.whatsappNumber ?? "",
+      },
     });
-  }, [invoice]);
+  }, [invoice, data]);
 
   const isLoading = getCompanyDataQuery.isLoading;
   const isPending = form.formState.isSubmitting || isLoading;
@@ -395,13 +402,13 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId: string }) => {
 
     return steps.map((stepItem) => (
       <Button
+        key={stepItem.index}
         disabled={isPending}
         className={cn(
           " h-7 px-4 ",
           step === stepItem.index &&
             " bg-linear-0 from-chart-5 via-primary to-chart-5"
         )}
-        key={stepItem.index}
         type="button"
         variant={step === stepItem.index ? "default" : "outline"}
         onClick={() => setStep(stepItem.index)}
@@ -417,7 +424,9 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId: string }) => {
         <div>
           <CardTitle className="text-xl">Create a new Invoice</CardTitle>
         </div>
-        <div className="flex gap-x-4 flex-1 ">{getStepButtons()}</div>
+        <div className="flex flex-wrap gap-y-3 gap-x-4 lg:flex-1 ">
+          {getStepButtons()}
+        </div>
         <CardAction>
           <Badge className=" py-0 rounded-sm bg-accent">invoice data</Badge>
         </CardAction>
@@ -440,7 +449,7 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId: string }) => {
             {step === 3 && <InvoiceShirttForm />}
             {step === 4 && <CheckOut />}
 
-            <div className="flex justify-between mt-6">
+            <div className="flex justify-between flex-wrap ">
               {step > 0 ? (
                 <Button
                   type="button"

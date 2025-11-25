@@ -161,10 +161,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center animate-pulse"
                 >
-                  <div className="w-full flex flex-col justify-center items-center">
-                    <Loader className="size-4 animate-spin" />
-                    <p>Loading data...</p>
-                  </div>
+                 no invoice.
                 </TableCell>
               </TableRow>
             )}

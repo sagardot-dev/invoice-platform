@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import { useForm, useFormContext } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -69,7 +70,7 @@ export const InvoiceForm = () => {
   }, [reselling]);
 
   useEffect(() => {
-    if(!saleManIds) return
+    if (!saleManIds) return;
     if (saleManIds.length > 0) {
       const selectedSaleMen = querySalemen.data?.filter((s: SaleMan) =>
         saleManIds.includes(s.id)
@@ -243,7 +244,7 @@ export const InvoiceForm = () => {
                   </Popover>
 
                   {safeValue.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mt-2 absolute right-49 top-14">
+                    <div className=" lg:flex  lg:gap-x-2 mt-2 absolute lg:right-39 lg:top-14  hidden ">
                       {safeValue.map((id: string) => {
                         const helper = querySalemen.data?.find(
                           (h: Helper) => h.id === id
@@ -318,7 +319,7 @@ export const InvoiceForm = () => {
                     </Popover>
 
                     {safeValue.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mt-2 absolute right-49 top-5">
+                      <div className=" lg:flex  lg:gap-x-2 mt-2 absolute lg:right-39 lg:top-6  hidden">
                         {safeValue.map((id: string) => {
                           const helper = queryHelper.data?.find(
                             (h: Helper) => h.id === id

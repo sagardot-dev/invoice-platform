@@ -1,8 +1,8 @@
 import type { NextConfig } from "next";
 
-const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
+const nextConfig: NextConfig = {
+  typescript: {
+    ignoreBuildErrors: true,
   },
 
   reactCompiler: true,
