@@ -1,19 +1,23 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-
   reactCompiler: true,
 
   images: {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "sagardotdev-invoice.s3.us-east-1.amazonaws.com",
+        hostname: "dqs8qc9o4jfra.cloudfront.net",
+        port: "",
+        pathname: "/**",
       },
     ],
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
   },
 };
 

@@ -319,3 +319,6 @@ export const shirtFieldLabels = {
   sloNk: "คอสั้น",
   brBly: "พุงใหญ่",
 };
+
+
+export const s3URL = 'https://dqs8qc9o4jfra.cloudfront.net'

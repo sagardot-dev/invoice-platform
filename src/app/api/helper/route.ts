@@ -3,7 +3,6 @@ import prisma from "@/lib/db";
 import { createResponse } from "@/lib/server/api-res";
 import { HttpStatus, ResponseTitle } from "@/lib/server/response-api-help";
 import { headers } from "next/headers";
-import { NextRequest } from "next/server";
 
 export async function POST(req: Request) {
   const { name, email, status } = await req.json();

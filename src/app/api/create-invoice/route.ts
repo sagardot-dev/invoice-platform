@@ -4,7 +4,6 @@ import { createResponse } from "@/lib/server/api-res";
 import { HttpStatus, ResponseTitle } from "@/lib/server/response-api-help";
 import { invoiceSchema } from "@/schema";
 import { headers } from "next/headers";
-import { jsPDF } from "jspdf";
 
 export async function POST(req: Request) {
   const json = await req.json();
