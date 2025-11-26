@@ -1,7 +1,6 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,7 +15,6 @@ import {
   MailIcon,
   MoreHorizontalIcon,
   Pencil,
-  Plus,
   Trash,
 } from "lucide-react";
 import Link from "next/link";

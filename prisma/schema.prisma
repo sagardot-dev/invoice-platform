@@ -11,7 +11,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 enum Role {
@@ -21,13 +20,13 @@ enum Role {
 }
 
 model User {
-  id            String    @id
+  id            String     @id
   name          String
   email         String
-  emailVerified Boolean   @default(false)
+  emailVerified Boolean    @default(false)
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @default(now()) @updatedAt
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @default(now()) @updatedAt
   sessions      Session[]
   accounts      Account[]
   company       Company?
@@ -35,7 +34,7 @@ model User {
   helper        Helper[]
   customer      Customer[]
   invoice       Invoice[]
-  role          Role @default(ADMIN)
+  role          Role       @default(ADMIN)
 
   @@unique([email])
   @@map("user")
@@ -86,65 +85,61 @@ model Verification {
   @@map("verification")
 }
 
-
-
 enum Status {
   ACTIVE
   INACTIVE
 }
 
 model SaleMan {
-  id        String    @id @default(uuid())
+  id        String   @id @default(uuid())
   name      String
   email     String
-  status    Status    @default(ACTIVE)
-  role      Role      @default(SALEMAN)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now()) @updatedAt
+  status    Status   @default(ACTIVE)
+  role      Role     @default(SALEMAN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
-  invoices  Invoice[] @relation("InvoiceSaleMen")
-  userId    String
-  user      User @relation(fields: [userId], references: [id])
+  invoices Invoice[] @relation("InvoiceSaleMen")
+  userId   String
+  user     User      @relation(fields: [userId], references: [id])
 
-  helpers   Helper[] @relation("SaleManHelpers")
+  helpers Helper[] @relation("SaleManHelpers")
 
   @@unique([name])
 }
 
 model Helper {
-  id        String    @id @default(uuid())
+  id        String   @id @default(uuid())
   name      String
   email     String
-  status    Status    @default(ACTIVE)
-  role      Role      @default(HELPER)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now()) @updatedAt
+  status    Status   @default(ACTIVE)
+  role      Role     @default(HELPER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
-  invoices  Invoice[] @relation("InvoiceHelpers") 
-  userId    String
-  user      User @relation(fields: [userId], references: [id])
+  invoices Invoice[] @relation("InvoiceHelpers")
+  userId   String
+  user     User      @relation(fields: [userId], references: [id])
 
-  salemen   SaleMan[] @relation("SaleManHelpers")
+  salemen SaleMan[] @relation("SaleManHelpers")
 
   @@unique([name])
 }
 
-
-
 model Company {
-  id               String @id @default(uuid())
-  name             String
-  email            String
-  image            String?
-  address          String
-  phoneNumber      String
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @default(now()) @updatedAt
-  taxId            String?
-  websiteUrl       String?
-  whatsappNumber   String
-  user             User  @relation(fields: [userId], references:[id])
-  userId           String @unique
+  id             String   @id @default(uuid())
+  name           String
+  email          String
+  image          String?
+  address        String
+  phoneNumber    String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now()) @updatedAt
+  taxId          String?
+  websiteUrl     String?
+  whatsappNumber String
+  user           User     @relation(fields: [userId], references: [id])
+  userId         String   @unique
 }
 
 enum Gender {
@@ -220,193 +215,191 @@ model Jacket {
   monogramName       String?
   monogramImage      String?
   liningImage        String?
-  
+
   // Measurements
-  ch                 Float?
-  wa                 Float?
-  hip                Float?
-  nk                 Float?
-  sh                 Float?
-  sleeve             Float?
-  arm                Float?
-  fr                 Float?
-  ba                 Float?
-  lg                 Float?
-  vLg                Float?
-  ocLg               Float?
-  
+  ch     Float?
+  wa     Float?
+  hip    Float?
+  nk     Float?
+  sh     Float?
+  sleeve Float?
+  arm    Float?
+  fr     Float?
+  ba     Float?
+  lg     Float?
+  vLg    Float?
+  ocLg   Float?
+
   // Shoulder types
-  nSho               Boolean     @default(false)
-  sqSho              Boolean     @default(false)
-  rdSho              Boolean     @default(false)
-  sloSho             Boolean     @default(false)
-  
+  nSho   Boolean @default(false)
+  sqSho  Boolean @default(false)
+  rdSho  Boolean @default(false)
+  sloSho Boolean @default(false)
+
   // Body characteristics
-  hBk                Boolean     @default(false)
-  curveBk            Boolean     @default(false)
-  shoNk              Boolean     @default(false)
-  bigM               Boolean     @default(false)
-  
+  hBk     Boolean @default(false)
+  curveBk Boolean @default(false)
+  shoNk   Boolean @default(false)
+  bigM    Boolean @default(false)
+
   // Additional features
-  holBk              Boolean     @default(false)
-  holCh              Boolean     @default(false)
-  brBly              Boolean     @default(false)
-  lLo                Boolean     @default(false)
-  rLo                Boolean     @default(false)
-  erect              Boolean     @default(false)
-  flatB              Boolean     @default(false)
-  
-  note               String?
-  
-  invoices           Invoice[]
+  holBk Boolean @default(false)
+  holCh Boolean @default(false)
+  brBly Boolean @default(false)
+  lLo   Boolean @default(false)
+  rLo   Boolean @default(false)
+  erect Boolean @default(false)
+  flatB Boolean @default(false)
+
+  note String?
+
+  invoices Invoice[]
 
   @@map("jacket")
 }
 
 model Pant {
-  id                 String       @id @default(uuid())
-  quantity           Int?
-  tailorName         String?
-  fittingDate        DateTime?
-  addInnerLining     Boolean      @default(false)
-  pantType           PantType?
-  pantLength         PantLength?
-  pantFabricImage    String?
-  pantStyleDrawing   String?
-  pantCustomStyle    String?
-  monogramName       String?
-  monogramImage      String?
-  
+  id               String      @id @default(uuid())
+  quantity         Int?
+  tailorName       String?
+  fittingDate      DateTime?
+  addInnerLining   Boolean     @default(false)
+  pantType         PantType?
+  pantLength       PantLength?
+  pantFabricImage  String?
+  pantStyleDrawing String?
+  pantCustomStyle  String?
+  monogramName     String?
+  monogramImage    String?
+
   // Measurements
-  wa                 Float?
-  hip                Float?
-  cr                 Float?
-  th                 Float?
-  kn                 Float?
-  bo                 Float?
-  lg                 Float?
-  
+  wa  Float?
+  hip Float?
+  cr  Float?
+  th  Float?
+  kn  Float?
+  bo  Float?
+  lg  Float?
+
   // Style options
-  slantingPkt        Boolean      @default(false)
-  straightPkt        Boolean      @default(false)
-  americanPkt        Boolean      @default(false)
-  backRhtPkt         Boolean      @default(false)
-  backLhtPkt         Boolean      @default(false)
-  cuffs              Boolean      @default(false)
-  wpIn               Boolean      @default(false)
-  wpOut              Boolean      @default(false)
-  flatB              Boolean      @default(false)
-  lowFront           Boolean      @default(false)
-  underBelly         Boolean      @default(false)
-  
-  note               String?
-  
-  invoices           Invoice[]
+  slantingPkt Boolean @default(false)
+  straightPkt Boolean @default(false)
+  americanPkt Boolean @default(false)
+  backRhtPkt  Boolean @default(false)
+  backLhtPkt  Boolean @default(false)
+  cuffs       Boolean @default(false)
+  wpIn        Boolean @default(false)
+  wpOut       Boolean @default(false)
+  flatB       Boolean @default(false)
+  lowFront    Boolean @default(false)
+  underBelly  Boolean @default(false)
+
+  note String?
+
+  invoices Invoice[]
 
   @@map("pant")
 }
 
 model Shirt {
-  id                  String     @id @default(uuid())
-  quantity            Int?
-  tailorName          String?
-  fittingDate         DateTime?
-  addMonogram         Boolean    @default(false)
-  addTie              Boolean    @default(false)
-  shirtType           ShirtType?
-  shirtFabricImage    String?
-  shirtStyleDrawing   String?
-  shirtCustomStyle    String?
-  shirtMonogramName   String?
-  shirtMonogramImage  String?
-  
+  id                 String     @id @default(uuid())
+  quantity           Int?
+  tailorName         String?
+  fittingDate        DateTime?
+  addMonogram        Boolean    @default(false)
+  addTie             Boolean    @default(false)
+  shirtType          ShirtType?
+  shirtFabricImage   String?
+  shirtStyleDrawing  String?
+  shirtCustomStyle   String?
+  shirtMonogramName  String?
+  shirtMonogramImage String?
+
   // Measurements
-  ch                  Float?
-  wa                  Float?
-  hip                 Float?
-  nk                  Float?
-  sh                  Float?
-  sleeve              Float?
-  arm                 Float?
-  fr                  Float?
-  ba                  Float?
-  lg                  Float?
-  stb                 Float?
-  stw                 Float?
-  ah                  Float?
-  dressLg             Float?
-  skirtLg             Float?
-  nLow                Float?
-  
+  ch      Float?
+  wa      Float?
+  hip     Float?
+  nk      Float?
+  sh      Float?
+  sleeve  Float?
+  arm     Float?
+  fr      Float?
+  ba      Float?
+  lg      Float?
+  stb     Float?
+  stw     Float?
+  ah      Float?
+  dressLg Float?
+  skirtLg Float?
+  nLow    Float?
+
   // Style options
-  sqSho               Boolean    @default(false)
-  rdSho               Boolean    @default(false)
-  sloSho              Boolean    @default(false)
-  brBly               Boolean    @default(false)
-  sloNk               Boolean    @default(false)
-  
-  note                String?
-  
-  invoices            Invoice[]
+  sqSho  Boolean @default(false)
+  rdSho  Boolean @default(false)
+  sloSho Boolean @default(false)
+  brBly  Boolean @default(false)
+  sloNk  Boolean @default(false)
+
+  note String?
+
+  invoices Invoice[]
 
   @@map("shirt")
 }
 
 model Customer {
-  id              String   @id @default(uuid())
-  name            String
-  phoneNumber     String
-  address         String?
-  email           String   @unique
-  gender          Gender
-  height          Float?
-  weight          Float?
-  stayDays        Int?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  
-  userId          String
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  invoices        Invoice[]
+  id          String   @id @default(uuid())
+  name        String
+  phoneNumber String
+  address     String?
+  email       String   @unique
+  gender      Gender
+  height      Float?
+  weight      Float?
+  stayDays    Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  invoices Invoice[]
 
   @@map("customer")
 }
 
 model Invoice {
-  id                  String         @id @default(uuid())
-  invoiceNumber       String         @unique
-  date                DateTime
-  customerStatus      CustomerStatus
-  paymentMethod       PaymentMethod
-  totalAmount         Int?
-  notes               String?
-  reselling           Boolean        @default(false)
-  isReadymade         Boolean        @default(false)
-  customerSignature   String?
-  createdAt           DateTime       @default(now())
-  updatedAt           DateTime       @updatedAt
+  id                String         @id @default(uuid())
+  invoiceNumber     String         @unique
+  date              DateTime
+  customerStatus    CustomerStatus
+  paymentMethod     PaymentMethod
+  totalAmount       Int?
+  notes             String?
+  reselling         Boolean        @default(false)
+  isReadymade       Boolean        @default(false)
+  customerSignature String?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
 
-  userId              String
-  user                User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  customerId          String
-  customer            Customer       @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
 
-  helpers             Helper[]       @relation("InvoiceHelpers")
+  helpers Helper[] @relation("InvoiceHelpers")
 
-  
-  saleMen             SaleMan[]      @relation("InvoiceSaleMen")
-  
-  jacketId            String?
-  jacket              Jacket?        @relation(fields: [jacketId], references: [id])
+  saleMen SaleMan[] @relation("InvoiceSaleMen")
 
-  pantId              String?
-  pant                Pant?          @relation(fields: [pantId], references: [id])
+  jacketId String?
+  jacket   Jacket? @relation(fields: [jacketId], references: [id])
 
-  shirtId             String?
-  shirt               Shirt?         @relation(fields: [shirtId], references: [id])
+  pantId String?
+  pant   Pant?   @relation(fields: [pantId], references: [id])
+
+  shirtId String?
+  shirt   Shirt?  @relation(fields: [shirtId], references: [id])
 
   @@map("invoice")
 }
-

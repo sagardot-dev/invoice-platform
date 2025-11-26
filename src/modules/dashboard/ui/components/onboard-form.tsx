@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -22,26 +21,21 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  CameraIcon,
-  LocationEditIcon,
-  PackagePlusIcon,
-  Paperclip,
-  UploadCloud,
-} from "lucide-react";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { CameraIcon, PackagePlusIcon } from "lucide-react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Kbd } from "@/components/ui/kbd";
 import { onBoardSchema } from "@/schema";
 import axios from "axios";
 import { useGetSignUrlMutation } from "../../server/get-signUrl";
-import { headers } from "next/headers";
 import Image from "next/image";
 import { useCreateCompany } from "../../server/create-company";
 import { useGetComapnyData } from "../../server/get-companydat";
 import { useEditCompanyData } from "../../server/edit-company-data";
 import { Textarea } from "@/components/ui/textarea";
+import { useIsClient } from "@/hooks/use-client";
 
 const OnboradForm = () => {
+  const isClient = useIsClient();
   const editMuation = useEditCompanyData();
   const getCompanyDataQuery = useGetComapnyData();
   const onboadringMutation = useCreateCompany();
@@ -53,7 +47,6 @@ const OnboradForm = () => {
     loading ||
     getCompanyDataQuery.isPending ||
     editMuation.isPending;
-  const [mouthed, setMounted] = useState(false);
 
   const form = useForm<z.infer<typeof onBoardSchema>>({
     resolver: zodResolver(onBoardSchema),
@@ -95,11 +88,7 @@ const OnboradForm = () => {
     }
   }, [getCompanyDataQuery.data, form]);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mouthed) return null;
+  if (!isClient) return null;
 
   async function onSubmit(values: z.infer<typeof onBoardSchema>) {
     onboadringMutation.mutate({

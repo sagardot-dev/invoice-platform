@@ -4,16 +4,13 @@ import Image from "next/image";
 import React from "react";
 import { motion } from "motion/react";
 import { useTheme } from "next-themes";
+import { useIsClient } from "@/hooks/use-client";
 
 export const Landing = () => {
   const { theme } = useTheme();
-  const [mounted, setMounted] = React.useState(false);
+  const isClient = useIsClient();
 
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
+  if (!isClient) return null;
 
   const image1 = theme === "dark" ? "/black1.png" : "/white.png";
   const image2 = theme === "dark" ? "/black2.png" : "/white1.png";

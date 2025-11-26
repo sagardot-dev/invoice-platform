@@ -1,4 +1,5 @@
 "use client";
+import { SaleMan } from "@/generated/prisma/client";
 import { useGetInvoice } from "@/modules/invoices/server/use-get-invoice";
 
 import {
@@ -667,7 +668,7 @@ export const Doc = ({ data }: any) => {
             <View style={styles.summaryRow}>
               <Text style={styles.summaryLabel}>Salesman</Text>
               <Text style={styles.summaryValue}>
-                {saleMen.map((s: any) => s.name).join(", ")}
+                {saleMen.map((s: SaleMan) => s.name).join(", ")}
               </Text>
             </View>
           )}

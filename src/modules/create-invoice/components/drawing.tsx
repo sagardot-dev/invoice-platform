@@ -1,15 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useGetSignUrlMutation } from "@/modules/dashboard/server/get-signUrl";
 import axios from "axios";
 import {
-  CameraIcon,
   Eraser,
   Pencil,
   Save,
   Trash2,
-  UploadCloud,
 } from "lucide-react";
 import React, { ChangeEvent, useRef, useState } from "react";
 import { ReactSketchCanvas, ReactSketchCanvasRef } from "react-sketch-canvas";

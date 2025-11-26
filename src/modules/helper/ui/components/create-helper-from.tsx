@@ -21,14 +21,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  CameraIcon,
-  LocationEditIcon,
-  PackagePlusIcon,
-  Paperclip,
-  UploadCloud,
-} from "lucide-react";
-import { useEffect, useState } from "react";
+import { PackagePlusIcon } from "lucide-react";
+import { useEffect } from "react";
 import { Kbd } from "@/components/ui/kbd";
 import { onBoardSchema, helperSchema } from "@/schema";
 import { useEditCompanyData } from "@/modules/dashboard/server/edit-company-data";
@@ -36,8 +30,10 @@ import { useEditCompanyData } from "@/modules/dashboard/server/edit-company-data
 import { useSearchParams } from "next/navigation";
 import { useGetHelperData } from "../../server/get-helper";
 import { useCreateHelper } from "../../server/create-helper";
+import { useIsClient } from "@/hooks/use-client";
 
 export const HelperForm = () => {
+  const isClient = useIsClient();
   const params = useSearchParams();
   const id = params.get("id");
   const editMuation = useEditCompanyData();
@@ -45,8 +41,6 @@ export const HelperForm = () => {
   const helperMutation = useCreateHelper();
   const loading = helperMutation.isPending;
   const pending = Boolean(loading || (id && getHelperDataQuery.isPending));
-
-  const [mouthed, setMounted] = useState(false);
 
   const form = useForm<z.infer<typeof helperSchema>>({
     resolver: zodResolver(helperSchema),
@@ -72,12 +66,6 @@ export const HelperForm = () => {
     }
   }, [getHelperDataQuery.data, form]);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mouthed) return null;
-
   async function onSubmit(values: z.infer<typeof helperSchema>) {
     console.log(values);
     helperMutation.mutate({
@@ -90,6 +78,7 @@ export const HelperForm = () => {
     editMuation.mutate({ ...values });
   };
 
+  if (!isClient) return null;
   return (
     <>
       <Card className=" space-y-2 py-8 pb-7 border-accent-foreground/4 shadow-sm">

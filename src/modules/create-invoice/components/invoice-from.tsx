@@ -26,23 +26,21 @@ import {
 
 import { Command, CommandGroup, CommandItem } from "@/components/ui/command";
 import { Check } from "lucide-react";
-import { toast } from "sonner";
 import { Drawing } from "./drawing";
 import { useGetHelpersData } from "@/modules/helper/server/get-many-helper";
-import { Company, Helper, SaleMan } from "@/generated/prisma/client";
+import { Helper, SaleMan } from "@/generated/prisma/client";
 import { useGetSalemenData } from "@/modules/saleman/server/get-many-saleman";
-import { useGetComapnyData } from "@/modules/dashboard/server/get-companydat";
 import { Calendar28 } from "./date-picker";
 import { generatePrefix } from "@/lib/prefix/invoice-prefix";
+import { useIsClient } from "@/hooks/use-client";
 
 export const InvoiceForm = () => {
-  const [mounted, setMounted] = useState(false);
-  const getCompanyDataQuery = useGetComapnyData() as {
-    data: Company | undefined;
-    isLoading: boolean;
-  };
-  const raw = Math.random().toString(36).substring(2) + Date.now().toString(36);
-  const unique = raw.substring(0, 6).toUpperCase();
+  const isClient = useIsClient();
+  const [unique] = useState(() =>
+    (Math.random().toString(36).substring(2) + Date.now().toString(36))
+      .substring(0, 6)
+      .toUpperCase()
+  );
   const queryHelper = useGetHelpersData();
   const querySalemen = useGetSalemenData();
   const [reselling, setReselling] = useState(false);
@@ -51,9 +49,7 @@ export const InvoiceForm = () => {
 
   const saleManIds = watch("saleManIds");
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+
 
   useEffect(() => {
     const subscription = watch((value) => {
@@ -67,7 +63,7 @@ export const InvoiceForm = () => {
     if (!reselling) {
       setValue("helperIds", []);
     }
-  }, [reselling]);
+  }, [reselling, setValue]);
 
   useEffect(() => {
     if (!saleManIds) return;
@@ -87,9 +83,10 @@ export const InvoiceForm = () => {
     } else {
       setValue("invoiceNumber", "");
     }
-  }, [saleManIds]);
+  }, [saleManIds, setValue, unique, querySalemen.data]);
 
-  if (!mounted) return null;
+  
+  if (!isClient) return null;
 
   return (
     <>

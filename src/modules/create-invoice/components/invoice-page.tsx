@@ -202,7 +202,7 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId?: string }) => {
         whatsappNumber: data.whatsappNumber ?? "",
       },
     });
-  }, [data]);
+  }, [data, form]);
 
   useEffect(() => {
     if (!invoice) return;

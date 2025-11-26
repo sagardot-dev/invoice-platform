@@ -1,5 +1,4 @@
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "@/const";
-import { ApiResponse } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 

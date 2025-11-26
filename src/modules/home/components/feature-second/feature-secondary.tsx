@@ -1,7 +1,6 @@
 "use client";
 import { Container } from "@/components/global/container";
 import { cn } from "@/lib/utils";
-import { motion } from "motion/react";
 import React from "react";
 import { CardSkeletonOne } from "./skeletons/first-skeletons";
 import { CardSkeletonTwo } from "./skeletons/second-skeletons";

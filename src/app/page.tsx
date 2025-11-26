@@ -1,4 +1,3 @@
-import { getServerSessionOrRedirect } from "@/components/global/check-session-server";
 import { HomeView } from "@/modules/home/view/view";
 
 export default async function Home() {

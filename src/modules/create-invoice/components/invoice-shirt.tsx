@@ -1,12 +1,10 @@
 'use client'
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, useFormContext } from "react-hook-form";
+
+import {  useFormContext } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
-  Form,
   FormControl,
   FormField,
   FormItem,
@@ -18,28 +16,24 @@ import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import {
   NativeSelect,
-  NativeSelectOption,
 } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  shirtSchema,
   ShirtTypeEnum,
   ShirtMeasurementType,
   ShirtShapeType,
 } from "@/schema";
 
-import { Save, UploadCloud } from "lucide-react";
+import {  UploadCloud } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Drawing } from "./drawing";
 import { useGetSignUrlMutation } from "@/modules/dashboard/server/get-signUrl";
 import { toast } from "sonner";
 import axios from "axios";
-import { useJacketFromStore } from "../store/store";
 import { Calendar28 } from "./date-picker";
 
 export const InvoiceShirttForm = () => {
-  const { control, watch, setValue } = useFormContext();
-  const { data, setData, reset } = useJacketFromStore();
+  const { control,  setValue } = useFormContext();
   const signUrlMutation = useGetSignUrlMutation();
   const [pending, setPending] = useState(false);
   const measurementFields: (keyof ShirtMeasurementType)[] = [

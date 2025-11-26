@@ -17,22 +17,21 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
-import { BoxIcon, MoreVertical } from "lucide-react";
+import { BoxIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Kbd } from "@/components/ui/kbd";
 import { SaleMan } from "@/generated/prisma/client";
 import { SaleManAction } from "./saleman-action";
+import { useIsClient } from "@/hooks/use-client";
 
 export const SalemanDataCard = () => {
-  const [mouthed, setMounted] = useState(false);
+    const isClient = useIsClient();
   const query = useGetSalemenData();
   console.log(query.data)
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
-  if (!mouthed) return null;
+  if(!isClient) return null;
+
 
   return (
     <Card className=" border border-accent-foreground/3">

@@ -12,10 +12,8 @@ import {
   TrendingUp,
   BarChart3,
   Clock,
-  Quote,
   DollarSign,
   Users,
-  Zap,
   CheckCircle,
   Receipt,
 } from "lucide-react";
@@ -26,12 +24,6 @@ import Footer from "./footer";
 import { testimonials } from "@/const";
 
 export default function InvoiceLandingPage() {
-  const stats = [
-    { value: "50K+", label: "Invoices Created" },
-    { value: "$10M+", label: "Revenue Tracked" },
-    { value: "5K+", label: "Happy Businesses" },
-    { value: "4.9/5", label: "User Rating" },
-  ];
 
   return (
     <div className="min-h-screen  antialiased">
@@ -177,7 +169,7 @@ export const Testimonial = () => {
                 ))}
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-3">
-                "{testimonial.content}"
+                `{testimonial.content}`
               </p>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-linear-to-br from-primary to-primary/50 flex items-center justify-center text-lg">

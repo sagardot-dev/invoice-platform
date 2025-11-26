@@ -9,13 +9,7 @@ import {
   TrendingUp,
   Users,
   Terminal,
-  Receipt,
-  CreditCard,
-  PieChart,
   BarChart3,
-  Clock,
-  CheckCircle,
-  AlertCircle,
 } from "lucide-react";
 import { motion } from "motion/react";
 

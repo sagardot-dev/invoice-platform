@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -22,23 +21,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  CameraIcon,
-  LocationEditIcon,
-  PackagePlusIcon,
-  Paperclip,
-  UploadCloud,
-} from "lucide-react";
-import { useEffect, useState } from "react";
+import { PackagePlusIcon } from "lucide-react";
+import { useEffect } from "react";
 import { Kbd } from "@/components/ui/kbd";
 import { onBoardSchema, saleManSchema } from "@/schema";
 import { useEditCompanyData } from "@/modules/dashboard/server/edit-company-data";
-
 import { useSearchParams } from "next/navigation";
 import { useCreateSaleman } from "../../server/create-saleman";
 import { useGetSalemanData } from "../../server/get-saleman";
+import { useIsClient } from "@/hooks/use-client";
 
 const SalemanForm = () => {
+  const isClient = useIsClient();
   const params = useSearchParams();
   const id = params.get("id");
   const editMuation = useEditCompanyData();
@@ -47,8 +41,6 @@ const SalemanForm = () => {
   const loading = salemanMutation.isPending;
   const pending = Boolean(loading || (id && getSaleManDataQuery.isPending));
 
-  // || editMuation.isPending;
-  const [mouthed, setMounted] = useState(false);
 
   const form = useForm<z.infer<typeof saleManSchema>>({
     resolver: zodResolver(saleManSchema),
@@ -56,12 +48,12 @@ const SalemanForm = () => {
       ? {
           name: getSaleManDataQuery.data.name,
           email: getSaleManDataQuery.data.email,
-          status : getSaleManDataQuery.data.status,
+          status: getSaleManDataQuery.data.status,
         }
       : {
           name: "",
           email: "",
-          status: 'ACTIVE'
+          status: "ACTIVE",
         },
   });
 
@@ -74,12 +66,6 @@ const SalemanForm = () => {
     }
   }, [getSaleManDataQuery.data, form]);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mouthed) return null;
-
   async function onSubmit(values: z.infer<typeof saleManSchema>) {
     console.log(values);
     salemanMutation.mutate({
@@ -91,14 +77,13 @@ const SalemanForm = () => {
   const onEdit = (values: z.infer<typeof onBoardSchema>) => {
     editMuation.mutate({ ...values });
   };
+  if (!isClient) return null;
 
   return (
     <>
       <Card className=" space-y-2 py-8 pb-7 border-accent-foreground/4 shadow-sm">
         <CardHeader className=" border-b px-9">
-          <CardTitle className=" lg:text-xl text-md ">
-            Create saleman
-          </CardTitle>
+          <CardTitle className=" lg:text-xl text-md ">Create saleman</CardTitle>
           <CardDescription className=" text-xs lg:text-sm">
             please fill the real data
           </CardDescription>

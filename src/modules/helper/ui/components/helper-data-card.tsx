@@ -7,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import React, { useEffect, useState } from "react";
 import {
   Empty,
   EmptyContent,
@@ -16,22 +15,19 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
-import { BoxIcon, MoreVertical } from "lucide-react";
+import { BoxIcon,} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Kbd } from "@/components/ui/kbd";
 import { SaleMan } from "@/generated/prisma/client";
 import { useGetHelpersData } from "../../server/get-many-helper";
 import { HelperAction } from "./helper-action";
+import { useIsClient } from "@/hooks/use-client";
 
 export const HelperDataCard = () => {
-  const [mouthed, setMounted] = useState(false);
+    const isClient = useIsClient();
   const query = useGetHelpersData();
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mouthed) return null;
+  if (!isClient) return null;
 
   return (
     <Card className=" border border-accent-foreground/3">

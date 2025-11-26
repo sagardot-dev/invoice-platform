@@ -3,7 +3,7 @@ import { Container } from "@/components/global/container";
 import { logos } from "@/const";
 import Image from "next/image";
 import React from "react";
-import { Heading, SubHeading } from "./heading";
+import {  SubHeading } from "./heading";
 import { motion } from "motion/react";
 
 export const Logos = () => {
