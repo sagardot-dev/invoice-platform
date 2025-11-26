@@ -1,5 +1,5 @@
-'use client'
-import React, {  useState } from "react";
+"use client";
+import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,15 +12,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
-import {
-  NativeSelect,
-} from "@/components/ui/native-select";
+import { NativeSelect } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  JacketTypeEnum,
-  MeasurementType,
-  shapeType,
-} from "@/schema";
+import { JacketTypeEnum, MeasurementType, shapeType } from "@/schema";
 
 import { UploadCloud } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -31,7 +25,7 @@ import axios from "axios";
 import { Calendar28 } from "./date-picker";
 
 export const InvoiceJacketForm = () => {
-  const { control, setValue } = useFormContext();
+  const { control, setValue, watch } = useFormContext();
   const signUrlMutation = useGetSignUrlMutation();
   const [pending, setPending] = useState(false);
   const measurementFields: (keyof MeasurementType)[] = [
@@ -241,7 +235,7 @@ export const InvoiceJacketForm = () => {
                               {...field}
                               value={field.value ?? 0}
                               onChange={(e) =>
-                                field.onChange(Number(e.target.value) )
+                                field.onChange(Number(e.target.value))
                               }
                             />
                           </FormControl>
@@ -394,7 +388,9 @@ export const InvoiceJacketForm = () => {
 
           <div className=" flex flex-col gap-y-1  w-full h-full border border-dashed rounded-lg px-1 py-1 overflow-hidden items-center ">
             <Drawing
+              bgImage={watch("jacket.jacketStyleDrawing")}
               onSave={(url) => setValue("jacket.jacketStyleDrawing", url)}
+              onRemoveBg={() => setValue("jacket.jacketStyleDrawing", "")}
             />
           </div>
         </div>

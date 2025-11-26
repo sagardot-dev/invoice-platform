@@ -36,11 +36,12 @@ import { useIsClient } from "@/hooks/use-client";
 
 export const InvoiceForm = () => {
   const isClient = useIsClient();
-  const [unique] = useState(() =>
-    (Math.random().toString(36).substring(2) + Date.now().toString(36))
-      .substring(0, 6)
-      .toUpperCase()
-  );
+  const [unique] = useState(() => {
+    const timestampPart = Number(String(Date.now()).slice(-5));
+    const randomPart = Math.floor(100 + Math.random() * 900);
+    return Number(`${timestampPart}${randomPart}`);
+  });
+
   const queryHelper = useGetHelpersData();
   const querySalemen = useGetSalemenData();
   const [reselling, setReselling] = useState(false);
@@ -48,8 +49,6 @@ export const InvoiceForm = () => {
   const { control, watch, setValue } = useFormContext();
 
   const saleManIds = watch("saleManIds");
-
-
 
   useEffect(() => {
     const subscription = watch((value) => {
@@ -85,7 +84,6 @@ export const InvoiceForm = () => {
     }
   }, [saleManIds, setValue, unique, querySalemen.data]);
 
-  
   if (!isClient) return null;
 
   return (
@@ -663,7 +661,11 @@ export const InvoiceForm = () => {
             </div>
           </div>
           <div className=" flex flex-col gap-y-1 col-span-2  w-full h-full border border-dashed rounded-lg px-1 py-1 overflow-hidden items-center ">
-            <Drawing onSave={(url) => setValue("customerSignature", url)} />
+            <Drawing
+              bgImage={watch("customerSignature")}
+              onSave={(url) => setValue("customerSignature", url)}
+              onRemoveBg={() => setValue("customerSignature", "")}
+            />
           </div>
         </div>
       </div>

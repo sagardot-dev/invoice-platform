@@ -33,6 +33,7 @@ import { useGetComapnyData } from "../../server/get-companydat";
 import { useEditCompanyData } from "../../server/edit-company-data";
 import { Textarea } from "@/components/ui/textarea";
 import { useIsClient } from "@/hooks/use-client";
+import { s3URL } from "@/const";
 
 const OnboradForm = () => {
   const isClient = useIsClient();
@@ -102,9 +103,11 @@ const OnboradForm = () => {
     const fileUrl = URL.createObjectURL(file);
     setPreview(fileUrl);
     const mime = file?.type || "application/octet-stream";
-    const ext = mime.split("/")[1] || file.name.split(".").pop() || "bin";
-    const fileName = file.name.split(".")[0];
+    let ext = mime.split("/")[1] || file.name.split(".").pop() || "bin";
 
+    ext = ext.split("+")[0];
+    const fileName = file.name.split(".")[0];
+    console.log(fileName, ext, mime);
     signUrlMutation.mutate(
       { fileName, ext, type: mime },
       {
@@ -115,8 +118,12 @@ const OnboradForm = () => {
           const res = await axios.put(data.signUrl, file, {
             headers: { "Content-Type": file.type },
           });
-          form.setValue("image", data.fileName);
-          console.log("✅ Uploaded:", res);
+          const signedUrl = data.signUrl;
+          const key = signedUrl.split(".amazonaws.com/")[1].split("?")[0];
+          const imageUrl = decodeURIComponent(key.split("%")[0]);
+          console.log(imageUrl);
+
+          form.setValue("image", imageUrl);
         },
       }
     );
@@ -160,7 +167,7 @@ const OnboradForm = () => {
                               type="file"
                               accept="image/*"
                               className="hidden"
-                              id="cameraInput"
+                              id="comapnyImage"
                               onChange={(e) => {
                                 onUpload(e);
                               }}
@@ -170,7 +177,7 @@ const OnboradForm = () => {
                               variant={"custom"}
                               type="button"
                               onClick={() =>
-                                document.getElementById("cameraInput")?.click()
+                                document.getElementById("comapnyImage")?.click()
                               }
                               className=""
                             >
@@ -185,17 +192,17 @@ const OnboradForm = () => {
                       </FormItem>
                     )}
                   />
-                  {preview && (
-                    <>
-                      <Image
-                        src={preview}
-                        width={29}
-                        height={29}
-                        alt="logo"
-                        className=" rounded-full"
-                      />
-                    </>
-                  )}
+                  <Image
+                    src={
+                      preview ||
+                      `${s3URL}/${getCompanyDataQuery?.data?.image}` ||
+                      "/default-logo.png"
+                    }
+                    width={29}
+                    height={29}
+                    alt="logo"
+                    className=""
+                  />
                 </div>
 
                 <div className=" w-full md:grid-cols-2 grid grid-cols-1 gap-5 ">

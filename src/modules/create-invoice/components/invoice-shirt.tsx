@@ -1,8 +1,7 @@
-'use client'
+"use client";
 import React, { useState } from "react";
 
-
-import {  useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   FormControl,
@@ -14,17 +13,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
-import {
-  NativeSelect,
-} from "@/components/ui/native-select";
+import { NativeSelect } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  ShirtTypeEnum,
-  ShirtMeasurementType,
-  ShirtShapeType,
-} from "@/schema";
+import { ShirtTypeEnum, ShirtMeasurementType, ShirtShapeType } from "@/schema";
 
-import {  UploadCloud } from "lucide-react";
+import { UploadCloud } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Drawing } from "./drawing";
 import { useGetSignUrlMutation } from "@/modules/dashboard/server/get-signUrl";
@@ -33,7 +26,7 @@ import axios from "axios";
 import { Calendar28 } from "./date-picker";
 
 export const InvoiceShirttForm = () => {
-  const { control,  setValue } = useFormContext();
+  const { control, setValue, watch } = useFormContext();
   const signUrlMutation = useGetSignUrlMutation();
   const [pending, setPending] = useState(false);
   const measurementFields: (keyof ShirtMeasurementType)[] = [
@@ -364,7 +357,11 @@ export const InvoiceShirttForm = () => {
         </div>
 
         <div className=" flex flex-col gap-y-1  w-full h-full border border-dashed rounded-lg px-1 py-1 overflow-hidden items-center col-span-1 ">
-          <Drawing onSave={(url) => setValue("shirt.shirtStyleDrawing", url)} />
+          <Drawing
+            bgImage={watch("shirt.shirtStyleDrawing")}
+            onSave={(url) => setValue("shirt.shirtStyleDrawing", url)}
+            onRemoveBg={() => setValue("shirt.shirtStyleDrawing", "")}
+          />
         </div>
       </div>
     </>

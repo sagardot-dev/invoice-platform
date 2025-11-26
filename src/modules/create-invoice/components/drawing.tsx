@@ -2,25 +2,23 @@
 import { Button } from "@/components/ui/button";
 import { useGetSignUrlMutation } from "@/modules/dashboard/server/get-signUrl";
 import axios from "axios";
-import {
-  Eraser,
-  Pencil,
-  Save,
-  Trash2,
-} from "lucide-react";
+import { Eraser, Pencil, Save, Trash2, X } from "lucide-react";
 import React, { ChangeEvent, useRef, useState } from "react";
 import { ReactSketchCanvas, ReactSketchCanvasRef } from "react-sketch-canvas";
 import { toast } from "sonner";
 
 type DrawingProps = {
   onSave?: (url: string) => void;
+  bgImage?: string;
+  onRemoveBg?: () => void;
 };
 
-export const Drawing = ({ onSave }: DrawingProps) => {
+export const Drawing = ({ onSave, bgImage, onRemoveBg }: DrawingProps) => {
   const signUrlMutation = useGetSignUrlMutation();
   const canvasRef = useRef<ReactSketchCanvasRef>(null);
   const [eraseMode, setEraseMode] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const [canvasKey, setCanvasKey] = useState(0);
 
   const handlePenClick = () => {
     setEraseMode(false);
@@ -63,6 +61,8 @@ export const Drawing = ({ onSave }: DrawingProps) => {
     const ext = "png";
     const fileName = `canvas-${Date.now()}`;
 
+    console.log(fileName, ext, mime);
+
     signUrlMutation.mutate(
       { fileName, ext, type: mime },
       {
@@ -72,34 +72,12 @@ export const Drawing = ({ onSave }: DrawingProps) => {
             headers: { "Content-Type": file.type },
           });
           const uploadedUrl = data.signUrl.split("?")[0];
-          console.log(uploadedUrl);
+          const imageUrl = uploadedUrl.split(".amazonaws.com/")[1];
+          console.log(imageUrl);
+
           toast.success("Canvas uploaded to S3!");
-          if (onSave) onSave(uploadedUrl);
+          if (onSave) onSave(imageUrl);
           setIsSaved(true);
-        },
-      }
-    );
-  };
-
-  const onUpload = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const fileUrl = URL.createObjectURL(file);
-    const mime = file?.type || "application/octet-stream";
-    const ext = mime.split("/")[1] || file.name.split(".").pop() || "bin";
-    const fileName = file.name.split(".")[0];
-
-    signUrlMutation.mutate(
-      { fileName, ext, type: mime },
-      {
-        onError: () => {
-          return;
-        },
-        onSuccess: async (data) => {
-          const res = await axios.put(data.signUrl, file, {
-            headers: { "Content-Type": file.type },
-          });
-          console.log("✅ Uploaded:", res);
         },
       }
     );
@@ -108,7 +86,7 @@ export const Drawing = ({ onSave }: DrawingProps) => {
   return (
     <>
       <div className="w-full flex justify-between border-b pb-2 p-3">
-        <div className="flex flex-wrap gap-x-3 justify-center items-center">
+        <div className="flex gap-x-3 justify-start items-center flex-1 w-full">
           <Button
             disabled={!eraseMode}
             onClick={handlePenClick}
@@ -135,6 +113,21 @@ export const Drawing = ({ onSave }: DrawingProps) => {
           >
             <Trash2 className="size-3 text-secondary" />
           </Button>
+          {bgImage && false && (
+            <Button
+              type="button"
+              variant="customsm"
+              size="sm"
+              onClick={() => {
+                setCanvasKey((prev) => prev + 1);
+                canvasRef.current?.clearCanvas();
+                onRemoveBg?.();
+              }}
+              className="flex items-center gap-1 px-2 py-1 h-7 text-xs"
+            >
+              <X className="size-3" /> Remove Image
+            </Button>
+          )}
         </div>
         <Button
           disabled={isSaved || signUrlMutation.isPending}
@@ -148,6 +141,7 @@ export const Drawing = ({ onSave }: DrawingProps) => {
       </div>
 
       <ReactSketchCanvas
+        key={`canvas-${bgImage ? "with-bg" : "no-bg"}-${canvasKey}`}
         ref={canvasRef}
         width="100%"
         canvasColor="transparent"

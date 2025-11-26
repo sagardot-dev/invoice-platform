@@ -27,6 +27,7 @@ import { useCreateInvoice } from "../server/create-invoice";
 import { useGetInvoice } from "@/modules/invoices/server/use-get-invoice";
 import { useUpdateInvoice } from "@/modules/invoices/server/use-mutate-invoice";
 import { CheckOut } from "./checkout";
+import { s3URL } from "@/const";
 
 export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId?: string }) => {
   const { data: invoice } = useGetInvoice(invoiceId || "");
@@ -219,7 +220,11 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId?: string }) => {
       customerId: invoice.customer?.id ?? "",
       saleManIds: invoice.saleMen?.map((s: SaleMan) => s.id) ?? [],
       helperIds: invoice.helpers?.map((h: Helper) => h.id) ?? [],
-      customerSignature: invoice.customerSignature ?? "",
+
+      customerSignature: invoice.customerSignature
+        ? `${s3URL}/${invoice.customerSignature}`
+        : "",
+
       customer: {
         name: invoice.customer?.name ?? "",
         phoneNumber: invoice.customer?.phoneNumber ?? "",
@@ -230,6 +235,7 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId?: string }) => {
         weight: invoice.customer?.weight ?? 0,
         stayDays: invoice.customer?.stayDays ?? 0,
       },
+
       jacket: {
         quantity: invoice.jacket?.quantity ?? 0,
         tailorName: invoice.jacket?.tailorName ?? "NORMAL",
@@ -239,12 +245,20 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId?: string }) => {
         addVest: invoice.jacket?.addVest ?? false,
         addMonogram: invoice.jacket?.addMonogram ?? false,
         jacketType: invoice.jacket?.jacketType ?? "",
-        jacketFabricImage: invoice.jacket?.jacketFabricImage ?? "",
-        jacketStyleDrawing: invoice.jacket?.jacketStyleDrawing ?? "",
+        jacketFabricImage: invoice.jacket?.jacketFabricImage
+          ? `${s3URL}/${invoice.jacket.jacketFabricImage}`
+          : "",
+        jacketStyleDrawing: invoice.jacket?.jacketStyleDrawing
+          ? `${s3URL}/${invoice.jacket.jacketStyleDrawing}`
+          : "",
         jacketCustomStyle: invoice.jacket?.jacketCustomStyle ?? "",
         monogramName: invoice.jacket?.monogramName ?? "",
-        monogramImage: invoice.jacket?.monogramImage ?? "",
-        liningImage: invoice.jacket?.liningImage ?? "",
+        monogramImage: invoice.jacket?.monogramImage
+          ? `${s3URL}/${invoice.jacket.monogramImage}`
+          : "",
+        liningImage: invoice.jacket?.liningImage
+          ? `${s3URL}/${invoice.jacket.liningImage}`
+          : "",
         ch: invoice.jacket?.ch ?? 0,
         wa: invoice.jacket?.wa ?? 0,
         hip: invoice.jacket?.hip ?? 0,
@@ -274,6 +288,7 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId?: string }) => {
         flatB: invoice.jacket?.flatB ?? false,
         note: invoice.jacket?.note ?? "",
       },
+
       pant: {
         quantity: invoice.pant?.quantity ?? 0,
         tailorName: invoice.pant?.tailorName ?? "",
@@ -283,11 +298,17 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId?: string }) => {
         addInnerLining: invoice.pant?.addInnerLining ?? false,
         pantType: invoice.pant?.pantType ?? "NORMAL",
         pantLength: invoice.pant?.pantLength ?? "",
-        pantFabricImage: invoice.pant?.pantFabricImage ?? "",
-        pantStyleDrawing: invoice.pant?.pantStyleDrawing ?? "",
+        pantFabricImage: invoice.pant?.pantFabricImage
+          ? `${s3URL}/${invoice.pant.pantFabricImage}`
+          : "",
+        pantStyleDrawing: invoice.pant?.pantStyleDrawing
+          ? `${s3URL}/${invoice.pant.pantStyleDrawing}`
+          : "",
         pantCustomStyle: invoice.pant?.pantCustomStyle ?? "",
         monogramName: invoice.pant?.monogramName ?? "",
-        monogramImage: invoice.pant?.monogramImage ?? "",
+        monogramImage: invoice.pant?.monogramImage
+          ? `${s3URL}/${invoice.pant.monogramImage}`
+          : "",
         wa: invoice.pant?.wa ?? 0,
         hip: invoice.pant?.hip ?? 0,
         cr: invoice.pant?.cr ?? 0,
@@ -308,6 +329,7 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId?: string }) => {
         underBelly: invoice.pant?.underBelly ?? false,
         note: invoice.pant?.note ?? "",
       },
+
       shirt: {
         quantity: invoice.shirt?.quantity ?? 0,
         tailorName: invoice.shirt?.tailorName ?? "",
@@ -317,11 +339,17 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId?: string }) => {
         addMonogram: invoice.shirt?.addMonogram ?? false,
         addTie: invoice.shirt?.addTie ?? false,
         shirtType: invoice.shirt?.shirtType ?? "DRESSSHIRT",
-        shirtFabricImage: invoice.shirt?.shirtFabricImage ?? "",
-        shirtStyleDrawing: invoice.shirt?.shirtStyleDrawing ?? "",
+        shirtFabricImage: invoice.shirt?.shirtFabricImage
+          ? `${s3URL}/${invoice.shirt.shirtFabricImage}`
+          : "",
+        shirtStyleDrawing: invoice.shirt?.shirtStyleDrawing
+          ? `${s3URL}/${invoice.shirt.shirtStyleDrawing}`
+          : "",
         shirtCustomStyle: invoice.shirt?.shirtCustomStyle ?? "",
         shirtMonogramName: invoice.shirt?.shirtMonogramName ?? "",
-        shirtMonogramImage: invoice.shirt?.shirtMonogramImage ?? "",
+        shirtMonogramImage: invoice.shirt?.shirtMonogramImage
+          ? `${s3URL}/${invoice.shirt.shirtMonogramImage}`
+          : "",
         ch: invoice.shirt?.ch ?? 0,
         wa: invoice.shirt?.wa ?? 0,
         hip: invoice.shirt?.hip ?? 0,
@@ -345,10 +373,11 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId?: string }) => {
         sloNk: invoice.shirt?.sloNk ?? false,
         note: invoice.shirt?.note ?? "",
       },
+
       onBoard: {
         name: data?.name ?? "",
         email: data?.email ?? "",
-        image: data?.image ?? "",
+        image: data?.image ? `${s3URL}/${data.image}` : "",
         address: data?.address ?? "",
         phoneNumber: data?.phoneNumber ?? "",
         taxId: data?.taxId ?? "",
@@ -356,7 +385,7 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId?: string }) => {
         whatsappNumber: data?.whatsappNumber ?? "",
       },
     });
-  }, [invoice, data]);
+  }, [invoice, data, form]);
 
   const isLoading = getCompanyDataQuery.isLoading;
   const isPending = form.formState.isSubmitting || isLoading;

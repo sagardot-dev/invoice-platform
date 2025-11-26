@@ -1,5 +1,7 @@
 "use client";
-import { SaleMan } from "@/generated/prisma/client";
+import { s3URL } from "@/const";
+import { Invoice, SaleMan } from "@/generated/prisma/client";
+import { useGetComapnyData } from "@/modules/dashboard/server/get-companydat";
 import { useGetInvoice } from "@/modules/invoices/server/use-get-invoice";
 
 import {
@@ -125,7 +127,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     fontFamily: "Niramit",
     fontSize: 9,
-    padding: 48,
+    padding: 18,
+    color: "#0a0a0a",
+  },
+  Invoicepage: {
+    backgroundColor: "#ffffff",
+    fontFamily: "Niramit",
+    fontSize: 9,
+    padding: 40,
     color: "#0a0a0a",
   },
   noteLabels: {
@@ -224,7 +233,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     backgroundColor: "#ffffff",
     borderRadius: 4,
-    border: '1px',
+    border: "1px",
     borderColor: "#E5E7EB",
   },
   measurementLabel: {
@@ -242,7 +251,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fffbeb",
     borderRadius: 6,
     borderLeft: "3px solid #f59e0b",
-    minHeight: 70,
+    minHeight: 65,
   },
   noteLabel: {
     fontSize: 7,
@@ -264,10 +273,11 @@ const styles = StyleSheet.create({
     border: "1px solid #e5e7eb",
     justifyContent: "center",
     alignItems: "center",
+    paddingTop: 10,
   },
   styleImage: {
     width: "100%",
-    height: 340,
+    height: "auto",
     objectFit: "cover",
     borderRadius: 8,
   },
@@ -330,13 +340,13 @@ const styles = StyleSheet.create({
   },
   signatureImage: {
     width: 100,
-    height: 50,
-    marginBottom: 8,
+    height: "auto",
+    marginBottom: 0,
   },
   signatureLine: {
     width: 200,
     borderTop: "1px solid #d1d5db",
-    paddingTop: 8,
+    paddingTop: 1,
   },
   signatureLabel: {
     fontSize: 7,
@@ -442,8 +452,14 @@ const MeasurementSection = ({ measurements, labels }: any) => {
   );
 };
 
-export const Doc = ({ data }: any) => {
-  if (!data) {
+interface DocProps {
+  data: any;
+  companyData: any;
+}
+
+export const Doc = ({ data, companyData }: DocProps) => {
+  console.log(data);
+  if (!data || !companyData) {
     return (
       <Document>
         <Page size="A4" style={styles.page}>
@@ -470,6 +486,9 @@ export const Doc = ({ data }: any) => {
     paymentMethod,
     customerStatus,
   } = data;
+
+  const { name, address, phoneNumber, email, websiteUrl, whatsappNumber } =
+    companyData;
 
   return (
     <Document>
@@ -509,7 +528,7 @@ export const Doc = ({ data }: any) => {
             {
               <View style={styles.imageContainer}>
                 <Image
-                  src={jacket.jacketStyleDrawing}
+                  src={`${s3URL}/${jacket.jacketStyleDrawing}`}
                   style={styles.styleImage}
                 />
               </View>
@@ -553,7 +572,10 @@ export const Doc = ({ data }: any) => {
 
             {
               <View style={styles.imageContainer}>
-                <Image src={pant.pantStyleDrawing} style={styles.styleImage} />
+                <Image
+                  src={`${s3URL}/${pant.pantStyleDrawing}`}
+                  style={styles.styleImage}
+                />
               </View>
             }
 
@@ -599,7 +621,7 @@ export const Doc = ({ data }: any) => {
             {
               <View style={styles.imageContainer}>
                 <Image
-                  src={shirt.shirtStyleDrawing}
+                  src={`${s3URL}/${shirt.shirtStyleDrawing}`}
                   style={styles.styleImage}
                 />
               </View>
@@ -615,7 +637,7 @@ export const Doc = ({ data }: any) => {
         </Page>
       )}
 
-      <Page size="A4" style={styles.page}>
+      <Page size="A4" style={styles.Invoicepage}>
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.invoiceTitle}>Invoice</Text>
@@ -624,10 +646,16 @@ export const Doc = ({ data }: any) => {
           <View style={styles.infoGrid}>
             <View style={styles.infoColumn}>
               <Text style={styles.infoLabel}>From</Text>
-              <Text style={styles.infoValue}>Company Name</Text>
-              <Text style={styles.infoValue}>123 Tailor Street</Text>
-              <Text style={styles.infoValue}>Bangkok, Thailand 10110</Text>
-              <Text style={styles.infoValue}>Tel: +66 XXX XXX XXX</Text>
+              <Text style={styles.infoValue}>{name}</Text>
+              <Text style={styles.infoValue}>{address}</Text>
+              <Text style={styles.infoValue}>Tel: {phoneNumber}</Text>
+              {email && <Text style={styles.infoValue}>Email: {email}</Text>}
+              {websiteUrl && (
+                <Text style={styles.infoValue}>Website: {websiteUrl}</Text>
+              )}
+              {whatsappNumber && (
+                <Text style={styles.infoValue}>WhatsApp: {whatsappNumber}</Text>
+              )}
             </View>
 
             <View style={styles.infoColumn}>
@@ -683,10 +711,12 @@ export const Doc = ({ data }: any) => {
 
           {customerSignature && (
             <View style={styles.signatureSection}>
-              <Image src={customerSignature} style={styles.signatureImage} />
-              <View style={styles.signatureLine}>
-                <Text style={styles.signatureLabel}>Customer Signature</Text>
-              </View>
+              <Image
+                src={`${s3URL}/${shirt.shirtStyleDrawing}`}
+                style={styles.signatureImage}
+              />
+              <View style={styles.signatureLine}></View>
+              <Text style={styles.signatureLabel}>Customer Signature</Text>
             </View>
           )}
         </View>
@@ -707,11 +737,12 @@ interface PdfTemplateProps {
 
 export const PdfTemplate = ({ invoiceId }: PdfTemplateProps) => {
   const invoiceQuery = useGetInvoice(invoiceId);
+  const { data } = useGetComapnyData();
 
   return (
     <div className="w-full h-full bar">
       <PdfViewerClient>
-        <Doc data={invoiceQuery.data} />
+        <Doc data={invoiceQuery.data} companyData={data} />
       </PdfViewerClient>
     </div>
   );

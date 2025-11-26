@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -12,9 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
-import {
-  NativeSelect,
-} from "@/components/ui/native-select";
+import { NativeSelect } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
 import {
   PantTypeEnum,
@@ -31,7 +29,7 @@ import axios from "axios";
 import { Calendar28 } from "./date-picker";
 
 export const InvoicePantForm = () => {
-  const { control, setValue } = useFormContext();
+  const { control, setValue, watch } = useFormContext();
   const signUrlMutation = useGetSignUrlMutation();
   const [pending, setPending] = useState(false);
 
@@ -367,7 +365,11 @@ export const InvoicePantForm = () => {
         </div>
 
         <div className="flex flex-col gap-y-1 w-full h-full border border-dashed rounded-lg px-1 py-1 overflow-hidden items-center">
-          <Drawing onSave={(url) => setValue("pant.pantStyleDrawing", url)} />
+          <Drawing
+            bgImage={watch("pant.pantStyleDrawing")}
+            onSave={(url) => setValue("pant.pantStyleDrawing", url)}
+            onRemoveBg={() => setValue("pant.pantStyleDrawing", "")}
+          />
         </div>
       </div>
     </>
