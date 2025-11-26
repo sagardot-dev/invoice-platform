@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { useGetSignUrlMutation } from "@/modules/dashboard/server/get-signUrl";
 import axios from "axios";
-import { Eraser, Pencil, Save, Trash2, X } from "lucide-react";
+import { Eraser, EyeIcon, Pencil, Save, Trash2, X } from "lucide-react";
 import React, { ChangeEvent, useRef, useState } from "react";
 import { ReactSketchCanvas, ReactSketchCanvasRef } from "react-sketch-canvas";
 import { toast } from "sonner";
@@ -18,7 +18,7 @@ export const Drawing = ({ onSave, bgImage, onRemoveBg }: DrawingProps) => {
   const canvasRef = useRef<ReactSketchCanvasRef>(null);
   const [eraseMode, setEraseMode] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  const [canvasKey, setCanvasKey] = useState(0);
+  const [showBg, setShowBg] = useState(!!bgImage);
 
   const handlePenClick = () => {
     setEraseMode(false);
@@ -113,19 +113,19 @@ export const Drawing = ({ onSave, bgImage, onRemoveBg }: DrawingProps) => {
           >
             <Trash2 className="size-3 text-secondary" />
           </Button>
-          {bgImage && false && (
+          {bgImage && (
             <Button
               type="button"
               variant="customsm"
               size="sm"
               onClick={() => {
-                setCanvasKey((prev) => prev + 1);
+                setShowBg((prev) => !prev);
                 canvasRef.current?.clearCanvas();
                 onRemoveBg?.();
               }}
               className="flex items-center gap-1 px-2 py-1 h-7 text-xs"
             >
-              <X className="size-3" /> Remove Image
+              <EyeIcon className="size-3" />
             </Button>
           )}
         </div>
@@ -141,7 +141,8 @@ export const Drawing = ({ onSave, bgImage, onRemoveBg }: DrawingProps) => {
       </div>
 
       <ReactSketchCanvas
-        key={`canvas-${bgImage ? "with-bg" : "no-bg"}-${canvasKey}`}
+        key={`canvas-${bgImage ? "with-bg" : "no-bg"}`}
+        backgroundImage={showBg && bgImage ? bgImage : ""}
         ref={canvasRef}
         width="100%"
         canvasColor="transparent"
