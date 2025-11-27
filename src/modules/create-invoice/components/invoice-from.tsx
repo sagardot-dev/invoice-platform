@@ -88,8 +88,8 @@ export const InvoiceForm = () => {
 
   return (
     <>
-      <div className="flex flex-col h-full gap-x-8 gap-y-6 w-full">
-        <div className=" flex flex-wrap gap-6 md:gap-x-10 justify-start items-center px-4  w-full pb-4">
+      <div className="flex flex-col h-full justify-center gap-x-8 gap-y-6 w-full">
+        <div className=" flex flex-wrap py-2 gap-6 md:gap-x-9 justify-start items-center px-4  w-full ">
           <FormField
             control={control}
             name="invoiceNumber"
@@ -239,7 +239,7 @@ export const InvoiceForm = () => {
                   </Popover>
 
                   {safeValue.length > 0 && (
-                    <div className=" lg:flex  lg:gap-x-2 mt-2 absolute lg:right-39 lg:top-14  hidden ">
+                    <div className=" lg:flex  lg:gap-x-2 mt-2 absolute lg:right-39 lg:top-10  hidden ">
                       {safeValue.map((id: string) => {
                         const helper = querySalemen.data?.find(
                           (h: Helper) => h.id === id
@@ -314,7 +314,7 @@ export const InvoiceForm = () => {
                     </Popover>
 
                     {safeValue.length > 0 && (
-                      <div className=" lg:flex  lg:gap-x-2 mt-2 absolute lg:right-39 lg:top-6  hidden">
+                      <div className=" lg:flex  lg:gap-x-2 mt-2 absolute lg:right-39 lg:top-3  hidden">
                         {safeValue.map((id: string) => {
                           const helper = queryHelper.data?.find(
                             (h: Helper) => h.id === id

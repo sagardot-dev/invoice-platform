@@ -95,7 +95,7 @@ export const InvoiceJacketForm = () => {
 
   return (
     <>
-      <div className="flex flex-col h-full gap-x-8 gap-y-8 w-full">
+      <div className="flex flex-col h-full gap-x-8 gap-y-4 w-full">
         <div className=" flex flex-wrap gap-7 md:gap-x-12 justify-start items-center px-4  w-full">
           {/* Invoice Number */}
           <FormField

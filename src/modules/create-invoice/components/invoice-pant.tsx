@@ -91,7 +91,7 @@ export const InvoicePantForm = () => {
 
   return (
     <>
-      <div className="flex flex-wrap gap-x-7 md:gap-x-12 gap-y-5 justify-start items-center px-4  w-full">
+      <div className="flex flex-wrap gap-x-7 md:gap-x-12 gap-y-4 justify-start items-center px-4  w-full">
         <FormField
           control={control}
           name="pant.quantity"
@@ -209,8 +209,8 @@ export const InvoicePantForm = () => {
         />
       </div>
 
-      <div className="space-y-4 bar grid xl:grid-cols-3 xl:grid-rows-1 grid-cols-1 grid-rows-2 gap-y-6 gap-x-3 rounded-2xl pt-5 px-2">
-        <div className="col-span-2 gap-y-9 w-full h-full justify-start grid grid-cols-2 bar">
+      <div className="space-y-4 bar grid xl:grid-cols-3 xl:grid-rows-1 grid-cols-1 grid-rows-2 gap-y-5 gap-x-3 rounded-2xl pt-5 px-2">
+        <div className="col-span-2  w-full h-full justify-start grid grid-cols-2 bar">
           <div className="border col-span-2 border-chart-1/10 rounded-2xl p-6 space-y-9 bar">
             <div className="flex flex-col gap-y-3">
               <Badge className="bg-primary/20 text-primary backdrop-blur-2xl">

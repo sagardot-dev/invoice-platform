@@ -238,13 +238,13 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId?: string }) => {
 
       jacket: {
         quantity: invoice.jacket?.quantity ?? 0,
-        tailorName: invoice.jacket?.tailorName ?? "NORMAL",
+        tailorName: invoice.jacket?.tailorName ?? "",
         fittingDate: invoice.jacket?.fittingDate
           ? new Date(invoice.jacket.fittingDate)
           : new Date(),
         addVest: invoice.jacket?.addVest ?? false,
         addMonogram: invoice.jacket?.addMonogram ?? false,
-        jacketType: invoice.jacket?.jacketType ?? "",
+        jacketType: invoice.jacket?.jacketType ?? "NORMAL",
         jacketFabricImage: invoice.jacket?.jacketFabricImage
           ? `${s3URL}/${invoice.jacket.jacketFabricImage}`
           : "",
@@ -393,9 +393,6 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId?: string }) => {
   const isDisabled = getCompanyDataQuery.isLoading || isPending;
 
   async function onSubmit(data: z.infer<typeof invoiceSchema>) {
-    toast.loading("Submitting invoice...", {
-      description: "please wait for a minute",
-    });
     if (invoice && invoiceId) {
       updateMutationInvoice.mutateAsync(
         { id: invoiceId, data },
@@ -448,7 +445,7 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId?: string }) => {
   };
 
   return (
-    <Card className="w-full border-none py-6">
+    <Card className="w-full h-full border-none flex">
       <CardHeader className="border-b pb-5! px-8 flex justify-between items-center gap-x-19">
         <div>
           <CardTitle className="text-xl">Create a new Invoice</CardTitle>
@@ -461,7 +458,7 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId?: string }) => {
         </CardAction>
       </CardHeader>
 
-      <CardContent className="">
+      <CardContent className=" flex justify-center items-center">
         <FormProvider {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit, (error) => {
@@ -470,7 +467,7 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId?: string }) => {
                 description: error.invoiceNumber?.message,
               });
             })}
-            className="space-y-6"
+            className="space-y-6 flex flex-col h-full w-full py-4"
           >
             {step === 0 && <InvoiceForm />}
             {step === 1 && <InvoiceJacketForm />}
@@ -478,7 +475,7 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId?: string }) => {
             {step === 3 && <InvoiceShirttForm />}
             {step === 4 && <CheckOut />}
 
-            <div className="flex justify-between flex-wrap ">
+            <div className="flex justify-between items-end flex-wrap w-full ">
               {step > 0 ? (
                 <Button
                   type="button"
