@@ -297,7 +297,7 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId?: string }) => {
           : new Date(),
         addInnerLining: invoice.pant?.addInnerLining ?? false,
         pantType: invoice.pant?.pantType ?? "NORMAL",
-        pantLength: invoice.pant?.pantLength ?? "",
+        pantLength: invoice.pant?.pantLength ?? "TROUSER",
         pantFabricImage: invoice.pant?.pantFabricImage
           ? `${s3URL}/${invoice.pant.pantFabricImage}`
           : "",
