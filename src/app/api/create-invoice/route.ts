@@ -132,6 +132,7 @@ export async function POST(req: Request) {
       },
       {
         timeout: 15000,
+        maxWait: 10000,
       }
     );
 

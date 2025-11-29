@@ -1,12 +1,14 @@
+
+import PdfWrapper from "@/lib/pdf/pdf-warpper";
+import { InvoiceWeb } from "@/lib/pdf/real-pdf";
 import React, { Suspense } from "react";
-import { PdfTemplate } from "@/lib/pdf/invoice-template";
 
 const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
 
   return (
     <Suspense fallback={<div>Loading PDF…</div>}>
-      <PdfTemplate invoiceId={id} />
+      <PdfWrapper invoiceId={id} />
     </Suspense>
   );
 };
