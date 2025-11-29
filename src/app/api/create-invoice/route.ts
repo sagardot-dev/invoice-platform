@@ -118,8 +118,8 @@ export async function POST(req: Request) {
         return invoice;
       },
       {
-        timeout: 15000,
-        maxWait: 10000,
+        timeout: 65000,
+        maxWait: 30000,
       }
     );
 
