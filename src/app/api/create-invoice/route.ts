@@ -48,25 +48,21 @@ export async function POST(req: Request) {
   try {
     const result = await prisma.$transaction(
       async (tx) => {
-        let customerRecord = await tx.customer.findUnique({
+        const customerRecord = await tx.customer.upsert({
           where: { email: data.customer.email },
+          update: {},
+          create: {
+            name: data.customer.name,
+            email: data.customer.email,
+            phoneNumber: data.customer.phoneNumber,
+            address: data.customer.address || null,
+            gender: data.customer.gender,
+            height: data.customer.height || null,
+            weight: data.customer.weight || null,
+            stayDays: data.customer.stayDays || null,
+            userId: session.user.id,
+          },
         });
-
-        if (!customerRecord) {
-          customerRecord = await tx.customer.create({
-            data: {
-              name: data.customer.name,
-              email: data.customer.email,
-              phoneNumber: data.customer.phoneNumber,
-              address: data.customer.address || null,
-              gender: data.customer.gender,
-              height: data.customer.height || null,
-              weight: data.customer.weight || null,
-              stayDays: data.customer.stayDays || null,
-              userId: session.user.id,
-            },
-          });
-        }
 
         const [jacketRecord, pantRecord, shirtRecord] = await Promise.all([
           data.jacket &&

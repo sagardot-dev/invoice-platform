@@ -26,8 +26,8 @@ import { Company, Helper, SaleMan } from "@/generated/prisma/client";
 import { useCreateInvoice } from "../server/create-invoice";
 import { useGetInvoice } from "@/modules/invoices/server/use-get-invoice";
 import { useUpdateInvoice } from "@/modules/invoices/server/use-mutate-invoice";
-import { CheckOut } from "./checkout";
 import { s3URL } from "@/const";
+import { InvoiceWebForm } from "./checkout";
 
 export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId?: string }) => {
   const { data: invoice } = useGetInvoice(invoiceId || "");
@@ -473,7 +473,7 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId?: string }) => {
             {step === 1 && <InvoiceJacketForm />}
             {step === 2 && <InvoicePantForm />}
             {step === 3 && <InvoiceShirttForm />}
-            {step === 4 && <CheckOut />}
+            {step === 4 && <InvoiceWebForm />}
 
             <div className="flex justify-between items-end flex-wrap w-full ">
               {step > 0 ? (
@@ -502,7 +502,11 @@ export const InvoiceFormWrapper = ({ invoiceId }: { invoiceId?: string }) => {
               ) : (
                 <Button
                   type="submit"
-                  disabled={isDisabled || updateMutationInvoice.isPending}
+                  disabled={
+                    isDisabled ||
+                    updateMutationInvoice.isPending ||
+                    invoiceMutation.isPending
+                  }
                   className="bg-linear-0 from-chart-5 via-primary to-chart-5 border border-primary h-8"
                 >
                   {invoice ? "Update Invoice" : "Create Invoice"}

@@ -52,37 +52,45 @@ export async function GET(req: NextRequest) {
       ];
     }
 
-    const totalCount = await prisma.invoice.count({
-      where: whereClause,
-    });
-
-    const invoices = await prisma.invoice.findMany({
-      where: whereClause,
-      select: {
-        id: true,
-        invoiceNumber: true,
-        date: true,
-        customerStatus: true,
-        paymentMethod: true,
-        totalAmount: true,
-        notes: true,
-        reselling: true,
-        isReadymade: true,
-        customer: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
+    const [totalCount, invoices] = await Promise.all([
+      prisma.invoice.count({
+        where: whereClause,
+      }),
+      prisma.invoice.findMany({
+        where: whereClause,
+        select: {
+          id: true,
+          invoiceNumber: true,
+          date: true,
+          customerStatus: true,
+          paymentMethod: true,
+          totalAmount: true,
+          notes: true,
+          reselling: true,
+          isReadymade: true,
+          customer: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
+          saleMen: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              status: true,
+            },
           },
         },
-        saleMen: true,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-      take: defaultPageSize,
-      skip: skip,
-    });
+        orderBy: {
+          createdAt: "desc",
+        },
+        take: defaultPageSize,
+        skip: skip,
+      }),
+    ]);
 
     const totalPages = Math.ceil(totalCount / defaultPageSize);
     return Response.json(

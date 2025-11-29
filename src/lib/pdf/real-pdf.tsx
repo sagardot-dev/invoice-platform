@@ -128,7 +128,9 @@ const MeasurementSection = ({ measurements, labels }: any) => {
                 <span className="text-xs text-gray-950">
                   {labels[key].th} / {labels[key].en}
                 </span>
-                <span className="font-semibold text-gray-900">{value}"</span>
+                <span className="font-semibold text-sm text-gray-900">
+                  {value}"
+                </span>
               </div>
             ))}
           </div>

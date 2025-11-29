@@ -401,5 +401,6 @@ model Invoice {
   shirtId String?
   shirt   Shirt?  @relation(fields: [shirtId], references: [id])
 
+  @@index([userId, id])
   @@map("invoice")
 }

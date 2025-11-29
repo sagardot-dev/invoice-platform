@@ -42,7 +42,7 @@ export async function GET(
 
   try {
     const invoice = await prisma.invoice.findUnique({
-      where: { id },
+      where: { id, userId: session.user.id },
       select: {
         id: true,
         invoiceNumber: true,
@@ -76,12 +76,10 @@ export async function GET(
             email: true,
           },
         },
-        
 
         jacket: true,
         pant: true,
         shirt: true,
-        
       },
     });
     if (!invoice) {
