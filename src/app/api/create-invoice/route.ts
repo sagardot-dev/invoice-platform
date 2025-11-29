@@ -68,40 +68,27 @@ export async function POST(req: Request) {
           });
         }
 
-        let jacketRecord = null;
-        if (
+        const [jacketRecord, pantRecord, shirtRecord] = await Promise.all([
           data.jacket &&
           Object.keys(data.jacket).length > 0 &&
           (data.jacket.quantity ||
             data.jacket.tailorName ||
             data.jacket.jacketType)
-        ) {
-          jacketRecord = await tx.jacket.create({
-            data: data.jacket,
-          });
-        }
+            ? tx.jacket.create({ data: data.jacket })
+            : Promise.resolve(null),
 
-        let pantRecord = null;
-        if (
           data.pant &&
           Object.keys(data.pant).length > 0 &&
           (data.pant.quantity || data.pant.tailorName || data.pant.pantType)
-        ) {
-          pantRecord = await tx.pant.create({
-            data: data.pant,
-          });
-        }
+            ? tx.pant.create({ data: data.pant })
+            : Promise.resolve(null),
 
-        let shirtRecord = null;
-        if (
           data.shirt &&
           Object.keys(data.shirt).length > 0 &&
           (data.shirt.quantity || data.shirt.tailorName || data.shirt.shirtType)
-        ) {
-          shirtRecord = await tx.shirt.create({
-            data: data.shirt,
-          });
-        }
+            ? tx.shirt.create({ data: data.shirt })
+            : Promise.resolve(null),
+        ]);
 
         const invoice = await tx.invoice.create({
           data: {

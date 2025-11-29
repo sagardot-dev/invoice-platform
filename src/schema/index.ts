@@ -269,7 +269,7 @@ const shapeType = jacketSchema.pick({
   flatB: true,
 });
 
-const measurementType = jacketSchema.pick({
+export const measurementType = jacketSchema.pick({
   ch: true,
   wa: true,
   hip: true,
@@ -288,7 +288,7 @@ export type MeasurementType = z.infer<typeof measurementType>;
 
 export type shapeType = z.infer<typeof shapeType>;
 
-const pantMeasurementType = pantSchema.pick({
+export const pantMeasurementType = pantSchema.pick({
   wa: true,
   hip: true,
   cr: true,
@@ -298,7 +298,7 @@ const pantMeasurementType = pantSchema.pick({
   lg: true,
 });
 
-const pantStyleType = pantSchema.pick({
+export  const pantStyleType = pantSchema.pick({
   slantingPkt: true,
   straightPkt: true,
   americanPkt: true,
@@ -315,7 +315,7 @@ const pantStyleType = pantSchema.pick({
 export type PantMeasurementType = z.infer<typeof pantMeasurementType>;
 export type PantStyleType = z.infer<typeof pantStyleType>;
 
-const shirtMeasurementType = shirtSchema.pick({
+export const shirtMeasurementType = shirtSchema.pick({
   ch: true,
   wa: true,
   hip: true,
@@ -334,7 +334,7 @@ const shirtMeasurementType = shirtSchema.pick({
   nLow: true,
 });
 
-const shirtShapeType = shirtSchema.pick({
+export const shirtShapeType = shirtSchema.pick({
   sqSho: true,
   rdSho: true,
   sloSho: true,
